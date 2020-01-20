@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+// import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-export default class Register extends Component {
+const BASE_URL = 'http://localhost:8000/api/v1';
+
+class Register extends Component {
   state = {
     user: {
       name: '',
@@ -11,8 +15,48 @@ export default class Register extends Component {
     }
   };
 
-  handleLogin = e => {
+  handleRegister = e => {
+    const { name, email, password, confirmPassword } = this.state.user;
+
+    console.log(this.state, 'register...');
+
     e.preventDefault();
+    if (
+      name.trim() &&
+      name.length >= 4 &&
+      email &&
+      email.length >= 8 &&
+      (email.includes('@gmail.com') || email.includes('@yahoo.com')) &&
+      password.trim() &&
+      confirmPassword.trim() &&
+      password.length >= 8 &&
+      password === confirmPassword
+    ) {
+      fetch(BASE_URL + '/users/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ name, email, password })
+      })
+        .then(res => res.json())
+        .then(data => {
+          console.log(data, 'register user data');
+          if (data.success) {
+            localStorage.setItem('jwt', data.token);
+            this.props.dispatch({ type: 'LOGIN', payload: data.user });
+            this.props.history.push('/');
+          }
+          if (!data.success) {
+            console.log('register user unsuccessful');
+
+            this.props.history.push('/users/login');
+          }
+        })
+        .catch(err => {
+          console.log(err, 'register user catch err');
+        });
+    }
   };
 
   handleInputChange = e => {
@@ -30,7 +74,7 @@ export default class Register extends Component {
 
     return (
       <div>
-        <form onSubmit={this.handleLogin}>
+        <form onSubmit={this.handleRegister}>
           <input
             type='text'
             name='name'
@@ -73,3 +117,9 @@ export default class Register extends Component {
     );
   }
 }
+
+function mapStateToProps(state) {
+  return state;
+}
+
+export default connect(mapStateToProps)(Register);

@@ -20,7 +20,7 @@ export default class Header extends Component {
           <Link to='/users/login'>
             <button>Login</button>
           </Link>
-          <Link to='users/register'>
+          <Link to='/users/register'>
             <button>Register</button>
           </Link>
         </div>

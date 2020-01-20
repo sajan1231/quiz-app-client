@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './assets/stylesheets/App.css';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, withRouter } from 'react-router-dom';
 
 import Home from './app/containers/Home';
 import Login from './user/containers/Login';
@@ -9,8 +9,44 @@ import ListQuiz from './quiz/containers/ListQuiz';
 import Header from './app/containers/Header';
 import Footer from './app/containers/Footer';
 
-export default class App extends Component {
+const BASE_URL = 'http://localhost:8000/api/v1';
+
+class App extends Component {
   state = {};
+
+  componentDidMount = () => {
+    const { jwt } = localStorage;
+
+    if (jwt) {
+      this.fetchData(BASE_URL + '/users/me', jwt);
+    } else if (!jwt) {
+      this.props.history.push('/users/login');
+    }
+  };
+
+  fetchData = (url, jwt) => {
+    fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: jwt
+      }
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data, 'user auto login data');
+        if (data.success) {
+          this.props.dispatch({ type: 'LOGIN', payload: data.user });
+          this.props.history.push('/');
+        }
+        if (!data.success) {
+          this.props.history.push('/users/login');
+        }
+      })
+      .catch(err => {
+        console.log(err, 'catch err');
+      });
+  };
 
   render() {
     return (
@@ -27,3 +63,5 @@ export default class App extends Component {
     );
   }
 }
+
+export default withRouter(App);

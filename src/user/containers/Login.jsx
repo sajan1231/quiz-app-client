@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-export default class Login extends Component {
+// import { withRouter } from 'react-router-dom';
+const BASE_URL = 'http://localhost:8000/api/v1';
+
+class Login extends Component {
   state = {
     user: {
       email: '',
@@ -11,6 +15,31 @@ export default class Login extends Component {
 
   handleLogin = e => {
     e.preventDefault();
+
+    fetch(BASE_URL + '/users/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(this.state.user)
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data, 'user login data');
+        if (data.success) {
+          localStorage.setItem('jwt', data.token);
+          this.props.dispatch({ type: 'LOGIN', payload: data.user });
+          this.props.history.push('/');
+        }
+        if (!data.success) {
+          console.log('login user unsuccessfull');
+
+          this.props.history.push('/users/login');
+        }
+      })
+      .catch(err => {
+        console.log(err, 'login user catch err');
+      });
   };
 
   handleInputChange = e => {
@@ -54,3 +83,9 @@ export default class Login extends Component {
     );
   }
 }
+
+function mapStateToProps(state) {
+  return state;
+}
+
+export default connect(mapStateToProps)(Login);
