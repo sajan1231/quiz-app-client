@@ -3,7 +3,7 @@ const initialState = {
   user: null
 }
 
-export function usersReducer (state=initialState, action) {
+export default function usersReducer(state = initialState, action) {
   console.log(action, 'inside user reducer...');
 
   switch (action.type) {
@@ -11,32 +11,26 @@ export function usersReducer (state=initialState, action) {
       return {
         ...state,
         isLoading: false,
-        token: action.payload.token,
-        user: action.payload.user,
-      }
+          token: action.payload.token,
+          user: action.payload.user,
+      };
 
-    case 'AUTO_LOGIN':
+    case 'REGISTER':
       return {
         ...state,
         isLoading: false,
-        user: action.payload.user,
-      }
-
-    case 'REGISTER':
-      return state;
-
+          token: action.payload.token,
+          user: action.payload.user,
+      };
 
     case 'LOGOUT':
       return {
         ...state,
         isLoading: true,
-        user: null,
-        token: null,
-      }
-    
-    case "":
-      return state;
-  
+          user: null,
+          token: null,
+      };
+
     default:
       return state;
   }

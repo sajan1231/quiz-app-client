@@ -43,9 +43,15 @@ class Register extends Component {
         .then(data => {
           console.log(data, 'register user data');
           if (data.success) {
-            localStorage.setItem('jwt', data.token);
-            this.props.dispatch({ type: 'LOGIN', payload: data.user });
-            this.props.history.push('/');
+            if (data.token) {
+              localStorage.setItem('jwt', data.token);
+            }
+            this.props.dispatch({ type: 'LOGIN', payload: data });
+            if (data.user.isAdmin) {
+              this.props.history.push('/users/admindashboard');
+            } else {
+              this.props.history.push('/users/userdashboard');
+            }
           }
           if (!data.success) {
             console.log('register user unsuccessful');
@@ -107,10 +113,12 @@ class Register extends Component {
             onChange={this.handleInputChange}
           />
 
-          <input type='submit' value='Register' />
+          <input type='submit' value='Register' className='btn' />
           <div>
             <span>Already have an account ?</span>
-            <Link to='/users/login'>Login</Link>
+            <Link to='/users/login' className='btn'>
+              Login
+            </Link>
           </div>
         </form>
       </div>

@@ -27,9 +27,15 @@ class Login extends Component {
       .then(data => {
         console.log(data, 'user login data');
         if (data.success) {
-          localStorage.setItem('jwt', data.token);
-          this.props.dispatch({ type: 'LOGIN', payload: data.user });
-          this.props.history.push('/');
+          if (data.token) {
+            localStorage.setItem('jwt', data.token);
+          }
+          this.props.dispatch({ type: 'LOGIN', payload: data });
+          if (data.user.isAdmin) {
+            this.props.history.push('/users/admindashboard');
+          } else {
+            this.props.history.push('/users/userdashboard');
+          }
         }
         if (!data.success) {
           console.log('login user unsuccessfull');
@@ -73,10 +79,12 @@ class Login extends Component {
             value={password}
             onChange={this.handleInputChange}
           />
-          <input type='submit' value='Login' />
+          <input type='submit' value='Login' className='btn' />
           <div>
             <span>Don't have an account ?</span>
-            <Link to='/users/register'>SignUp</Link>
+            <Link to='/users/register' className='btn'>
+              SignUp
+            </Link>
           </div>
         </form>
       </div>
@@ -85,6 +93,7 @@ class Login extends Component {
 }
 
 function mapStateToProps(state) {
+  console.log(state, 'login mapstate...');
   return state;
 }
 
