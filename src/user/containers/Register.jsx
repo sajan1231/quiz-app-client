@@ -79,49 +79,137 @@ class Register extends Component {
     const { name, email, password, confirmPassword } = this.state;
 
     return (
-      <div>
-        <form onSubmit={this.handleRegister}>
-          <input
-            type='text'
-            name='name'
-            placeholder='exapmle@gmail.com'
-            required
-            value={name}
-            onChange={this.handleInputChange}
-          />
-          <input
-            type='email'
-            name='email'
-            placeholder='exapmle@gmail.com'
-            required
-            value={email}
-            onChange={this.handleInputChange}
-          />
-          <input
-            type='password'
-            name='password'
-            required
-            value={password}
-            onChange={this.handleInputChange}
-          />
+      // <div>
+      //   <form onSubmit={this.handleRegister}>
+      //     <input
+      //       type='text'
+      //       name='name'
+      //       placeholder='exapmle@gmail.com'
+      //       required
+      //       value={name}
+      //       onChange={this.handleInputChange}
+      //     />
+      //     <input
+      //       type='email'
+      //       name='email'
+      //       placeholder='exapmle@gmail.com'
+      //       required
+      //       value={email}
+      //       onChange={this.handleInputChange}
+      //     />
+      //     <input
+      //       type='password'
+      //       name='password'
+      //       required
+      //       value={password}
+      //       onChange={this.handleInputChange}
+      //     />
 
-          <input
-            type='password'
-            name='confirmPassword'
-            required
-            value={confirmPassword}
-            onChange={this.handleInputChange}
-          />
+      //     <input
+      //       type='password'
+      //       name='confirmPassword'
+      //       required
+      //       value={confirmPassword}
+      //       onChange={this.handleInputChange}
+      //     />
 
-          <input type='submit' value='Register' className='btn' />
-          <div>
-            <span>Already have an account ?</span>
-            <Link to='/users/login' className='btn'>
-              Login
-            </Link>
+      //     <input type='submit' value='Register' className='btn' />
+      //     <div>
+      //       <span>Already have an account ?</span>
+      //       <Link to='/users/login' className='btn'>
+      //         Login
+      //       </Link>
+      //     </div>
+      //   </form>
+      // </div>
+
+      <section className='hero is-primary is-fullheight'>
+        <div className='hero-body'>
+          <div className='container'>
+            <div className='columns is-centered'>
+              <div className='column is-5-tablet is-4-desktop is-3-widescreen'>
+                <form action='' className='box'>
+                  <div className='field'>
+                    <label for='' className='label'>
+                      Username
+                    </label>
+                    <div className='control has-icons-left'>
+                      <input
+                        type='text'
+                        placeholder='e.g. bobsmith'
+                        className='input'
+                        required
+                      />
+                      <span className='icon is-small is-left'>
+                        <i class='fa fa-user'></i>
+                      </span>
+                    </div>
+                  </div>
+                  <div className='field'>
+                    <label for='' className='label'>
+                      Email
+                    </label>
+                    <div className='control has-icons-left'>
+                      <input
+                        type='email'
+                        placeholder='e.g. bobsmith@gmail.com'
+                        className='input'
+                        required
+                      />
+                      <span className='icon is-small is-left'>
+                        <i className='fa fa-envelope'></i>
+                      </span>
+                    </div>
+                  </div>
+                  <div className='field'>
+                    <label for='' className='label'>
+                      Password
+                    </label>
+                    <div className='control has-icons-left'>
+                      <input
+                        type='password'
+                        placeholder='*******'
+                        className='input'
+                        required
+                      />
+                      <span className='icon is-small is-left'>
+                        <i className='fa fa-lock'></i>
+                      </span>
+                    </div>
+                  </div>
+                  <div className='field'>
+                    <label for='' className='label'>
+                      Confirm Password
+                    </label>
+                    <div className='control has-icons-left'>
+                      <input
+                        type='password'
+                        placeholder='*******'
+                        className='input'
+                        required
+                      />
+                      <span className='icon is-small is-left'>
+                        <i className='fa fa-lock'></i>
+                      </span>
+                    </div>
+                  </div>
+                  <div className='field'>
+                    <label for='' className='checkbox'>
+                      Already have an account?
+                    </label>
+                    <Link to='/users/login'>
+                      <span style={{ margin: '0 10px' }}>Login</span>
+                    </Link>
+                  </div>
+                  <div className='field'>
+                    <button className='button is-success'>Login</button>
+                  </div>
+                </form>
+              </div>
+            </div>
           </div>
-        </form>
-      </div>
+        </div>
+      </section>
     );
   }
 }

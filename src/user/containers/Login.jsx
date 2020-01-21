@@ -62,32 +62,61 @@ class Login extends Component {
     const { email, password } = this.state;
 
     return (
-      <div>
-        <form onSubmit={this.handleLogin}>
-          <input
-            type='email'
-            name='email'
-            placeholder='exapmle@gmail.com'
-            required
-            value={email}
-            onChange={this.handleInputChange}
-          />
-          <input
-            type='password'
-            name='password'
-            required
-            value={password}
-            onChange={this.handleInputChange}
-          />
-          <input type='submit' value='Login' className='btn' />
-          <div>
-            <span>Don't have an account ?</span>
-            <Link to='/users/register' className='btn'>
-              SignUp
-            </Link>
+      <section className='hero is-primary is-fullheight'>
+        <div className='hero-body'>
+          <div className='container'>
+            <div className='columns is-centered'>
+              <div className='column is-5-tablet is-4-desktop is-3-widescreen'>
+                <form action='' className='box'>
+                  <div className='field'>
+                    <label for='' className='label'>
+                      Email
+                    </label>
+                    <div className='control has-icons-left'>
+                      <input
+                        type='email'
+                        placeholder='e.g. bobsmith@gmail.com'
+                        className='input'
+                        required
+                      />
+                      <span className='icon is-small is-left'>
+                        <i className='fa fa-envelope'></i>
+                      </span>
+                    </div>
+                  </div>
+                  <div className='field'>
+                    <label for='' className='label'>
+                      Password
+                    </label>
+                    <div className='control has-icons-left'>
+                      <input
+                        type='password'
+                        placeholder='*******'
+                        className='input'
+                        required
+                      />
+                      <span className='icon is-small is-left'>
+                        <i className='fa fa-lock'></i>
+                      </span>
+                    </div>
+                  </div>
+                  <div className='field'>
+                    <label for='' className='checkbox'>
+                      Don't have an account?
+                    </label>
+                    <Link to='/users/register'>
+                      <span style={{ margin: '0 10px' }}>SignUp</span>
+                    </Link>
+                  </div>
+                  <div className='field'>
+                    <button className='button is-success'>Login</button>
+                  </div>
+                </form>
+              </div>
+            </div>
           </div>
-        </form>
-      </div>
+        </div>
+      </section>
     );
   }
 }
@@ -98,3 +127,34 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(Login);
+
+/*
+// ===========================================
+// <div>
+//   <form onSubmit={this.handleLogin}>
+//     <input
+//       type='email'
+//       name='email'
+//       placeholder='exapmle@gmail.com'
+//       required
+//       value={email}
+//       onChange={this.handleInputChange}
+//     />
+//     <input
+//       type='password'
+//       name='password'
+//       required
+//       value={password}
+//       onChange={this.handleInputChange}
+//     />
+//     <input type='submit' value='Login' className='btn' />
+//     <div>
+//       <span>Don't have an account ?</span>
+//       <Link to='/users/register' className='btn'>
+//         SignUp
+//       </Link>
+//     </div>
+//   </form>
+// </div>
+// ===========================================
+*/

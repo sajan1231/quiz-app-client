@@ -3,12 +3,12 @@ import './assets/stylesheets/App.css';
 import { Switch, Route, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import Home from './app/containers/Home';
+// import Home from './app/containers/Home';
 import Login from './user/containers/Login';
 import Register from './user/containers/Register';
-import ListQuiz from './quiz/containers/ListQuiz';
+// import ListQuiz from './quiz/containers/ListQuiz';
 import Header from './app/containers/Header';
-import Footer from './app/containers/Footer';
+// import Footer from './app/containers/Footer';
 import AdminDashboard from './admin/containers/AdminDashboard';
 import UserDashboard from './user/containers/UserDashboard';
 
