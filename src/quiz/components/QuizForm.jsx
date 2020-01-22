@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 
-export default class EditQuiz extends Component {
+export default class QuizForm extends Component {
   render() {
     return (
       <div className='container'>
-        <div className='notification'>
-          <div className='field'>
-            <label className='label'>Question</label>
-            <div className='control'>
+        <div class='notification'>
+          <div class='field'>
+            <label class='label'>Question</label>
+            <div class='control'>
               <input
-                className='input'
+                class='input'
                 type='text'
                 placeholder='e.g What does ISRO stands for?'
                 required
@@ -19,11 +19,11 @@ export default class EditQuiz extends Component {
             </div>
           </div>
 
-          <div className='field'>
-            <label className='label'>Option 1</label>
-            <div className='control'>
+          <div class='field'>
+            <label class='label'>Option 1</label>
+            <div class='control'>
               <input
-                className='input'
+                class='input'
                 type='text'
                 required
                 value=''
@@ -33,11 +33,11 @@ export default class EditQuiz extends Component {
             </div>
           </div>
 
-          <div className='field'>
-            <label className='label'>Option 2</label>
-            <div className='control'>
+          <div class='field'>
+            <label class='label'>Option 2</label>
+            <div class='control'>
               <input
-                className='input'
+                class='input'
                 type='text'
                 required
                 value=''
@@ -46,11 +46,11 @@ export default class EditQuiz extends Component {
               />
             </div>
           </div>
-          <div className='field'>
-            <label className='label'>Option 3</label>
-            <div className='control'>
+          <div class='field'>
+            <label class='label'>Option 3</label>
+            <div class='control'>
               <input
-                className='input'
+                class='input'
                 type='text'
                 required
                 value=''
@@ -59,11 +59,11 @@ export default class EditQuiz extends Component {
               />
             </div>
           </div>
-          <div className='field'>
-            <label className='label'>Option 4</label>
-            <div className='control'>
+          <div class='field'>
+            <label class='label'>Option 4</label>
+            <div class='control'>
               <input
-                className='input'
+                class='input'
                 type='text'
                 required
                 value=''
@@ -72,11 +72,11 @@ export default class EditQuiz extends Component {
               />
             </div>
           </div>
-          <div className='field'>
-            <label className='label'>Answer</label>
-            <div className='control'>
+          <div class='field'>
+            <label class='label'>Answer</label>
+            <div class='control'>
               <input
-                className='input'
+                class='input'
                 type='number'
                 required
                 // value=''
@@ -87,8 +87,8 @@ export default class EditQuiz extends Component {
             </div>
           </div>
 
-          <div className='control'>
-            <button className='button is-primary'>Submit</button>
+          <div class='control'>
+            <button class='button is-primary'>Submit</button>
           </div>
         </div>
       </div>

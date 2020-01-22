@@ -23,7 +23,15 @@ export default function usersReducer(state = initialState, action) {
           user: action.payload.user,
       };
 
+    case 'UPDATE_USER':
+      return {
+        ...state,
+        isLoading: false,
+          user: action.payload.user,
+      };
+
     case 'LOGOUT':
+      localStorage.clear();
       return {
         ...state,
         isLoading: true,

@@ -5,6 +5,8 @@ import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 
 import App from './App.jsx';
+import 'bulma/css/bulma.css';
+import 'bulma/css/bulma.css';
 
 import './assets/stylesheets/index.css';
 import { store } from './reducers/index';

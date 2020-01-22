@@ -69,7 +69,7 @@ class Login extends Component {
               <div className='column is-5-tablet is-4-desktop is-3-widescreen'>
                 <form action='' className='box'>
                   <div className='field'>
-                    <label for='' className='label'>
+                    <label htmlFor='email' className='label'>
                       Email
                     </label>
                     <div className='control has-icons-left'>
@@ -77,7 +77,10 @@ class Login extends Component {
                         type='email'
                         placeholder='e.g. bobsmith@gmail.com'
                         className='input'
+                        name='email'
                         required
+                        value={email}
+                        onChange={this.handleInputChange}
                       />
                       <span className='icon is-small is-left'>
                         <i className='fa fa-envelope'></i>
@@ -85,15 +88,18 @@ class Login extends Component {
                     </div>
                   </div>
                   <div className='field'>
-                    <label for='' className='label'>
+                    <label htmlFor='password' className='label'>
                       Password
                     </label>
                     <div className='control has-icons-left'>
                       <input
-                        type='password'
                         placeholder='*******'
                         className='input'
+                        type='password'
+                        name='password'
                         required
+                        value={password}
+                        onChange={this.handleInputChange}
                       />
                       <span className='icon is-small is-left'>
                         <i className='fa fa-lock'></i>
@@ -101,7 +107,7 @@ class Login extends Component {
                     </div>
                   </div>
                   <div className='field'>
-                    <label for='' className='checkbox'>
+                    <label htmlFor='' className='checkbox'>
                       Don't have an account?
                     </label>
                     <Link to='/users/register'>
@@ -109,7 +115,12 @@ class Login extends Component {
                     </Link>
                   </div>
                   <div className='field'>
-                    <button className='button is-success'>Login</button>
+                    <button
+                      className='button is-success'
+                      onClick={this.handleLogin}
+                    >
+                      Login
+                    </button>
                   </div>
                 </form>
               </div>

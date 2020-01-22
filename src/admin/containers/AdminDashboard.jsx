@@ -7,6 +7,7 @@ import ListQuiz from '../../quiz/containers/ListQuiz';
 import CreateQuiz from '../../quiz/components/CreateQuiz';
 import EditQuiz from '../../quiz/components/EditQuiz';
 import QuizCard from '../../quiz/components/QuizCard';
+import PlayQuiz from '../../quiz/components/PlayQuiz';
 
 // import Header from './app/containers/Header';
 // import Footer from './app/containers/Footer';
@@ -14,14 +15,16 @@ import QuizCard from '../../quiz/components/QuizCard';
 export default class AdminDashboard extends Component {
   render() {
     return (
-      <div>
-        <p>admin dashboard...</p>
-        <QuizCard />
+      <div style={{ margin: '20px 0' }}>
+        {/* <QuizCard /> */}
+        {/* <ListQuiz /> */}
+        {/* <EditQuiz /> */}
+        <PlayQuiz />
         <Switch>
           <Route exact path='/' component={Home} />{' '}
           <Route exact path='/users/list-quiz' component={ListQuiz} />{' '}
-          <Route exact path='/users/list-quiz' component={CreateQuiz} />{' '}
-          <Route exact path='/users/list-quiz' component={EditQuiz} />{' '}
+          <Route exact path='/quiz/create-quiz' component={CreateQuiz} />{' '}
+          <Route exact path='/quiz/:id/edit' component={EditQuiz} />{' '}
         </Switch>{' '}
         {/* <Footer /> */}
       </div>

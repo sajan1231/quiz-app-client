@@ -1,51 +1,136 @@
 import React, { Component } from 'react';
 
-export default class QuizCard extends Component {
+import { Link } from 'react-router-dom';
+
+class QuizCard extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      isCorrect: false
+    };
+  }
+
   render() {
+    const {
+      question,
+      user,
+      handleClick,
+      resetCounter,
+      isAnswered
+    } = this.props;
+
+    // const answer = isAnswered && question.id === 'option1' ? 'is-success' : 'is-danger'
+
     return (
-      <div class='container'>
-        <div class='notification'>
-          <div class='card'>
-            <div class='card-content'>
-              <p class='title'>
-                “There are two hard things in computer science: cache
-                invalidation, naming things, and off-by-one errors.”
-              </p>
-              <p class='subtitle'>Jeff Atwood</p>
+      <>
+        {question ? (
+          <div className='container'>
+            <div>
+              {user && user.isAdmin ? (
+                <div
+                  className=''
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'flex-end'
+                  }}
+                >
+                  <Link to='quiz/:id/edit'>
+                    <span
+                      className='icon has-text-success'
+                      style={{ cursor: 'pointer' }}
+                    >
+                      <i className='fa fa-edit'></i>
+                    </span>
+                  </Link>
+
+                  <button className='delete'></button>
+                </div>
+              ) : (
+                ''
+              )}
+
+              <div className='notification is-link'>
+                {/* <h3 className='title is-3'>What does HTML stands for?</h3> */}
+                <h3 className='title is-3'>{question.question}</h3>
+              </div>
             </div>
-            <footer class='card-footer'>
-              <p class='card-footer-item'>
-                <span>
-                  View on{' '}
-                  <a href='https://twitter.com/codinghorror/status/506010907021828096'>
-                    Twitter
-                  </a>
-                </span>
-              </p>
-              <p class='card-footer-item'>
-                <span>
-                  Share on <a href='#'>Facebook</a>
-                </span>
-              </p>
-            </footer>
-            <footer class='card-footer'>
-              <p class='card-footer-item'>
-                <span>
-                  View on{' '}
-                  <a href='https://twitter.com/codinghorror/status/506010907021828096'>
-                    Twitter
-                  </a>
-                </span>
-              </p>
-              <p class='card-footer-item'>
-                <span>
-                  Share on <a href='#'>Facebook</a>
-                </span>
-              </p>
-            </footer>
+            <div
+              className='grid-contaoner'
+              style={{
+                padding: '20px 0',
+                display: 'grid',
+                gridTemplateColumns: '1fr 1fr',
+                gridTemplateRows: '1fr 1fr',
+                gridAutoFlow: 'row',
+                gridGap: '20px'
+              }}
+            >
+              <div
+                id='option1'
+                className='btn notification is-primary'
+                style={isAnswered ? { pointerEvents: 'none' } : {}}
+                // style ={ isAnswered ? { pointerEvents: 'none' } : isAnswered && question.id === 'option1' ? 'is-success' : 'is-danger'}
+                // className={
+                //   'btn notification is-primary' + isAnswered &&
+                //   question.id === 'option1'
+                //     ? 'is-success'
+                //     : 'is-danger'
+                // }
+                onClick={e => handleClick(e, question)}
+              >
+                <h4 className='title is-5'>{question.option1}</h4>
+              </div>
+              <div
+                id='option2'
+                className='btn notification is-primary'
+                style={isAnswered ? { pointerEvents: 'none' } : {}}
+                onClick={e => handleClick(e, question)}
+              >
+                <h4 className='title is-5'>{question.option2}</h4>
+              </div>
+              <div
+                id='option3'
+                className={`btn notification is-primary`}
+                style={isAnswered ? { pointerEvents: 'none' } : {}}
+                onClick={e => handleClick(e, question)}
+              >
+                <h4 className='title is-5'>{question.option3}</h4>
+              </div>
+              <div
+                id='option4'
+                className='btn notification is-primary'
+                style={isAnswered ? { pointerEvents: 'none' } : {}}
+                onClick={e => handleClick(e, question)}
+              >
+                <h4 className='title is-5'>{question.option4}</h4>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
+        ) : (
+          <div className='container'>
+            <div className='notification is-danger'>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center'
+                }}
+              >
+                {/* <h3 className='title is-3'>No quiz...!</h3> */}
+                <button class='button is-text'>
+                  <h3 className='title is-3'>No quiz...!</h3>
+                </button>
+                <button class='button is-info' onClick={resetCounter}>
+                  Play again
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+      </>
     );
   }
 }
+
+export default QuizCard;
