@@ -26,7 +26,6 @@ export default class AdminDashboard extends Component {
           <Route exact path='/quiz/create-quiz' component={CreateQuiz} />{' '}
           <Route exact path='/quiz/:id/edit' component={EditQuiz} />{' '}
         </Switch>{' '}
-        {/* <Footer /> */}
       </div>
     );
   }

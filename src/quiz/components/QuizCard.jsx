@@ -68,40 +68,61 @@ class QuizCard extends Component {
             >
               <div
                 id='option1'
-                className='btn notification is-primary'
+                // className='btn notification is-primary'
                 style={isAnswered ? { pointerEvents: 'none' } : {}}
-                // style ={ isAnswered ? { pointerEvents: 'none' } : isAnswered && question.id === 'option1' ? 'is-success' : 'is-danger'}
-                // className={
-                //   'btn notification is-primary' + isAnswered &&
-                //   question.id === 'option1'
-                //     ? 'is-success'
-                //     : 'is-danger'
-                // }
-                onClick={e => handleClick(e, question)}
+                className={`btn notification is-primary ${
+                  isAnswered && 'option1' === question.answer
+                    ? 'is-success'
+                    : isAnswered && 'option1' !== question.answer
+                    ? 'is-danger'
+                    : ''
+                }`}
+                onClick={e => handleClick(e, 'option1', question)}
               >
                 <h4 className='title is-5'>{question.option1}</h4>
               </div>
               <div
                 id='option2'
-                className='btn notification is-primary'
+                // className='btn notification is-primary'
+                className={`btn notification is-primary ${
+                  isAnswered && 'option2' === question.answer
+                    ? 'is-success'
+                    : isAnswered && 'option1' !== question.answer
+                    ? 'is-danger'
+                    : ''
+                }`}
                 style={isAnswered ? { pointerEvents: 'none' } : {}}
-                onClick={e => handleClick(e, question)}
+                onClick={e => handleClick(e, 'option2', question)}
               >
                 <h4 className='title is-5'>{question.option2}</h4>
               </div>
               <div
                 id='option3'
-                className={`btn notification is-primary`}
+                // className={`btn notification is-primary`}
+                className={`btn notification is-primary ${
+                  isAnswered && 'option3' === question.answer
+                    ? 'is-success'
+                    : isAnswered && 'option1' !== question.answer
+                    ? 'is-danger'
+                    : ''
+                }`}
                 style={isAnswered ? { pointerEvents: 'none' } : {}}
-                onClick={e => handleClick(e, question)}
+                onClick={e => handleClick(e, 'option3', question)}
               >
                 <h4 className='title is-5'>{question.option3}</h4>
               </div>
               <div
                 id='option4'
-                className='btn notification is-primary'
+                // className='btn notification is-primary'
+                className={`btn notification is-primary ${
+                  isAnswered && 'option4' === question.answer
+                    ? 'is-success'
+                    : isAnswered && 'option1' !== question.answer
+                    ? 'is-danger'
+                    : ''
+                }`}
                 style={isAnswered ? { pointerEvents: 'none' } : {}}
-                onClick={e => handleClick(e, question)}
+                onClick={e => handleClick(e, 'option4', question)}
               >
                 <h4 className='title is-5'>{question.option4}</h4>
               </div>

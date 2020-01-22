@@ -41,20 +41,51 @@ class PlayQuiz extends Component {
     }
   };
 
+  updateTotalScore = () => {
+    console.log(
+      'update total score....................................................'
+    );
+
+    const { jwt } = localStorage;
+    if (jwt) {
+      fetch(BASE_URL + '/users/update/total-score', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: jwt
+        }
+      })
+        .then(res => res.json())
+        .then(data => {
+          console.log(data, 'user total score update data....');
+          if (data.success) {
+            // this.setState({ questions: data.questions });
+          } else {
+            // this.setState({ err: data.message });
+          }
+        })
+        .catch(err => {
+          console.log(err, 'update user total score fetch error...');
+        });
+    }
+  };
+
   updateScore = score => {
+    console.log(score);
+
     const { jwt } = localStorage;
     fetch(BASE_URL + '/users/update', {
-      method: 'POST',
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
         Authorization: jwt
       },
-      body: JSON.stringify({ score })
+      body: JSON.stringify({ score: score })
     })
       .then(res => res.json())
       .then(data => {
-        console.log(data, 'user login data');
-        console.log('upadate user score successfull');
+        console.log(data, 'user login data...');
+        console.log('upadate user score successfull...');
 
         if (data.success) {
           if (data.token) {
@@ -62,9 +93,9 @@ class PlayQuiz extends Component {
           }
           this.props.dispatch({ type: 'UPDATE_USER', payload: data });
           if (data.user.isAdmin) {
-            // this.props.history.push('/users/admindashboard');
+            // this.props.history.push('/users/admin-dashboard');
           } else {
-            // this.props.history.push('/users/userdashboard');
+            // this.props.history.push('/users/user-dashboard');
           }
         }
         if (!data.success) {
@@ -78,54 +109,85 @@ class PlayQuiz extends Component {
       });
   };
 
-  handleClick = (e, question) => {
-    console.log(e.target.id, question, 'dataset id...');
-    const id = e.target.id;
+  handleClick = (e, option, question) => {
+    console.log(e.target.id, question, 'target id...');
+    const { questions, counter } = this.state;
+    // const option = option;
+    console.log(
+      counter,
+      questions.length - 1,
+      'counter < questions.length-1...'
+    );
 
-    if (id === question.answer) {
-      e.target.classList.add('is-success');
+    if (counter <= questions.length - 1) {
+      if (option && option === question.answer) {
+        if (option && counter < questions.length - 1) {
+          document.getElementById(option).classList.add('is-success');
+        }
 
-      this.setState(
-        state => {
-          return {
-            score: state.score + 1,
-            isAnswered: !this.state.isAnswered
-          };
-        },
-        () => this.updateScore(this.state.score)
-      );
-
-      setTimeout(
-        () =>
-          this.setState(state => {
+        this.setState(
+          state => {
             return {
-              counter: state.counter + 1,
-              isAnswered: !state.isAnswered
+              score: state.score + 1,
+              isAnswered: !this.state.isAnswered
             };
-          }),
-        1000
-      );
-      return true;
+          },
+          () => this.updateScore(this.state.score),
+          this.updateTotalScore()
+        );
+
+        setTimeout(
+          () =>
+            this.setState(
+              state => {
+                return {
+                  counter: state.counter + 1,
+                  isAnswered: !state.isAnswered
+                };
+              },
+              () => {
+                if (option && counter < questions.length - 1) {
+                  document
+                    .getElementById(option)
+                    .classList.remove('is-success');
+                }
+              }
+            ),
+          1000
+        );
+        return true;
+      } else {
+        if (option && counter < questions.length - 1) {
+          document.getElementById(option).classList.add('is-danger');
+        }
+
+        this.setState({ isAnswered: !this.state.isAnswered });
+        setTimeout(
+          () =>
+            this.setState(
+              state => {
+                return {
+                  counter: state.counter + 1,
+                  isAnswered: !state.isAnswered
+                };
+              },
+              () => {
+                if (option && counter < questions.length - 1) {
+                  document.getElementById(option).classList.remove('is-danger');
+                }
+              }
+            ),
+          1000
+        );
+        return false;
+      }
     } else {
-      e.target.classList.add('is-danger');
-
-      this.setState({ isAnswered: !this.state.isAnswered });
-      setTimeout(
-        () =>
-          this.setState(state => {
-            return {
-              counter: state.counter + 1,
-              isAnswered: !state.isAnswered
-            };
-          }),
-        1000
-      );
-      return false;
+      return null;
     }
   };
 
   resetCounter = () => {
-    this.setState({ counter: 0 });
+    this.setState({ counter: 0, score: 0 });
   };
 
   render() {
@@ -137,7 +199,7 @@ class PlayQuiz extends Component {
       user,
       questions,
       counter,
-      questions.length,
+      questions.length - 1,
       'play quiz questions count...'
     );
 
@@ -145,7 +207,9 @@ class PlayQuiz extends Component {
       <div>
         {questions ? (
           <QuizCard
-            question={questions[counter] || null}
+            question={
+              counter <= questions.length - 1 ? questions[counter] : null
+            }
             handleClick={this.handleClick}
             user={user}
             resetCounter={this.resetCounter}

@@ -32,9 +32,9 @@ class Login extends Component {
           }
           this.props.dispatch({ type: 'LOGIN', payload: data });
           if (data.user.isAdmin) {
-            this.props.history.push('/users/admindashboard');
+            this.props.history.push('/users/admin-dashboard');
           } else {
-            this.props.history.push('/users/userdashboard');
+            this.props.history.push('/users/user-dashboard');
           }
         }
         if (!data.success) {

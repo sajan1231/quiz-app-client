@@ -6,17 +6,17 @@ import Home from '../../app/containers/Home';
 import ListQuiz from '../../quiz/containers/ListQuiz';
 // import Header from './app/containers/Header';
 // import Footer from './app/containers/Footer';
+import PlayQuiz from '../../quiz/components/PlayQuiz';
 
 export default class UserDashboard extends Component {
   render() {
     return (
-      <div>
-        <p>user dashboard...</p>
+      <div style={{ margin: '20px 0' }}>
+        <PlayQuiz />
         <Switch>
           <Route exact path='/' component={Home} />{' '}
           <Route exact path='/users/list-quiz' component={ListQuiz} />{' '}
         </Switch>{' '}
-        {/* <Footer /> */}
       </div>
     );
   }

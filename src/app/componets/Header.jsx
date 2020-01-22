@@ -36,9 +36,12 @@ function Header({ user, handleLogout }) {
               </>
             ) : (
               <>
-                <button className='button is-danger is-rounded'>
-                  {user.user.name[0].toUpperCase()}
+                <button className='button is-light'>
+                  <strong style={{ fontWeight: 'bold', fontSize: '24px' }}>
+                    Score : {user.user.score}
+                  </strong>
                 </button>
+
                 <Link
                   to='/users/register'
                   className='button is-primary'
@@ -46,6 +49,12 @@ function Header({ user, handleLogout }) {
                 >
                   <strong>Log out</strong>
                 </Link>
+
+                <button className='button is-danger is-rounded'>
+                  <strong style={{ fontWeight: 'bold', fontSize: '20px' }}>
+                    {user.user.name[0].toUpperCase()}
+                  </strong>
+                </button>
               </>
             )}
           </div>

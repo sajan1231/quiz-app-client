@@ -23,7 +23,7 @@ class Register extends Component {
     e.preventDefault();
     if (
       name.trim() &&
-      name.length >= 4 &&
+      name.length >= 3 &&
       email &&
       email.length >= 8 &&
       (email.includes('@gmail.com') || email.includes('@yahoo.com')) &&
@@ -41,16 +41,16 @@ class Register extends Component {
       })
         .then(res => res.json())
         .then(data => {
-          console.log(data, 'register user data');
+          console.log(data, 'register user data...');
           if (data.success) {
             if (data.token) {
               localStorage.setItem('jwt', data.token);
             }
-            this.props.dispatch({ type: 'LOGIN', payload: data });
+            this.props.dispatch({ type: 'REGISTER', payload: data });
             if (data.user.isAdmin) {
-              this.props.history.push('/users/admindashboard');
-            } else {
-              this.props.history.push('/users/userdashboard');
+              this.props.history.push('/users/admin-dashboard');
+            } else if (!data.user.isAdmin) {
+              this.props.history.push('/users/user-dashboard');
             }
           }
           if (!data.success) {
@@ -79,82 +79,44 @@ class Register extends Component {
     const { name, email, password, confirmPassword } = this.state;
 
     return (
-      // <div>
-      //   <form onSubmit={this.handleRegister}>
-      //     <input
-      //       type='text'
-      //       name='name'
-      //       placeholder='exapmle@gmail.com'
-      //       required
-      //       value={name}
-      //       onChange={this.handleInputChange}
-      //     />
-      //     <input
-      //       type='email'
-      //       name='email'
-      //       placeholder='exapmle@gmail.com'
-      //       required
-      //       value={email}
-      //       onChange={this.handleInputChange}
-      //     />
-      //     <input
-      //       type='password'
-      //       name='password'
-      //       required
-      //       value={password}
-      //       onChange={this.handleInputChange}
-      //     />
-
-      //     <input
-      //       type='password'
-      //       name='confirmPassword'
-      //       required
-      //       value={confirmPassword}
-      //       onChange={this.handleInputChange}
-      //     />
-
-      //     <input type='submit' value='Register' className='btn' />
-      //     <div>
-      //       <span>Already have an account ?</span>
-      //       <Link to='/users/login' className='btn'>
-      //         Login
-      //       </Link>
-      //     </div>
-      //   </form>
-      // </div>
-
       <section className='hero is-primary is-fullheight'>
         <div className='hero-body'>
           <div className='container'>
             <div className='columns is-centered'>
               <div className='column is-5-tablet is-4-desktop is-3-widescreen'>
-                <form action='' className='box'>
+                <form className='box' onSubmit={this.handleRegister}>
                   <div className='field'>
-                    <label for='' className='label'>
+                    <label htmlFor='' className='label'>
                       Username
                     </label>
                     <div className='control has-icons-left'>
                       <input
-                        type='text'
-                        placeholder='e.g. bobsmith'
                         className='input'
+                        type='text'
+                        name='name'
+                        placeholder='bob'
                         required
+                        value={name}
+                        onChange={this.handleInputChange}
                       />
                       <span className='icon is-small is-left'>
-                        <i class='fa fa-user'></i>
+                        <i className='fa fa-user'></i>
                       </span>
                     </div>
                   </div>
                   <div className='field'>
-                    <label for='' className='label'>
+                    <label htmlFor='' className='label'>
                       Email
                     </label>
                     <div className='control has-icons-left'>
                       <input
-                        type='email'
-                        placeholder='e.g. bobsmith@gmail.com'
                         className='input'
+                        type='email'
+                        name='email'
+                        placeholder='exapmle@gmail.com'
                         required
+                        value={email}
+                        onChange={this.handleInputChange}
                       />
                       <span className='icon is-small is-left'>
                         <i className='fa fa-envelope'></i>
@@ -162,15 +124,18 @@ class Register extends Component {
                     </div>
                   </div>
                   <div className='field'>
-                    <label for='' className='label'>
+                    <label htmlFor='' className='label'>
                       Password
                     </label>
                     <div className='control has-icons-left'>
                       <input
-                        type='password'
                         placeholder='*******'
                         className='input'
+                        type='password'
+                        name='password'
                         required
+                        value={password}
+                        onChange={this.handleInputChange}
                       />
                       <span className='icon is-small is-left'>
                         <i className='fa fa-lock'></i>
@@ -178,15 +143,18 @@ class Register extends Component {
                     </div>
                   </div>
                   <div className='field'>
-                    <label for='' className='label'>
+                    <label htmlFor='' className='label'>
                       Confirm Password
                     </label>
                     <div className='control has-icons-left'>
                       <input
-                        type='password'
                         placeholder='*******'
                         className='input'
+                        type='password'
+                        name='confirmPassword'
                         required
+                        value={confirmPassword}
+                        onChange={this.handleInputChange}
                       />
                       <span className='icon is-small is-left'>
                         <i className='fa fa-lock'></i>
@@ -194,7 +162,7 @@ class Register extends Component {
                     </div>
                   </div>
                   <div className='field'>
-                    <label for='' className='checkbox'>
+                    <label htmlFor='' className='checkbox'>
                       Already have an account?
                     </label>
                     <Link to='/users/login'>
@@ -202,7 +170,7 @@ class Register extends Component {
                     </Link>
                   </div>
                   <div className='field'>
-                    <button className='button is-success'>Login</button>
+                    <button className='button is-success'>Sign Up</button>
                   </div>
                 </form>
               </div>
@@ -215,6 +183,7 @@ class Register extends Component {
 }
 
 function mapStateToProps(state) {
+  console.log(state, 'register map state...');
   return state;
 }
 

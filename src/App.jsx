@@ -46,9 +46,9 @@ class App extends Component {
           }
           this.props.dispatch({ type: 'LOGIN', payload: data });
           if (data.user.isAdmin) {
-            this.props.history.push('/users/admindashboard');
+            this.props.history.push('/users/admin-dashboard');
           } else {
-            this.props.history.push('/users/userdashboard');
+            this.props.history.push('/users/user-dashboard');
           }
         }
         if (!data.success) {
@@ -77,10 +77,10 @@ class App extends Component {
           <Route exact path='/users/register' component={Register} />{' '}
           <Route
             exact
-            path='/users/admindashboard'
+            path='/users/admin-dashboard'
             component={AdminDashboard}
           />{' '}
-          <Route exact path='/users/userdashboard' component={UserDashboard} />{' '}
+          <Route exact path='/users/user-dashboard' component={UserDashboard} />{' '}
         </Switch>{' '}
         {/* <Footer /> */}
       </div>
