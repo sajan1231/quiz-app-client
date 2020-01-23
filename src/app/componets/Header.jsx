@@ -19,9 +19,7 @@ function Header({ user, handleLogout }) {
             fontWeight: 'bold'
           }}
         >
-          {/* <Link to='/' style={{ color: '#fff !important' }}> */}
           QUIZ APP
-          {/* </Link> */}
         </h1>
       </div>
 

@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
-// import { withRouter } from 'react-router-dom';
 const BASE_URL = 'http://localhost:8000/api/v1';
 
 class Login extends Component {
@@ -133,34 +132,3 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(Login);
-
-/*
-// ===========================================
-// <div>
-//   <form onSubmit={this.handleLogin}>
-//     <input
-//       type='email'
-//       name='email'
-//       placeholder='exapmle@gmail.com'
-//       required
-//       value={email}
-//       onChange={this.handleInputChange}
-//     />
-//     <input
-//       type='password'
-//       name='password'
-//       required
-//       value={password}
-//       onChange={this.handleInputChange}
-//     />
-//     <input type='submit' value='Login' className='btn' />
-//     <div>
-//       <span>Don't have an account ?</span>
-//       <Link to='/users/register' className='btn'>
-//         SignUp
-//       </Link>
-//     </div>
-//   </form>
-// </div>
-// ===========================================
-*/

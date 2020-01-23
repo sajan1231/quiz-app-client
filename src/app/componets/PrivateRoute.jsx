@@ -1,13 +1,13 @@
 import React from 'react';
-import { Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { Route, Redirect } from 'react-router-dom';
 
 function PrivateRoute({ component: Component, ...rest }) {
   return (
     <Route
       {...rest}
       render={props => {
-        console.log(props.user, 'PrivateRoute user....................');
+        console.log(props.user, 'PrivateRoute user...');
         return props.user && props.user.isAdmin === true ? (
           <Component {...props} />
         ) : (

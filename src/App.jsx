@@ -15,6 +15,7 @@ import AdminDashboard from './admin/containers/AdminDashboard';
 import UserDashboard from './user/containers/UserDashboard';
 import PrivateRoute from './app/componets/PrivateRoute';
 import ListQuiz from './quiz/containers/ListQuiz';
+import ErrorPage from './app/componets/ErrorPage';
 
 const BASE_URL = 'http://localhost:8000/api/v1';
 
@@ -42,24 +43,21 @@ class App extends Component {
       .then(res => res.json())
       .then(data => {
         console.log(data, 'user auto login data');
-        if (data.success) {
-          if (data.token) {
-            localStorage.setItem('jwt', data.token);
-          }
-          this.props.dispatch({ type: 'LOGIN', payload: data });
-          if (data.user.isAdmin) {
-            // this.props.history.push('/users/admin');
-          } else {
-            // this.props.history.push('/users');
-          }
-        }
-        if (!data.success) {
-          // this.props.history.push('/users/login');
+        if (data && data.success) {
+          if (data.token) localStorage.setItem('jwt', data.token);
+          if (data.user) this.props.dispatch({ type: 'LOGIN', payload: data });
+        } else if (!data.success) {
+          this.props.history.push('/users/login');
         }
       })
       .catch(err => {
-        console.log(err, 'catch err');
+        console.log(err, 'auto login catch err');
       });
+  };
+
+  handleLogout = () => {
+    localStorage.clear();
+    window.location.reload();
   };
 
   render() {
@@ -68,11 +66,20 @@ class App extends Component {
 
     return (
       <div className='App'>
+        <Header user={user} handleLogout={this.handleLogout} />
         <Switch>
           <Route exact path='/users/login' component={Login} />
           <Route path='/users/register' component={Register} />
+          {/* <Route path='/*' component={ErrorPage} /> */}
         </Switch>
-        {user && user.isAdmin ? <AdminDashboard /> : <UserDashboard />}
+
+        {user && user.isAdmin ? (
+          <AdminDashboard />
+        ) : user && !user.isAdmin ? (
+          <UserDashboard />
+        ) : (
+          ''
+        )}
       </div>
     );
   }

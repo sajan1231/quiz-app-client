@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-// import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 const BASE_URL = 'http://localhost:8000/api/v1';
@@ -179,9 +178,4 @@ class Register extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  console.log(state, 'register map state...');
-  return state;
-}
-
-export default connect(mapStateToProps)(Register);
+export default connect()(Register);

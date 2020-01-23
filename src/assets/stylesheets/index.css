@@ -1,4 +1,5 @@
 @import './reset.css';
+@import './ErrorPage.css';
 
 body {
   margin: 0;

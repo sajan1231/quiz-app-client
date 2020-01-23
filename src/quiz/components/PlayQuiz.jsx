@@ -246,7 +246,7 @@ class PlayQuiz extends Component {
     );
 
     return (
-      <div>
+      <div style={{ marginTop: '50px ' }}>
         {questions ? (
           <QuizCard
             question={
