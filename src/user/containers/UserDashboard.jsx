@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
 
-import ListQuiz from '../../quiz/containers/ListQuiz';
 import PlayQuiz from '../../quiz/components/PlayQuiz';
+import ErrorPage from '../../app/componets/ErrorPage';
 
 class UserDashboard extends Component {
   render() {
@@ -18,12 +18,3 @@ class UserDashboard extends Component {
 }
 
 export default UserDashboard;
-
-export const ErrorPage = () => {
-  return (
-    <div style={{ height: '100vh', width: '100vw', position: 'relative' }}>
-      <img src='../../assets/media/' alt='404 error page' />
-      <h2>404 Page Not Found</h2>
-    </div>
-  );
-};

@@ -5,6 +5,7 @@ import ListQuiz from '../../quiz/containers/ListQuiz';
 import CreateQuiz from '../../quiz/components/CreateQuiz';
 import EditQuiz from '../../quiz/components/EditQuiz';
 import PlayQuiz from '../../quiz/components/PlayQuiz';
+import ErrorPage from '../../app/componets/ErrorPage';
 
 class AdminDashboard extends Component {
   render() {
@@ -23,12 +24,3 @@ class AdminDashboard extends Component {
 }
 
 export default AdminDashboard;
-
-export const ErrorPage = () => {
-  return (
-    <div style={{ height: '100vh', width: '100vw', position: 'relative' }}>
-      <img src='../../assets/media/' alt='404 error page' />
-      <h2>404 Page Not Found</h2>
-    </div>
-  );
-};
