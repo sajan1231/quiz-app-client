@@ -10,12 +10,20 @@ class UserDashboard extends Component {
       <div>
         <Switch>
           <Route exact path='/' component={PlayQuiz} />
-          {/* <Route path='/list-quiz' component={ListQuiz} /> */}
+          <Route path='/*' component={ErrorPage} />
         </Switch>
-        <p>user dashboard....</p>
       </div>
     );
   }
 }
 
 export default UserDashboard;
+
+export const ErrorPage = () => {
+  return (
+    <div style={{ height: '100vh', width: '100vw', position: 'relative' }}>
+      <img src='../../assets/media/' alt='404 error page' />
+      <h2>404 Page Not Found</h2>
+    </div>
+  );
+};

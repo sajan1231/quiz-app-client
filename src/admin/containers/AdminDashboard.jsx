@@ -15,6 +15,7 @@ class AdminDashboard extends Component {
           <Route path='/quiz/list-quiz' component={ListQuiz} />
           <Route path='/quiz/create-quiz' component={CreateQuiz} />
           <Route path='/quiz/:id/edit' component={EditQuiz} />
+          <Route path='/*' component={ErrorPage} />
         </Switch>
       </div>
     );
@@ -22,3 +23,12 @@ class AdminDashboard extends Component {
 }
 
 export default AdminDashboard;
+
+export const ErrorPage = () => {
+  return (
+    <div style={{ height: '100vh', width: '100vw', position: 'relative' }}>
+      <img src='../../assets/media/' alt='404 error page' />
+      <h2>404 Page Not Found</h2>
+    </div>
+  );
+};

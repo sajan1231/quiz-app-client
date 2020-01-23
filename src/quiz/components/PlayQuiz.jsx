@@ -28,7 +28,7 @@ class PlayQuiz extends Component {
       })
         .then(res => res.json())
         .then(data => {
-          console.log(data, 'quiz data....');
+          console.log(data, 'fetch quiz data....');
           if (data.success) {
             this.setState({ questions: data.questions });
             this.props.dispatch({
@@ -197,11 +197,6 @@ class PlayQuiz extends Component {
   };
 
   handleDeleteQuiz = id => {
-    console.log(
-      id,
-      'handleDeleteQuiz check1....................................'
-    );
-
     const { jwt } = localStorage;
     if (jwt) {
       console.log('handleDeleteQuiz check2');
@@ -221,6 +216,8 @@ class PlayQuiz extends Component {
               type: 'DELETE_QUIZ',
               payload: id
             });
+            this.props.history.push('/');
+            window.location.reload();
           }
           if (!data.success) {
             console.log(data.message, 'delete question unsuccessfull...');

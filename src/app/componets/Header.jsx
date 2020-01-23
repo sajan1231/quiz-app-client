@@ -19,13 +19,18 @@ function Header({ user, handleLogout }) {
             fontWeight: 'bold'
           }}
         >
-          QUIZ APP
+          <Link to='/' style={{ color: '#fff' }}>
+            QUIZ APP
+          </Link>
         </h1>
       </div>
 
       {user && user.isAdmin ? (
         <div id='navbarBasicExample' className='navbar-menu'>
           <div className='navbar-start'>
+            <Link to='/' className='navbar-item'>
+              Play Game
+            </Link>
             <Link to='/quiz/list-quiz' className='navbar-item'>
               List Quiz
             </Link>

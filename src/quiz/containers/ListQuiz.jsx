@@ -26,10 +26,13 @@ class ListQuiz extends Component {
       })
         .then(res => res.json())
         .then(data => {
-          console.log(data, 'quiz data....');
+          console.log(data, 'list quiz data....');
           if (data.success) {
             // this.setState({ questions: data.questions });
-            this.props.dispatch({ type: 'GET_QUIZES', payload: data.question });
+            this.props.dispatch({
+              type: 'GET_QUIZES',
+              payload: data.questions
+            });
           } else {
             this.setState({ err: data.message });
           }
@@ -49,14 +52,23 @@ class ListQuiz extends Component {
   };
 
   render() {
-    const { questions, counter } = this.state;
+    const { quiz, user } = this.props;
+    console.log(quiz, user, 'list quiz render quiz....');
 
     return (
-      <div>
-        {questions
-          ? questions.map(question => {
+      <div style={{ margin: '50px 0' }}>
+        {quiz && quiz.quiz && user && user.user
+          ? quiz.quiz.map(question => {
               return (
-                <QuizCard question={question} handleClick={this.handleClick} />
+                <section class='section'>
+                  <div class='container'>
+                    <QuizCard
+                      question={question}
+                      handleClick={this.handleClick}
+                      user={user.user}
+                    />
+                  </div>
+                </section>
               );
             })
           : 'Questions not found.....'}
@@ -67,8 +79,7 @@ class ListQuiz extends Component {
 
 const mapStateToProps = state => {
   console.log(state, 'list quiz map state to props...');
-
-  return state.quiz;
+  return state;
 };
 
 export default connect(mapStateToProps)(ListQuiz);
