@@ -27,20 +27,15 @@ class Login extends Component {
       .then(data => {
         console.log(data, 'user login data');
         if (data.success) {
-          if (data.token) {
-            localStorage.setItem('jwt', data.token);
-          }
-          this.props.dispatch({ type: 'LOGIN', payload: data });
-          if (data.user.isAdmin) {
-            this.props.history.push('/users/admin-dashboard');
-          } else {
-            this.props.history.push('/users/user-dashboard');
-          }
-        }
-        if (!data.success) {
-          console.log('login user unsuccessfull');
+          if (data && data.user) {
+            if (data.token) localStorage.setItem('jwt', data.token);
 
-          this.props.history.push('/users/login');
+            this.props.dispatch({ type: 'LOGIN', payload: data });
+            this.props.history.push('/');
+          } else if (!data.success) {
+            console.log('login user unsuccessfull');
+            this.props.history.push('/users/login');
+          }
         }
       })
       .catch(err => {

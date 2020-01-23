@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 
 import { Link } from 'react-router-dom';
+import { FaRegEdit } from 'react-icons/fa';
+import { TiDelete } from 'react-icons/ti';
 
 class QuizCard extends Component {
   constructor(props) {
@@ -17,10 +19,9 @@ class QuizCard extends Component {
       user,
       handleClick,
       resetCounter,
-      isAnswered
+      isAnswered,
+      handleDeleteQuiz
     } = this.props;
-
-    // const answer = isAnswered && question.id === 'option1' ? 'is-success' : 'is-danger'
 
     return (
       <>
@@ -32,26 +33,35 @@ class QuizCard extends Component {
                   className=''
                   style={{
                     display: 'flex',
-                    justifyContent: 'flex-end'
+                    justifyContent: 'flex-end',
+                    alignItems: 'center'
                   }}
                 >
-                  <Link to='quiz/:id/edit'>
-                    <span
-                      className='icon has-text-success'
-                      style={{ cursor: 'pointer' }}
-                    >
-                      <i className='fa fa-edit'></i>
+                  <Link to={`quiz/${question._id}/edit`}>
+                    <span>
+                      <FaRegEdit
+                        color='green'
+                        fontSize='20px'
+                        cursor='pointer'
+                      />
                     </span>
                   </Link>
 
-                  <button className='delete'></button>
+                  <span style={{ marginLeft: '20px' }}>
+                    {/* {question._id} */}
+                    <TiDelete
+                      color='red'
+                      fontSize='30px'
+                      cursor='pointer'
+                      onClick={() => handleDeleteQuiz(question._id)}
+                    />
+                  </span>
                 </div>
               ) : (
                 ''
               )}
 
               <div className='notification is-link'>
-                {/* <h3 className='title is-3'>What does HTML stands for?</h3> */}
                 <h3 className='title is-3'>{question.question}</h3>
               </div>
             </div>
@@ -68,7 +78,6 @@ class QuizCard extends Component {
             >
               <div
                 id='option1'
-                // className='btn notification is-primary'
                 style={isAnswered ? { pointerEvents: 'none' } : {}}
                 className={`btn notification is-primary ${
                   isAnswered && 'option1' === question.answer
@@ -138,11 +147,10 @@ class QuizCard extends Component {
                   alignItems: 'center'
                 }}
               >
-                {/* <h3 className='title is-3'>No quiz...!</h3> */}
-                <button class='button is-text'>
-                  <h3 className='title is-3'>No quiz...!</h3>
+                <button className='button is-text'>
+                  <h3 className='title is-3'>Quiz end...!</h3>
                 </button>
-                <button class='button is-info' onClick={resetCounter}>
+                <button className='button is-info' onClick={resetCounter}>
                   Play again
                 </button>
               </div>

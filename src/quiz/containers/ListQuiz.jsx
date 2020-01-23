@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import QuizCard from '../components/QuizCard';
+import { connect } from 'react-redux';
 
 const BASE_URL = 'http://localhost:8000/api/v1';
 
-export default class ListQuiz extends Component {
+class ListQuiz extends Component {
   state = {
     questions: [],
-    count: 0
+    counter: 0
   };
 
   componentDidMount = () => {
@@ -27,7 +28,8 @@ export default class ListQuiz extends Component {
         .then(data => {
           console.log(data, 'quiz data....');
           if (data.success) {
-            this.setState({ questions: data.questions });
+            // this.setState({ questions: data.questions });
+            this.props.dispatch({ type: 'GET_QUIZES', payload: data.question });
           } else {
             this.setState({ err: data.message });
           }
@@ -47,7 +49,7 @@ export default class ListQuiz extends Component {
   };
 
   render() {
-    const { questions, count } = this.state;
+    const { questions, counter } = this.state;
 
     return (
       <div>
@@ -57,8 +59,16 @@ export default class ListQuiz extends Component {
                 <QuizCard question={question} handleClick={this.handleClick} />
               );
             })
-          : 'err...'}
+          : 'Questions not found.....'}
       </div>
     );
   }
 }
+
+const mapStateToProps = state => {
+  console.log(state, 'list quiz map state to props...');
+
+  return state.quiz;
+};
+
+export default connect(mapStateToProps)(ListQuiz);

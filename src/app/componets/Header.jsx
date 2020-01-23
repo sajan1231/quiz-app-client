@@ -3,6 +3,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 function Header({ user, handleLogout }) {
+  console.log(user, 'header user................');
+
   return (
     <nav
       className='navbar is-dark'
@@ -17,14 +19,31 @@ function Header({ user, handleLogout }) {
             fontWeight: 'bold'
           }}
         >
+          {/* <Link to='/' style={{ color: '#fff !important' }}> */}
           QUIZ APP
+          {/* </Link> */}
         </h1>
       </div>
+
+      {user && user.isAdmin ? (
+        <div id='navbarBasicExample' className='navbar-menu'>
+          <div className='navbar-start'>
+            <Link to='/quiz/list-quiz' className='navbar-item'>
+              List Quiz
+            </Link>
+            <Link to='/quiz/create-quiz' className='navbar-item'>
+              Create Quiz
+            </Link>
+          </div>
+        </div>
+      ) : (
+        ''
+      )}
 
       <div className='navbar-end'>
         <div className='navbar-item'>
           <div className='buttons'>
-            {!user.user ? (
+            {!user ? (
               <>
                 <Link to='/users/register' className='button is-primary'>
                   <strong>Sign up</strong>
@@ -38,7 +57,7 @@ function Header({ user, handleLogout }) {
               <>
                 <button className='button is-light'>
                   <strong style={{ fontWeight: 'bold', fontSize: '24px' }}>
-                    Score : {user.user.score}
+                    Score : {user.score}
                   </strong>
                 </button>
 
@@ -52,7 +71,7 @@ function Header({ user, handleLogout }) {
 
                 <button className='button is-danger is-rounded'>
                   <strong style={{ fontWeight: 'bold', fontSize: '20px' }}>
-                    {user.user.name[0].toUpperCase()}
+                    {user.name[0].toUpperCase()}
                   </strong>
                 </button>
               </>

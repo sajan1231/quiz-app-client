@@ -13,6 +13,8 @@ import Header from './app/componets/Header';
 // import Footer from './app/containers/Footer';
 import AdminDashboard from './admin/containers/AdminDashboard';
 import UserDashboard from './user/containers/UserDashboard';
+import PrivateRoute from './app/componets/PrivateRoute';
+import ListQuiz from './quiz/containers/ListQuiz';
 
 const BASE_URL = 'http://localhost:8000/api/v1';
 
@@ -46,13 +48,13 @@ class App extends Component {
           }
           this.props.dispatch({ type: 'LOGIN', payload: data });
           if (data.user.isAdmin) {
-            this.props.history.push('/users/admin-dashboard');
+            // this.props.history.push('/users/admin');
           } else {
-            this.props.history.push('/users/user-dashboard');
+            // this.props.history.push('/users');
           }
         }
         if (!data.success) {
-          this.props.history.push('/users/login');
+          // this.props.history.push('/users/login');
         }
       })
       .catch(err => {
@@ -60,29 +62,17 @@ class App extends Component {
       });
   };
 
-  handleLogout = () => {
-    console.log('handleLogout called...');
-    localStorage.clear();
-    window.location.reload();
-  };
-
   render() {
     const { user } = this.props;
+    console.log(user, 'app props....');
 
     return (
       <div className='App'>
-        <Header user={user} handleLogout={this.handleLogout} />
         <Switch>
-          <Route exact path='/users/login' component={Login} />{' '}
-          <Route exact path='/users/register' component={Register} />{' '}
-          <Route
-            exact
-            path='/users/admin-dashboard'
-            component={AdminDashboard}
-          />{' '}
-          <Route exact path='/users/user-dashboard' component={UserDashboard} />{' '}
-        </Switch>{' '}
-        {/* <Footer /> */}
+          <Route exact path='/users/login' component={Login} />
+          <Route path='/users/register' component={Register} />
+        </Switch>
+        {user && user.isAdmin ? <AdminDashboard /> : <UserDashboard />}
       </div>
     );
   }
@@ -90,7 +80,7 @@ class App extends Component {
 
 function mapStateToProps(state) {
   console.log(state, 'app map state...');
-  return state;
+  return state.user;
 }
 
 export default withRouter(connect(mapStateToProps)(App));

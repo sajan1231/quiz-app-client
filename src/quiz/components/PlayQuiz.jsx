@@ -31,6 +31,10 @@ class PlayQuiz extends Component {
           console.log(data, 'quiz data....');
           if (data.success) {
             this.setState({ questions: data.questions });
+            this.props.dispatch({
+              type: 'GET_QUIZES',
+              payload: data.questions.reverse()
+            });
           } else {
             this.setState({ err: data.message });
           }
@@ -93,9 +97,9 @@ class PlayQuiz extends Component {
           }
           this.props.dispatch({ type: 'UPDATE_USER', payload: data });
           if (data.user.isAdmin) {
-            // this.props.history.push('/users/admin-dashboard');
+            // this.props.history.push('/users/admin');
           } else {
-            // this.props.history.push('/users/user-dashboard');
+            // this.props.history.push('/users');
           }
         }
         if (!data.success) {
@@ -153,7 +157,8 @@ class PlayQuiz extends Component {
                 }
               }
             ),
-          1000
+          300
+          // 1000
         );
         return true;
       } else {
@@ -177,7 +182,8 @@ class PlayQuiz extends Component {
                 }
               }
             ),
-          1000
+          300
+          // 1000
         );
         return false;
       }
@@ -188,6 +194,42 @@ class PlayQuiz extends Component {
 
   resetCounter = () => {
     this.setState({ counter: 0, score: 0 });
+  };
+
+  handleDeleteQuiz = id => {
+    console.log(
+      id,
+      'handleDeleteQuiz check1....................................'
+    );
+
+    const { jwt } = localStorage;
+    if (jwt) {
+      console.log('handleDeleteQuiz check2');
+
+      fetch(BASE_URL + '/questions/' + id + '/delete', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: jwt
+        }
+      })
+        .then(res => res.json())
+        .then(data => {
+          console.log(data, 'delete question res check3...');
+          if (data.success) {
+            this.props.dispatch({
+              type: 'DELETE_QUIZ',
+              payload: id
+            });
+          }
+          if (!data.success) {
+            console.log(data.message, 'delete question unsuccessfull...');
+          }
+        })
+        .catch(err => {
+          console.log(err, 'delete question catch err...');
+        });
+    }
   };
 
   render() {
@@ -214,6 +256,7 @@ class PlayQuiz extends Component {
             user={user}
             resetCounter={this.resetCounter}
             isAnswered={isAnswered}
+            handleDeleteQuiz={this.handleDeleteQuiz}
           />
         ) : (
           'err...'

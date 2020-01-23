@@ -1,7 +1,61 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
-export default class QuizForm extends Component {
+const BASE_URL = 'http://localhost:8000/api/v1';
+
+class QuizForm extends Component {
+  state = {
+    question: '',
+    option1: '',
+    option2: '',
+    option3: '',
+    option4: '',
+    answer: ''
+  };
+
+  handleInputChange = e => {
+    const { name, value } = e.target;
+    this.setState({ [name]: value });
+  };
+
+  handleQuestionSubmit = () => {
+    const { question, option1, option2, option3, option4, answer } = this.state;
+
+    const { jwt } = localStorage;
+    if (jwt && question && option1 && option2 && option3 && option4 && answer) {
+      const quiz = { ...this.state, answer: answer.toLowerCase() };
+      console.log(quiz, 'quiz.....');
+
+      fetch(BASE_URL + '/questions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: jwt
+        },
+        body: JSON.stringify(quiz)
+      })
+        .then(res => res.json())
+        .then(data => {
+          console.log(data, 'question post data...');
+          if (data.success) {
+            this.props.dispatch({
+              type: 'CREATE_QUIZ',
+              payload: data.question
+            });
+          }
+          if (!data.success) {
+            console.log('question post unsuccessfull...');
+          }
+        })
+        .catch(err => {
+          console.log(err, 'question post catch err...');
+        });
+    }
+  };
+
   render() {
+    const { question, option1, option2, option3, option4, answer } = this.state;
+
     return (
       <div className='container'>
         <div class='notification'>
@@ -11,10 +65,11 @@ export default class QuizForm extends Component {
               <input
                 class='input'
                 type='text'
+                name='question'
                 placeholder='e.g What does ISRO stands for?'
                 required
-                value=''
-                onChange={() => {}}
+                value={question}
+                onChange={this.handleInputChange}
               />
             </div>
           </div>
@@ -25,9 +80,10 @@ export default class QuizForm extends Component {
               <input
                 class='input'
                 type='text'
+                name='option1'
+                value={option1}
                 required
-                value=''
-                onChange={() => {}}
+                onChange={this.handleInputChange}
                 placeholder='e.g. Indian Space Reserch Organization'
               />
             </div>
@@ -39,9 +95,10 @@ export default class QuizForm extends Component {
               <input
                 class='input'
                 type='text'
+                name='option2'
+                value={option2}
                 required
-                value=''
-                onChange={() => {}}
+                onChange={this.handleInputChange}
                 placeholder='e.g. Indian Space Reserch Organization'
               />
             </div>
@@ -52,9 +109,10 @@ export default class QuizForm extends Component {
               <input
                 class='input'
                 type='text'
+                name='option3'
+                value={option3}
                 required
-                value=''
-                onChange={() => {}}
+                onChange={this.handleInputChange}
                 placeholder='e.g. Indian Space Reserch Organization'
               />
             </div>
@@ -65,9 +123,10 @@ export default class QuizForm extends Component {
               <input
                 class='input'
                 type='text'
+                name='option4'
+                value={option4}
                 required
-                value=''
-                onChange={() => {}}
+                onChange={this.handleInputChange}
                 placeholder='e.g. Indian Space Reserch Organization'
               />
             </div>
@@ -77,21 +136,28 @@ export default class QuizForm extends Component {
             <div class='control'>
               <input
                 class='input'
-                type='number'
+                type='text'
+                name='answer'
+                value={answer}
                 required
-                // value=''
-                limit='4'
-                onChange={() => {}}
+                onChange={this.handleInputChange}
                 placeholder='e.g. option 1'
               />
             </div>
           </div>
 
           <div class='control'>
-            <button class='button is-primary'>Submit</button>
+            <button
+              class='button is-primary'
+              onClick={this.handleQuestionSubmit}
+            >
+              Submit
+            </button>
           </div>
         </div>
       </div>
     );
   }
 }
+
+export default connect()(QuizForm);
