@@ -57,6 +57,12 @@ export default function Header({ user, handleLogout }) {
               <>
                 <button className='button is-light'>
                   <strong style={{ fontWeight: 'bold', fontSize: '24px' }}>
+                    Total Score : {user.totalScore}
+                  </strong>
+                </button>
+
+                <button className='button is-light'>
+                  <strong style={{ fontWeight: 'bold', fontSize: '24px' }}>
                     Score : {user.score}
                   </strong>
                 </button>
@@ -70,9 +76,7 @@ export default function Header({ user, handleLogout }) {
                 </Link>
 
                 <button className='button is-danger is-rounded'>
-                  <strong style={{ fontWeight: 'bold', fontSize: '20px' }}>
-                    {user.name[0].toUpperCase()}
-                  </strong>
+                  <strong>{user.name || ''}</strong>
                 </button>
               </>
             )}

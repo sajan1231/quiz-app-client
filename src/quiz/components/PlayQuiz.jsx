@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import QuizCard from './QuizCard';
 import { connect } from 'react-redux';
+
+import QuizCard from './QuizCard';
+import updateScore, { incUsersTotalScore } from '../../utils/updateScore';
 
 const BASE_URL = 'http://localhost:8000/api/v1';
 
@@ -44,60 +46,30 @@ class PlayQuiz extends Component {
     }
   };
 
-  updateTotalScore = () => {
-    const { jwt } = localStorage;
-    if (jwt) {
-      fetch(BASE_URL + '/users/update/total-score', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: jwt
-        }
-      })
-        .then(res => res.json())
-        .then(data => {
-          if (data.success) {
-            // TODO :
-            // this.setState({ questions: data.questions });
-          } else {
-            // this.setState({ err: data.message });
-          }
-        })
-        .catch(err => {
-          console.log(err, 'update user total score fetch error...');
-        });
+  dispatchUpdateUser = data => {
+    if (data && data.user) {
+      this.props.dispatch({ type: 'UPDATE_USER', payload: data });
+    } else if (!data || !data.user) {
+      return null;
     }
   };
 
-  updateScore = score => {
-    const { jwt } = localStorage;
-    fetch(BASE_URL + '/users/update', {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: jwt
-      },
-      body: JSON.stringify({ score: score })
-    })
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          if (data.token) {
-            localStorage.setItem('jwt', data.token);
-          }
-          this.props.dispatch({ type: 'UPDATE_USER', payload: data });
-        }
-        if (!data.success) {
-          console.log('upadate user score unsuccessfull');
-        }
-      })
-      .catch(err => {
-        console.log(err, 'update user score catch err');
-      });
+  incrementTotalScore = async jwt => {
+    let data = await incUsersTotalScore(
+      BASE_URL + '/users/update/total-score',
+      jwt
+    );
+    this.dispatchUpdateUser(data);
+  };
+
+  updateUserScore = async (score, jwt) => {
+    let data = await updateScore(BASE_URL + '/users/update', jwt, score);
+    this.dispatchUpdateUser(data);
   };
 
   handleClick = (option, question) => {
     const { questions, counter } = this.state;
+    const { jwt } = localStorage;
 
     if (counter <= questions.length - 1) {
       if (option && option === question.answer) {
@@ -112,8 +84,10 @@ class PlayQuiz extends Component {
               isAnswered: !this.state.isAnswered
             };
           },
-          () => this.updateScore(this.state.score),
-          this.updateTotalScore()
+          () => {
+            this.updateUserScore(this.state.score, jwt);
+            this.incrementTotalScore(jwt);
+          }
         );
 
         setTimeout(
@@ -133,7 +107,7 @@ class PlayQuiz extends Component {
                 }
               }
             ),
-          1000
+          500
         );
         return true;
       } else {
@@ -157,8 +131,7 @@ class PlayQuiz extends Component {
                 }
               }
             ),
-          300
-          // 1000
+          500
         );
         return false;
       }
@@ -219,7 +192,7 @@ class PlayQuiz extends Component {
             handleDeleteQuiz={this.handleDeleteQuiz}
           />
         ) : (
-          'err...'
+          ''
         )}
       </div>
     );

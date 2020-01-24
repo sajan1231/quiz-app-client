@@ -54,7 +54,7 @@ class App extends Component {
     const { user } = this.props;
 
     return (
-      <div className=''>
+      <div className='app'>
         <Header user={user} handleLogout={this.handleLogout} />
         <Switch>
           <Route exact path='/users/login' component={Login} />
