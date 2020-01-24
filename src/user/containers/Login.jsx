@@ -32,13 +32,13 @@ class Login extends Component {
             this.props.dispatch({ type: 'LOGIN', payload: data });
             this.props.history.push('/');
           } else if (!data.success) {
-            console.log('login user unsuccessfull');
+            console.log('login user unsuccessfull...');
             this.props.history.push('/users/login');
           }
         }
       })
       .catch(err => {
-        console.log(err, 'login user catch err');
+        console.log(err, 'login user catch err...');
       });
   };
 
@@ -127,7 +127,6 @@ class Login extends Component {
 }
 
 function mapStateToProps(state) {
-  console.log(state, 'login mapstate...');
   return state;
 }
 

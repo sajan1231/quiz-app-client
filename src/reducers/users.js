@@ -4,8 +4,6 @@ const initialState = {
 }
 
 export default function usersReducer(state = initialState, action) {
-  console.log(action, 'inside user reducer...');
-
   switch (action.type) {
     case 'LOGIN':
       return {

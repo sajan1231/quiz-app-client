@@ -6,8 +6,7 @@ const BASE_URL = 'http://localhost:8000/api/v1';
 
 class ListQuiz extends Component {
   state = {
-    questions: [],
-    counter: 0
+    seletedCategory: null
   };
 
   componentDidMount = () => {
@@ -26,9 +25,7 @@ class ListQuiz extends Component {
       })
         .then(res => res.json())
         .then(data => {
-          console.log(data, 'list quiz data....');
           if (data.success) {
-            // this.setState({ questions: data.questions });
             this.props.dispatch({
               type: 'GET_QUIZES',
               payload: data.questions
@@ -51,34 +48,139 @@ class ListQuiz extends Component {
     }
   };
 
+  handleDeleteQuiz = id => {
+    const { jwt } = localStorage;
+    if (jwt) {
+      fetch(BASE_URL + '/questions/' + id + '/delete', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: jwt
+        }
+      })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            this.props.dispatch({
+              type: 'DELETE_QUIZ',
+              payload: id
+            });
+          }
+          if (!data.success) {
+            console.log(data.message, 'delete question unsuccessfull...');
+          }
+        })
+        .catch(err => {
+          console.log(err, 'delete question catch err...');
+        });
+    }
+  };
+
+  handleQuizCategory = category => {
+    console.log(category);
+
+    this.setState({ seletedCategory: category }, () => console.log(this.state));
+  };
+
+  filtereQuiz = (quiz, seletedCategory) => {
+    console.log('inside quiz filter...');
+
+    if (quiz.quiz && seletedCategory !== 'all') {
+      return quiz.quiz.filter(question => {
+        console.log(question, 'filter....');
+        return question.category === seletedCategory;
+      });
+    } else return null;
+  };
+
   render() {
-    const { quiz, user } = this.props;
-    console.log(quiz, user, 'list quiz render quiz....');
+    const { quiz, user, seletedCategory } = this.props;
+
+    let filteredQuiz = seletedCategory
+      ? this.filtereQuiz(quiz, seletedCategory)
+      : [];
+
+    console.log(filteredQuiz, 'list quiz rnder.....');
 
     return (
-      <div style={{ margin: '50px 0' }}>
-        {quiz && quiz.quiz && user && user.user
-          ? quiz.quiz.map(question => {
-              return (
-                <section class='section'>
-                  <div class='container'>
+      <div
+        className=''
+        style={{ display: 'flex', justifyContent: 'space-between' }}
+      >
+        <aside style={{ padding: '30px' }}>
+          <ul>
+            <li
+              className='title is-4'
+              style={{ cursor: 'pointer', textTransform: 'capitalize' }}
+              onClick={() => this.handleQuizCategory('all')}
+            >
+              all
+            </li>
+            <li
+              className='title is-4'
+              style={{ cursor: 'pointer', textTransform: 'capitalize' }}
+              onClick={() => this.handleQuizCategory('science')}
+            >
+              science
+            </li>
+            <li
+              className='title is-4'
+              style={{ cursor: 'pointer', textTransform: 'capitalize' }}
+              onClick={() => this.handleQuizCategory('computer')}
+            >
+              computer
+            </li>
+            <li
+              className='title is-4'
+              style={{ cursor: 'pointer', textTransform: 'capitalize' }}
+              onClick={() => this.handleQuizCategory('space')}
+            >
+              space
+            </li>
+            <li
+              className='title is-4'
+              style={{ cursor: 'pointer', textTransform: 'capitalize' }}
+              onClick={() => this.handleQuizCategory('bio')}
+            >
+              bio
+            </li>
+          </ul>
+        </aside>
+        <div className='container'>
+          {quiz && quiz.quiz && user && user.user
+            ? quiz.quiz.map(question => {
+                return (
+                  <div className='container'>
                     <QuizCard
                       question={question}
                       handleClick={this.handleClick}
                       user={user.user}
+                      handleDeleteQuiz={this.handleDeleteQuiz}
                     />
                   </div>
-                </section>
-              );
-            })
-          : 'Questions not found.....'}
+                );
+              })
+            : filteredQuiz
+            ? filteredQuiz.map(question => {
+                return (
+                  <div className='container'>
+                    <QuizCard
+                      question={question}
+                      handleClick={this.handleClick}
+                      user={user.user}
+                      handleDeleteQuiz={this.handleDeleteQuiz}
+                    />
+                  </div>
+                );
+              })
+            : 'no question found...'}
+        </div>
       </div>
     );
   }
 }
 
 const mapStateToProps = state => {
-  console.log(state, 'list quiz map state to props...');
   return state;
 };
 

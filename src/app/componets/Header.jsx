@@ -1,10 +1,7 @@
 import React from 'react';
-
 import { Link } from 'react-router-dom';
 
-function Header({ user, handleLogout }) {
-  console.log(user, 'header user................');
-
+export default function Header({ user, handleLogout }) {
   return (
     <nav
       className='navbar is-dark'
@@ -85,5 +82,3 @@ function Header({ user, handleLogout }) {
     </nav>
   );
 }
-
-export default Header;

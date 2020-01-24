@@ -11,6 +11,7 @@ class CreateQuiz extends Component {
     option3: '',
     option4: '',
     answer: '',
+    category: '',
     successMsg: '',
     errorMsg: ''
   };
@@ -21,12 +22,11 @@ class CreateQuiz extends Component {
   };
 
   handleQuestionSubmit = () => {
-    const { question, option1, option2, option3, option4, answer } = this.state;
+    const { question, option1, option2, option3, option4, answer, category } = this.state;
 
     const { jwt } = localStorage;
-    if (jwt && question && option1 && option2 && option3 && option4 && answer) {
+    if (jwt && question && option1 && option2 && option3 && option4 && answer&& category) {
       const quiz = { ...this.state, answer: answer.toLowerCase() };
-      console.log(quiz, 'quiz.....');
 
       fetch(BASE_URL + '/questions', {
         method: 'POST',
@@ -38,7 +38,6 @@ class CreateQuiz extends Component {
       })
         .then(res => res.json())
         .then(data => {
-          console.log(data, 'question post data...');
           if (data.success) {
             this.props.dispatch({
               type: 'CREATE_QUIZ',
@@ -51,6 +50,7 @@ class CreateQuiz extends Component {
               option3: '',
               option4: '',
               answer: '',
+              category: '',
               successMsg: 'Question created!'
             });
 
@@ -80,6 +80,7 @@ class CreateQuiz extends Component {
       option3,
       option4,
       answer,
+      category,
       errorMsg,
       successMsg
     } = this.state;
@@ -101,6 +102,21 @@ class CreateQuiz extends Component {
                   placeholder='e.g What does ISRO stands for?'
                   required
                   value={question}
+                  onChange={this.handleInputChange}
+                />
+              </div>
+            </div>
+
+            <div className='field'>
+              <label className='label'>Category</label>
+              <div className='control'>
+                <input
+                  className='input'
+                  type='text'
+                  name='category'
+                  placeholder='e.g What does ISRO stands for?'
+                  required
+                  value={category}
                   onChange={this.handleInputChange}
                 />
               </div>
@@ -194,6 +210,3 @@ class CreateQuiz extends Component {
 }
 
 export default connect()(CreateQuiz);
-
-// PDF stands for
-// Portable Document Format

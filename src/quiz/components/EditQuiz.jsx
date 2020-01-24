@@ -10,25 +10,15 @@ class EditQuiz extends Component {
     option2: '',
     option3: '',
     option4: '',
+    category: '',
     answer: ''
   };
 
   componentDidMount = () => {
-    console.log(
-      'edir quiz cdm......................................... check1'
-    );
-
     const questionId = window.location.pathname.split('/')[2];
     const { jwt } = localStorage;
-    console.log(
-      jwt,
-      questionId,
-      'edir quiz cdm......................................... check2'
-    );
+
     if (jwt && questionId) {
-      console.log(
-        'edir quiz cdm......................................... check3'
-      );
       fetch(BASE_URL + '/questions/' + questionId, {
         method: 'GET',
         headers: {
@@ -38,7 +28,6 @@ class EditQuiz extends Component {
       })
         .then(res => res.json())
         .then(data => {
-          console.log(data, 'edit question data...');
           if (data.success) {
             this.setState({ ...data.question });
           }
@@ -64,7 +53,6 @@ class EditQuiz extends Component {
     const { jwt } = localStorage;
     if (jwt && question && option1 && option2 && option3 && option4 && answer) {
       const quiz = { ...this.state, answer: answer.toLowerCase() };
-      console.log(quiz, 'quiz.....');
 
       fetch(BASE_URL + '/questions/' + questionId + '/update', {
         method: 'PUT',
@@ -76,7 +64,6 @@ class EditQuiz extends Component {
       })
         .then(res => res.json())
         .then(data => {
-          console.log(data, 'question update data...');
           if (data.success) {
             this.props.dispatch({
               type: 'UPDATE_QUIZ',
@@ -90,6 +77,7 @@ class EditQuiz extends Component {
                 option2: '',
                 option3: '',
                 option4: '',
+                category: '',
                 answer: ''
               },
               () => this.props.history.push('/')
@@ -107,7 +95,7 @@ class EditQuiz extends Component {
   };
 
   render() {
-    const { question, option1, option2, option3, option4, answer } = this.state;
+    const { question, option1, option2, option3, option4, answer, category } = this.state;
 
     return (
       <div style={{ margin: '50px 0' }}>
@@ -124,6 +112,21 @@ class EditQuiz extends Component {
                   required
                   value={question}
                   onChange={this.handleInputChange}
+                />
+              </div>
+            </div>
+
+            <div class='field'>
+              <label class='label'>Category</label>
+              <div class='control'>
+                <input
+                  class='input'
+                  type='text'
+                  name='category'
+                  value={category}
+                  required
+                  onChange={this.handleInputChange}
+                  placeholder='e.g. science'
                 />
               </div>
             </div>

@@ -17,8 +17,6 @@ class Register extends Component {
   handleRegister = e => {
     const { name, email, password, confirmPassword } = this.state.user;
 
-    console.log(this.state, 'register...');
-
     e.preventDefault();
     if (
       name.trim() &&
@@ -40,7 +38,6 @@ class Register extends Component {
       })
         .then(res => res.json())
         .then(data => {
-          console.log(data, 'register user data...');
           if (data.success) {
             if (data && data.user) {
               if (data.token) {

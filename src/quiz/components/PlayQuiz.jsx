@@ -28,7 +28,6 @@ class PlayQuiz extends Component {
       })
         .then(res => res.json())
         .then(data => {
-          console.log(data, 'fetch quiz data....');
           if (data.success) {
             this.setState({ questions: data.questions });
             this.props.dispatch({
@@ -46,10 +45,6 @@ class PlayQuiz extends Component {
   };
 
   updateTotalScore = () => {
-    console.log(
-      'update total score....................................................'
-    );
-
     const { jwt } = localStorage;
     if (jwt) {
       fetch(BASE_URL + '/users/update/total-score', {
@@ -61,8 +56,8 @@ class PlayQuiz extends Component {
       })
         .then(res => res.json())
         .then(data => {
-          console.log(data, 'user total score update data....');
           if (data.success) {
+            // TODO :
             // this.setState({ questions: data.questions });
           } else {
             // this.setState({ err: data.message });
@@ -75,8 +70,6 @@ class PlayQuiz extends Component {
   };
 
   updateScore = score => {
-    console.log(score);
-
     const { jwt } = localStorage;
     fetch(BASE_URL + '/users/update', {
       method: 'PUT',
@@ -88,40 +81,23 @@ class PlayQuiz extends Component {
     })
       .then(res => res.json())
       .then(data => {
-        console.log(data, 'user login data...');
-        console.log('upadate user score successfull...');
-
         if (data.success) {
           if (data.token) {
             localStorage.setItem('jwt', data.token);
           }
           this.props.dispatch({ type: 'UPDATE_USER', payload: data });
-          if (data.user.isAdmin) {
-            // this.props.history.push('/users/admin');
-          } else {
-            // this.props.history.push('/users');
-          }
         }
         if (!data.success) {
           console.log('upadate user score unsuccessfull');
-
-          // this.props.history.push('/users/login');
         }
       })
       .catch(err => {
-        console.log(err, 'login user catch err');
+        console.log(err, 'update user score catch err');
       });
   };
 
-  handleClick = (e, option, question) => {
-    console.log(e.target.id, question, 'target id...');
+  handleClick = (option, question) => {
     const { questions, counter } = this.state;
-    // const option = option;
-    console.log(
-      counter,
-      questions.length - 1,
-      'counter < questions.length-1...'
-    );
 
     if (counter <= questions.length - 1) {
       if (option && option === question.answer) {
@@ -157,8 +133,7 @@ class PlayQuiz extends Component {
                 }
               }
             ),
-          300
-          // 1000
+          1000
         );
         return true;
       } else {
@@ -199,8 +174,6 @@ class PlayQuiz extends Component {
   handleDeleteQuiz = id => {
     const { jwt } = localStorage;
     if (jwt) {
-      console.log('handleDeleteQuiz check2');
-
       fetch(BASE_URL + '/questions/' + id + '/delete', {
         method: 'DELETE',
         headers: {
@@ -210,7 +183,6 @@ class PlayQuiz extends Component {
       })
         .then(res => res.json())
         .then(data => {
-          console.log(data, 'delete question res check3...');
           if (data.success) {
             this.props.dispatch({
               type: 'DELETE_QUIZ',
@@ -230,17 +202,8 @@ class PlayQuiz extends Component {
   };
 
   render() {
-    const { questions, counter, isAnswered, score } = this.state;
+    const { questions, counter, isAnswered } = this.state;
     const { user } = this.props.user;
-
-    console.log(
-      score,
-      user,
-      questions,
-      counter,
-      questions.length - 1,
-      'play quiz questions count...'
-    );
 
     return (
       <div style={{ marginTop: '50px ' }}>
@@ -264,7 +227,6 @@ class PlayQuiz extends Component {
 }
 
 function mapStateToProps(state) {
-  console.log(state, 'playquiz map state...');
   return state;
 }
 
