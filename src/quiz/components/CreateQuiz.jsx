@@ -22,13 +22,30 @@ class CreateQuiz extends Component {
   };
 
   handleQuestionSubmit = () => {
-    const { question, option1, option2, option3, option4, answer, category } = this.state;
+    const {
+      question,
+      option1,
+      option2,
+      option3,
+      option4,
+      answer,
+      category
+    } = this.state;
 
     const { jwt } = localStorage;
-    if (jwt && question && option1 && option2 && option3 && option4 && answer&& category) {
+    if (
+      jwt &&
+      question &&
+      option1 &&
+      option2 &&
+      option3 &&
+      option4 &&
+      answer &&
+      category
+    ) {
       const quiz = { ...this.state, answer: answer.toLowerCase() };
 
-      fetch(BASE_URL + '/questions', {
+      fetch(BASE_URL + '/quizzes', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -41,7 +58,7 @@ class CreateQuiz extends Component {
           if (data.success) {
             this.props.dispatch({
               type: 'CREATE_QUIZ',
-              payload: data.question
+              payload: data.quiz
             });
             this.setState({
               question: '',
@@ -51,7 +68,7 @@ class CreateQuiz extends Component {
               option4: '',
               answer: '',
               category: '',
-              successMsg: 'Question created!'
+              successMsg: 'quiz created!'
             });
 
             setTimeout(() => {

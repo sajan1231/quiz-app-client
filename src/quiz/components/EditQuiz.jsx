@@ -19,7 +19,7 @@ class EditQuiz extends Component {
     const { jwt } = localStorage;
 
     if (jwt && questionId) {
-      fetch(BASE_URL + '/questions/' + questionId, {
+      fetch(BASE_URL + '/quizzes/' + questionId, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -29,14 +29,14 @@ class EditQuiz extends Component {
         .then(res => res.json())
         .then(data => {
           if (data.success) {
-            this.setState({ ...data.question });
+            this.setState({ ...data.quiz });
           }
           if (!data.success) {
-            console.log('get question unsuccessfull...');
+            console.log('get quiz unsuccessfull...');
           }
         })
         .catch(err => {
-          console.log(err, 'get question catch err...');
+          console.log(err, 'get quiz catch err...');
         });
     }
   };
@@ -46,7 +46,7 @@ class EditQuiz extends Component {
     this.setState({ [name]: value });
   };
 
-  handleQuestionSubmit = () => {
+  handleQuestionUpdate = () => {
     const { question, option1, option2, option3, option4, answer } = this.state;
     const questionId = window.location.pathname.split('/')[2];
 
@@ -54,7 +54,7 @@ class EditQuiz extends Component {
     if (jwt && question && option1 && option2 && option3 && option4 && answer) {
       const quiz = { ...this.state, answer: answer.toLowerCase() };
 
-      fetch(BASE_URL + '/questions/' + questionId + '/update', {
+      fetch(BASE_URL + '/quizzes/' + questionId + '/update', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -67,7 +67,7 @@ class EditQuiz extends Component {
           if (data.success) {
             this.props.dispatch({
               type: 'UPDATE_QUIZ',
-              payload: data.question
+              payload: data.quiz
             });
 
             this.setState(
@@ -85,17 +85,25 @@ class EditQuiz extends Component {
           }
 
           if (!data.success) {
-            console.log('question update unsuccessfull...');
+            console.log('quiz update unsuccessfull...');
           }
         })
         .catch(err => {
-          console.log(err, 'update question catch err...');
+          console.log(err, 'update quiz catch err...');
         });
     }
   };
 
   render() {
-    const { question, option1, option2, option3, option4, answer, category } = this.state;
+    const {
+      question,
+      option1,
+      option2,
+      option3,
+      option4,
+      answer,
+      category
+    } = this.state;
 
     return (
       <div style={{ margin: '50px 0' }}>
@@ -206,7 +214,7 @@ class EditQuiz extends Component {
             <div class='control'>
               <button
                 class='button is-primary'
-                onClick={this.handleQuestionSubmit}
+                onClick={this.handleQuestionUpdate}
               >
                 Submit
               </button>

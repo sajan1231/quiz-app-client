@@ -5,21 +5,23 @@ import QuizCard from './QuizCard';
 import updateScore, { incUsersTotalScore } from '../../utils/updateScore';
 
 const BASE_URL = 'http://localhost:8000/api/v1';
+const { jwt } = localStorage;
 
 class PlayQuiz extends Component {
   state = {
-    questions: [],
+    quizzes: [],
     counter: 0,
     isAnswered: false,
     score: 0
   };
 
   componentDidMount = () => {
-    this.fetchQuiz(BASE_URL + '/questions');
+    this.fetchQuizzes(BASE_URL + '/quizzes');
   };
 
-  fetchQuiz = url => {
+  fetchQuizzes = url => {
     const { jwt } = localStorage;
+
     if (jwt) {
       fetch(url, {
         method: 'GET',
@@ -30,11 +32,13 @@ class PlayQuiz extends Component {
       })
         .then(res => res.json())
         .then(data => {
+          // console.log(data, 'play quiz cdm...');
+
           if (data.success) {
-            this.setState({ questions: data.questions });
+            this.setState({ quizzes: data.quizzes });
             this.props.dispatch({
               type: 'GET_QUIZES',
-              payload: data.questions.reverse()
+              payload: data.quizzes.reverse()
             });
           } else {
             this.setState({ err: data.message });
@@ -55,25 +59,25 @@ class PlayQuiz extends Component {
   };
 
   incrementTotalScore = async jwt => {
+    console.log('in score called...');
+
     let data = await incUsersTotalScore(
       BASE_URL + '/users/update/total-score',
       jwt
     );
-    this.dispatchUpdateUser(data);
+    this.dispatchUpdateUser({ ...data, currentScore: this.state.score });
   };
 
   updateUserScore = async (score, jwt) => {
-    let data = await updateScore(BASE_URL + '/users/update', jwt, score);
+    let data = await updateScore(BASE_URL + '/users/update/score', jwt, score);
     this.dispatchUpdateUser(data);
   };
 
   handleClick = (option, question) => {
-    const { questions, counter } = this.state;
-    const { jwt } = localStorage;
-
-    if (counter <= questions.length - 1) {
+    const { quizzes, counter } = this.state;
+    if (counter <= quizzes.length - 1) {
       if (option && option === question.answer) {
-        if (option && counter < questions.length - 1) {
+        if (option && counter < quizzes.length - 1) {
           document.getElementById(option).classList.add('is-success');
         }
 
@@ -85,7 +89,8 @@ class PlayQuiz extends Component {
             };
           },
           () => {
-            this.updateUserScore(this.state.score, jwt);
+            // this.updateUserScore(this.state.score, jwt);
+
             this.incrementTotalScore(jwt);
           }
         );
@@ -100,7 +105,7 @@ class PlayQuiz extends Component {
                 };
               },
               () => {
-                if (option && counter < questions.length - 1) {
+                if (option && counter < quizzes.length - 1) {
                   document
                     .getElementById(option)
                     .classList.remove('is-success');
@@ -111,7 +116,7 @@ class PlayQuiz extends Component {
         );
         return true;
       } else {
-        if (option && counter < questions.length - 1) {
+        if (option && counter < quizzes.length - 1) {
           document.getElementById(option).classList.add('is-danger');
         }
 
@@ -126,7 +131,7 @@ class PlayQuiz extends Component {
                 };
               },
               () => {
-                if (option && counter < questions.length - 1) {
+                if (option && counter < quizzes.length - 1) {
                   document.getElementById(option).classList.remove('is-danger');
                 }
               }
@@ -145,9 +150,8 @@ class PlayQuiz extends Component {
   };
 
   handleDeleteQuiz = id => {
-    const { jwt } = localStorage;
     if (jwt) {
-      fetch(BASE_URL + '/questions/' + id + '/delete', {
+      fetch(BASE_URL + '/quizzes/' + id + '/delete', {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -174,22 +178,31 @@ class PlayQuiz extends Component {
     }
   };
 
+  handleSubmitScore = () => {
+    // const { user } = this.props.user;
+    const { score } = this.state;
+    // console.log(this.state, 'state score..........................');
+
+    this.updateUserScore(score, jwt);
+    this.incrementTotalScore(jwt);
+    this.resetCounter();
+  };
+
   render() {
-    const { questions, counter, isAnswered } = this.state;
+    const { quizzes, counter, isAnswered } = this.state;
     const { user } = this.props.user;
 
     return (
       <div style={{ marginTop: '50px ' }}>
-        {questions ? (
+        {quizzes && quizzes.length ? (
           <QuizCard
-            question={
-              counter <= questions.length - 1 ? questions[counter] : null
-            }
+            quiz={counter <= quizzes.length - 1 ? quizzes[counter] : null}
             handleClick={this.handleClick}
             user={user}
             resetCounter={this.resetCounter}
             isAnswered={isAnswered}
             handleDeleteQuiz={this.handleDeleteQuiz}
+            submitScore={this.handleSubmitScore}
           />
         ) : (
           ''
@@ -200,6 +213,8 @@ class PlayQuiz extends Component {
 }
 
 function mapStateToProps(state) {
+  console.log(state, 'playquiz map state');
+
   return state;
 }
 

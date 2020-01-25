@@ -9,7 +9,8 @@ class Login extends Component {
     user: {
       email: '',
       password: ''
-    }
+    },
+    errMsg: ''
   };
 
   handleLogin = e => {
@@ -25,16 +26,18 @@ class Login extends Component {
       .then(res => res.json())
       .then(data => {
         console.log(data, 'user login data');
-        if (data.success) {
-          if (data && data.user) {
-            if (data.token) localStorage.setItem('jwt', data.token);
+        if (data && data.success) {
+          if (data.token) localStorage.setItem('jwt', data.token);
 
-            this.props.dispatch({ type: 'LOGIN', payload: data });
-            this.props.history.push('/');
-          } else if (!data.success) {
-            console.log('login user unsuccessfull...');
-            this.props.history.push('/users/login');
-          }
+          this.props.dispatch({ type: 'LOGIN', payload: data });
+          this.props.history.push('/');
+        } else if (data && !data.success) {
+          this.setState({ errMsg: data.message }, () =>
+            setTimeout(() => this.setState({ errMsg: ' ' }), 2000)
+          );
+
+          console.log('login user unsuccessfull...');
+          // this.props.history.push('/users/login');
         }
       })
       .catch(err => {
@@ -53,7 +56,7 @@ class Login extends Component {
   };
 
   render() {
-    const { email, password } = this.state;
+    const { email, password } = this.state.user;
 
     return (
       <section className='hero is-primary is-fullheight'>
@@ -61,6 +64,17 @@ class Login extends Component {
           <div className='container'>
             <div className='columns is-centered'>
               <div className='column is-5-tablet is-4-desktop is-3-widescreen'>
+                {this.state.errMsg ? (
+                  <label
+                    htmlFor=''
+                    className='label'
+                    style={{ textAlign: 'center' }}
+                  >
+                    {this.state.errMsg}
+                  </label>
+                ) : (
+                  ''
+                )}
                 <form action='' className='box'>
                   <div className='field'>
                     <label htmlFor='email' className='label'>

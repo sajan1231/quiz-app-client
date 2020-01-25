@@ -56,14 +56,11 @@ class App extends Component {
     return (
       <div className='app'>
         <Header user={user} handleLogout={this.handleLogout} />
-        <Switch>
-          <Route exact path='/users/login' component={Login} />
-          <Route path='/users/register' component={Register} />
-        </Switch>
+        {user && !user.user ? <PublicRotes /> : ''}
 
-        {user && user.isAdmin ? (
+        {user && user.user && user.user.isAdmin ? (
           <AdminDashboard />
-        ) : user && !user.isAdmin ? (
+        ) : user && user.user && !user.user.isAdmin ? (
           <UserDashboard />
         ) : (
           ''
@@ -73,8 +70,17 @@ class App extends Component {
   }
 }
 
+const PublicRotes = () => {
+  return (
+    <Switch>
+      <Route exact path='/users/login' component={Login} />
+      <Route path='/users/register' component={Register} />
+    </Switch>
+  );
+};
+
 function mapStateToProps(state) {
-  return state.user;
+  return state;
 }
 
 export default withRouter(connect(mapStateToProps)(App));

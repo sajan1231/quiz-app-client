@@ -11,7 +11,8 @@ class Register extends Component {
       email: '',
       password: '',
       confirmPassword: ''
-    }
+    },
+    error: ''
   };
 
   handleRegister = e => {
@@ -55,6 +56,10 @@ class Register extends Component {
         .catch(err => {
           console.log(err, 'register user catch err');
         });
+    } else {
+      this.setState({ error: 'required field is missing' }, () =>
+        setTimeout(() => this.setState({ error: '' }), 2000)
+      );
     }
   };
 
@@ -69,7 +74,7 @@ class Register extends Component {
   };
 
   render() {
-    const { name, email, password, confirmPassword } = this.state;
+    const { name, email, password, confirmPassword } = this.state.user;
 
     return (
       <section className='hero is-primary is-fullheight'>
@@ -77,6 +82,17 @@ class Register extends Component {
           <div className='container'>
             <div className='columns is-centered'>
               <div className='column is-5-tablet is-4-desktop is-3-widescreen'>
+                {this.state.error ? (
+                  <label
+                    htmlFor=''
+                    className='label'
+                    style={{ textAlign: 'center' }}
+                  >
+                    {this.state.error}
+                  </label>
+                ) : (
+                  ''
+                )}
                 <form className='box' onSubmit={this.handleRegister}>
                   <div className='field'>
                     <label htmlFor='' className='label'>

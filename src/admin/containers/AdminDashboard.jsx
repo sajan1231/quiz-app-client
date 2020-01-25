@@ -13,9 +13,9 @@ class AdminDashboard extends Component {
       <div>
         <Switch>
           <Route exact path='/' component={PlayQuiz} />
-          <Route path='/quiz/list-quiz' component={ListQuiz} />
-          <Route path='/quiz/create-quiz' component={CreateQuiz} />
-          <Route path='/quiz/:id/edit' component={EditQuiz} />
+          <Route path='/quizzes/list-quiz' component={ListQuiz} />
+          <Route path='/quizzes/create-quiz' component={CreateQuiz} />
+          <Route path='/quizzes/:id/edit' component={EditQuiz} />
           <Route path='/*' component={ErrorPage} />
         </Switch>
       </div>

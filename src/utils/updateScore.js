@@ -1,4 +1,6 @@
 export default async function updateScore(url, jwt, score) {
+  console.log(score, 'update score helper...');
+
   let res = await fetch(url, {
     method: 'PUT',
     headers: {
@@ -6,7 +8,8 @@ export default async function updateScore(url, jwt, score) {
       Authorization: jwt
     },
     body: JSON.stringify({
-      score: score
+      // score: score
+      scores: score
     })
   })
 

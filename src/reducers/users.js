@@ -4,6 +4,8 @@ const initialState = {
 }
 
 export default function usersReducer(state = initialState, action) {
+  console.log(action, 'user reducer...');
+
   switch (action.type) {
     case 'LOGIN':
       return {
@@ -11,6 +13,7 @@ export default function usersReducer(state = initialState, action) {
         isLoading: false,
           token: action.payload.token,
           user: action.payload.user,
+          currentScore: action.payload.currentScore || 0
       };
 
     case 'REGISTER':
@@ -19,6 +22,7 @@ export default function usersReducer(state = initialState, action) {
         isLoading: false,
           token: action.payload.token,
           user: action.payload.user,
+          currentScore: action.payload.currentScore || 0
       };
 
     case 'UPDATE_USER':
@@ -26,6 +30,7 @@ export default function usersReducer(state = initialState, action) {
         ...state,
         isLoading: false,
           user: action.payload.user,
+          currentScore: action.payload.currentScore || 0
       };
 
     case 'LOGOUT':
@@ -34,7 +39,7 @@ export default function usersReducer(state = initialState, action) {
         ...state,
         isLoading: true,
           user: null,
-          token: null,
+          token: null
       };
 
     default:

@@ -6,7 +6,7 @@ import { TiDelete } from 'react-icons/ti';
 
 export default function QuizCard(props) {
   const {
-    question,
+    quiz,
     user,
     handleClick,
     resetCounter,
@@ -16,7 +16,7 @@ export default function QuizCard(props) {
 
   return (
     <>
-      {question ? (
+      {quiz ? (
         <div className='container'>
           <div>
             {user && user.isAdmin ? (
@@ -28,7 +28,7 @@ export default function QuizCard(props) {
                   alignItems: 'center'
                 }}
               >
-                <Link to={`/quiz/${question._id}/edit`}>
+                <Link to={`/quizzes/${quiz._id}/edit`}>
                   <span>
                     <FaRegEdit color='green' fontSize='20px' cursor='pointer' />
                   </span>
@@ -39,7 +39,7 @@ export default function QuizCard(props) {
                     color='red'
                     fontSize='30px'
                     cursor='pointer'
-                    onClick={() => handleDeleteQuiz(question._id)}
+                    onClick={() => handleDeleteQuiz(quiz._id)}
                   />
                 </span>
               </div>
@@ -48,7 +48,7 @@ export default function QuizCard(props) {
             )}
 
             <div className='notification is-link'>
-              <h3 className='title is-3'>{question.question}</h3>
+              <h3 className='title is-3'>{quiz.quiz}</h3>
             </div>
           </div>
           <div
@@ -66,57 +66,57 @@ export default function QuizCard(props) {
               id='option1'
               style={isAnswered ? { pointerEvents: 'none' } : {}}
               className={`btn notification is-primary ${
-                isAnswered && 'option1' === question.answer
+                isAnswered && 'option1' === quiz.answer
                   ? 'is-success'
-                  : isAnswered && 'option1' !== question.answer
+                  : isAnswered && 'option1' !== quiz.answer
                   ? 'is-danger'
                   : ''
               }`}
-              onClick={() => handleClick('option1', question)}
+              onClick={() => handleClick('option1', quiz)}
             >
-              <h4 className='title is-5'>{question.option1}</h4>
+              <h4 className='title is-5'>{quiz.option1}</h4>
             </div>
             <div
               id='option2'
               className={`btn notification is-primary ${
-                isAnswered && 'option2' === question.answer
+                isAnswered && 'option2' === quiz.answer
                   ? 'is-success'
-                  : isAnswered && 'option2' !== question.answer
+                  : isAnswered && 'option2' !== quiz.answer
                   ? 'is-danger'
                   : ''
               }`}
               style={isAnswered ? { pointerEvents: 'none' } : {}}
-              onClick={() => handleClick('option2', question)}
+              onClick={() => handleClick('option2', quiz)}
             >
-              <h4 className='title is-5'>{question.option2}</h4>
+              <h4 className='title is-5'>{quiz.option2}</h4>
             </div>
             <div
               id='option3'
               className={`btn notification is-primary ${
-                isAnswered && 'option3' === question.answer
+                isAnswered && 'option3' === quiz.answer
                   ? 'is-success'
-                  : isAnswered && 'option3' !== question.answer
+                  : isAnswered && 'option3' !== quiz.answer
                   ? 'is-danger'
                   : ''
               }`}
               style={isAnswered ? { pointerEvents: 'none' } : {}}
-              onClick={() => handleClick('option3', question)}
+              onClick={() => handleClick('option3', quiz)}
             >
-              <h4 className='title is-5'>{question.option3}</h4>
+              <h4 className='title is-5'>{quiz.option3}</h4>
             </div>
             <div
               id='option4'
               className={`btn notification is-primary ${
-                isAnswered && 'option4' === question.answer
+                isAnswered && 'option4' === quiz.answer
                   ? 'is-success'
-                  : isAnswered && 'option4' !== question.answer
+                  : isAnswered && 'option4' !== quiz.answer
                   ? 'is-danger'
                   : ''
               }`}
               style={isAnswered ? { pointerEvents: 'none' } : {}}
-              onClick={() => handleClick('option4', question)}
+              onClick={() => handleClick('option4', quiz)}
             >
-              <h4 className='title is-5'>{question.option4}</h4>
+              <h4 className='title is-5'>{quiz.option4}</h4>
             </div>
           </div>
         </div>

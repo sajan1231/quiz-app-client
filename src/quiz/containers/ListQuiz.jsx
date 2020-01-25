@@ -18,8 +18,9 @@ class ListQuiz extends Component {
   };
 
   componentDidMount = () => {
-    this.fetchQuiz(BASE_URL + '/questions');
-    this.checkWindowReload();
+    this.fetchQuiz(BASE_URL + '/quizzes');
+
+    // this.checkWindowReload();
   };
 
   fetchQuiz = url => {
@@ -36,7 +37,7 @@ class ListQuiz extends Component {
           if (data.success) {
             this.props.dispatch({
               type: 'GET_QUIZES',
-              payload: data.questions.reverse()
+              payload: data.quizzes.reverse()
             });
           } else {
             this.setState({ err: data.message });
@@ -48,6 +49,7 @@ class ListQuiz extends Component {
     }
   };
 
+  // check if the browser window is reloaded
   checkWindowReload = () => {
     if (window.performance) {
       console.info('window.performance works fine on this browser');
@@ -60,8 +62,8 @@ class ListQuiz extends Component {
     }
   };
 
-  handleClick = (option, question) => {
-    if (option === question.answer) {
+  handleClick = (option, quiz) => {
+    if (option === quiz.answer) {
       this.setState(
         state => {
           return {
@@ -108,7 +110,7 @@ class ListQuiz extends Component {
 
   handleDeleteQuiz = id => {
     if (jwt) {
-      fetch(BASE_URL + '/questions/' + id + '/delete', {
+      fetch(BASE_URL + '/quizzes/' + id + '/delete', {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -162,14 +164,6 @@ class ListQuiz extends Component {
       >
         <aside style={{ padding: '30px' }}>
           <ul>
-            <li
-              key={'all'}
-              className='title is-4'
-              style={{ cursor: 'pointer', textTransform: 'capitalize' }}
-              onClick={() => this.handleQuizCategory('all')}
-            >
-              All
-            </li>
             {quiz && quiz.category
               ? quiz.category.map(val => {
                   return (
@@ -210,7 +204,7 @@ class ListQuiz extends Component {
                   <div className='container' key={index}>
                     <div style={{ margin: '20px 0' }}>
                       <QuizCard
-                        question={question}
+                        quiz={question}
                         handleClick={this.handleClick}
                         user={user.user}
                         handleDeleteQuiz={this.handleDeleteQuiz}
@@ -229,6 +223,8 @@ class ListQuiz extends Component {
 }
 
 const mapStateToProps = state => {
+  console.log(state, 'list quiz map state...');
+
   return state;
 };
 

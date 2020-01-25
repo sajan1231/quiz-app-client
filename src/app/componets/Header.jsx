@@ -2,6 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 export default function Header({ user, handleLogout }) {
+  // console.log(user, 'header user...');
+
   return (
     <nav
       className='navbar is-dark'
@@ -22,28 +24,34 @@ export default function Header({ user, handleLogout }) {
         </h1>
       </div>
 
-      {user && user.isAdmin ? (
+      {user && user.user && user.user.isAdmin ? (
         <div id='navbarBasicExample' className='navbar-menu'>
           <div className='navbar-start'>
             <Link to='/' className='navbar-item'>
               Play Game
             </Link>
-            <Link to='/quiz/list-quiz' className='navbar-item'>
+            <Link to='/quizzes/list-quiz' className='navbar-item'>
               List Quiz
             </Link>
-            <Link to='/quiz/create-quiz' className='navbar-item'>
+            <Link to='/quizzes/create-quiz' className='navbar-item'>
               Create Quiz
             </Link>
           </div>
         </div>
       ) : (
-        ''
+        <div id='navbarBasicExample' className='navbar-menu'>
+          <div className='navbar-start'>
+            <Link to='/quizzes/list-quiz' className='navbar-item'>
+              List Quiz
+            </Link>
+          </div>
+        </div>
       )}
 
       <div className='navbar-end'>
         <div className='navbar-item'>
           <div className='buttons'>
-            {!user ? (
+            {!user || !user.user ? (
               <>
                 <Link to='/users/register' className='button is-primary'>
                   <strong>Sign up</strong>
@@ -57,13 +65,13 @@ export default function Header({ user, handleLogout }) {
               <>
                 <button className='button is-light'>
                   <strong style={{ fontWeight: 'bold', fontSize: '24px' }}>
-                    Total Score : {user.totalScore}
+                    Total Score : {user && user.user ? user.user.totalScore : 0}
                   </strong>
                 </button>
 
                 <button className='button is-light'>
                   <strong style={{ fontWeight: 'bold', fontSize: '24px' }}>
-                    Score : {user.score}
+                    Score : {user && user.user ? user.currentScore : 0}
                   </strong>
                 </button>
 
@@ -76,7 +84,7 @@ export default function Header({ user, handleLogout }) {
                 </Link>
 
                 <button className='button is-danger is-rounded'>
-                  <strong>{user.name || ''}</strong>
+                  <strong>{user && user.user ? user.user.name : ''}</strong>
                 </button>
               </>
             )}
