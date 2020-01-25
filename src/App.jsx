@@ -54,7 +54,7 @@ class App extends Component {
     const { user } = this.props;
 
     return (
-      <div className='app'>
+      <div className='app' style={{ marginTop: '60px' }}>
         <Header user={user} handleLogout={this.handleLogout} />
         {user && !user.user ? <PublicRotes /> : ''}
 

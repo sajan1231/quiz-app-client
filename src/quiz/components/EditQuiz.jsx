@@ -106,14 +106,14 @@ class EditQuiz extends Component {
     } = this.state;
 
     return (
-      <div style={{ margin: '50px 0' }}>
+      <div style={{ margin: '100px 0' }}>
         <div className='container'>
-          <div class='notification'>
-            <div class='field'>
-              <label class='label'>Question</label>
-              <div class='control'>
+          <div className='notification'>
+            <div className='field'>
+              <label className='label'>Question</label>
+              <div className='control'>
                 <input
-                  class='input'
+                  className='input'
                   type='text'
                   name='question'
                   placeholder='e.g What does ISRO stands for?'
@@ -124,11 +124,11 @@ class EditQuiz extends Component {
               </div>
             </div>
 
-            <div class='field'>
-              <label class='label'>Category</label>
-              <div class='control'>
+            <div className='field'>
+              <label className='label'>Category</label>
+              <div className='control'>
                 <input
-                  class='input'
+                  className='input'
                   type='text'
                   name='category'
                   value={category}
@@ -139,11 +139,11 @@ class EditQuiz extends Component {
               </div>
             </div>
 
-            <div class='field'>
-              <label class='label'>Option 1</label>
-              <div class='control'>
+            <div className='field'>
+              <label className='label'>Option 1</label>
+              <div className='control'>
                 <input
-                  class='input'
+                  className='input'
                   type='text'
                   name='option1'
                   value={option1}
@@ -154,11 +154,11 @@ class EditQuiz extends Component {
               </div>
             </div>
 
-            <div class='field'>
-              <label class='label'>Option 2</label>
-              <div class='control'>
+            <div className='field'>
+              <label className='label'>Option 2</label>
+              <div className='control'>
                 <input
-                  class='input'
+                  className='input'
                   type='text'
                   name='option2'
                   value={option2}
@@ -168,11 +168,11 @@ class EditQuiz extends Component {
                 />
               </div>
             </div>
-            <div class='field'>
-              <label class='label'>Option 3</label>
-              <div class='control'>
+            <div className='field'>
+              <label className='label'>Option 3</label>
+              <div className='control'>
                 <input
-                  class='input'
+                  className='input'
                   type='text'
                   name='option3'
                   value={option3}
@@ -182,11 +182,11 @@ class EditQuiz extends Component {
                 />
               </div>
             </div>
-            <div class='field'>
-              <label class='label'>Option 4</label>
-              <div class='control'>
+            <div className='field'>
+              <label className='label'>Option 4</label>
+              <div className='control'>
                 <input
-                  class='input'
+                  className='input'
                   type='text'
                   name='option4'
                   value={option4}
@@ -196,11 +196,11 @@ class EditQuiz extends Component {
                 />
               </div>
             </div>
-            <div class='field'>
-              <label class='label'>Answer</label>
-              <div class='control'>
+            <div className='field'>
+              <label className='label'>Answer</label>
+              <div className='control'>
                 <input
-                  class='input'
+                  className='input'
                   type='text'
                   name='answer'
                   value={answer}
@@ -211,9 +211,9 @@ class EditQuiz extends Component {
               </div>
             </div>
 
-            <div class='control'>
+            <div className='control'>
               <button
-                class='button is-primary'
+                className='button is-primary'
                 onClick={this.handleQuestionUpdate}
               >
                 Submit

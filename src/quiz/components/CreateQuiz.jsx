@@ -103,7 +103,7 @@ class CreateQuiz extends Component {
     } = this.state;
 
     return (
-      <div style={{ marginTop: '50px' }}>
+      <div style={{ marginTop: '100px' }}>
         <div className='container'>
           <div className='notification'>
             <label className='label' style={{ textAlign: 'center' }}>

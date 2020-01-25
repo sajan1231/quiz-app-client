@@ -74,7 +74,7 @@ class ListQuiz extends Component {
         },
         () => {
           this.incrementTotalScore(jwt);
-          this.updateUserScore(this.state.score, jwt);
+          // this.updateUserScore(this.state.score, jwt);
           // setTimeout(() => {
           // let elm = document.getElementById(option);
           // if (elm) elm.classList.remove('is-danger');
@@ -89,7 +89,13 @@ class ListQuiz extends Component {
 
   dispatchUpdateUser = data => {
     if (data && data.user) {
-      this.props.dispatch({ type: 'UPDATE_USER', payload: data });
+      this.props.dispatch({
+        type: 'UPDATE_USER',
+        payload: {
+          ...data,
+          currentScore: this.state.score
+        }
+      });
     } else if (!data || !data.user) {
       return null;
     }
@@ -135,7 +141,17 @@ class ListQuiz extends Component {
     }
   };
 
-  handleQuizCategory = category => {
+  quizCategoryFilter = (category, id) => {
+    console.log(category, id, 'quiz filtere called');
+    // TODO: write logic to
+    // if (!category && id) {
+    //   this.setState({ seletedCategory: category }, () => {
+    //     this.setState({
+    //       filteredQuiz: this.props.quiz.quiz.filter(quiz => quiz._id !== id)
+    //     });
+    //   });
+    // } else
+
     if (!category || category === 'all') {
       this.setState({ filteredQuiz: [] });
     } else {
@@ -153,9 +169,20 @@ class ListQuiz extends Component {
     this.setState({ counter: 0, score: 0 });
   };
 
+  // handleSubmitScore = () => {
+  //   // const { user } = this.props.user;
+  //   const { score } = this.state;
+  //   // console.log(this.state, 'state score...');
+
+  //   this.updateUserScore(score, jwt);
+  //   this.incrementTotalScore(jwt);
+  //   this.resetCounter();
+  // };
+
   render() {
     const { quiz, user } = this.props;
     const { filteredQuiz, isAnswered } = this.state;
+    console.log(filteredQuiz, 'filteredQuiz....');
 
     return (
       <div
@@ -171,7 +198,7 @@ class ListQuiz extends Component {
                       key={val}
                       className='title is-4'
                       style={{ cursor: 'pointer', textTransform: 'capitalize' }}
-                      onClick={() => this.handleQuizCategory(val)}
+                      onClick={() => this.quizCategoryFilter(val)}
                     >
                       {val}
                     </li>
@@ -182,18 +209,21 @@ class ListQuiz extends Component {
         </aside>
         <div className='container'>
           {filteredQuiz && filteredQuiz.length
-            ? filteredQuiz.map((question, index) => {
+            ? filteredQuiz.map((quiz, index) => {
                 return (
                   <div className='container' key={index}>
                     <div className='container'>
-                      <QuizCard
-                        question={question}
-                        handleClick={this.handleClick}
-                        user={user.user}
-                        handleDeleteQuiz={this.handleDeleteQuiz}
-                        resetCounter={this.resetCounter}
-                        isAnswered={isAnswered}
-                      />
+                      <div style={{ margin: '40px 0' }}>
+                        <QuizCard
+                          quiz={quiz}
+                          handleClick={this.handleClick}
+                          user={user.user}
+                          handleDeleteQuiz={this.handleDeleteQuiz}
+                          resetCounter={this.resetCounter}
+                          isAnswered={isAnswered}
+                          quizCategoryFilter={this.quizCategoryFilter}
+                        />
+                      </div>
                     </div>
                   </div>
                 );
@@ -202,7 +232,7 @@ class ListQuiz extends Component {
             ? quiz.quiz.map((question, index) => {
                 return (
                   <div className='container' key={index}>
-                    <div style={{ margin: '20px 0' }}>
+                    <div style={{ margin: '40px 0' }}>
                       <QuizCard
                         quiz={question}
                         handleClick={this.handleClick}
@@ -210,6 +240,7 @@ class ListQuiz extends Component {
                         handleDeleteQuiz={this.handleDeleteQuiz}
                         resetCounter={this.resetCounter}
                         isAnswered={isAnswered}
+                        quizCategoryFilter={this.quizCategoryFilter}
                       />
                     </div>
                   </div>

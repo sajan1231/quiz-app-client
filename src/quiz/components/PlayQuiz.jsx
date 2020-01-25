@@ -59,7 +59,7 @@ class PlayQuiz extends Component {
   };
 
   incrementTotalScore = async jwt => {
-    console.log('in score called...');
+    console.log('incrementTotalScore score called...');
 
     let data = await incUsersTotalScore(
       BASE_URL + '/users/update/total-score',
@@ -181,7 +181,7 @@ class PlayQuiz extends Component {
   handleSubmitScore = () => {
     // const { user } = this.props.user;
     const { score } = this.state;
-    // console.log(this.state, 'state score..........................');
+    // console.log(this.state, 'state score...');
 
     this.updateUserScore(score, jwt);
     this.incrementTotalScore(jwt);
@@ -193,7 +193,7 @@ class PlayQuiz extends Component {
     const { user } = this.props.user;
 
     return (
-      <div style={{ marginTop: '50px ' }}>
+      <div style={{ marginTop: '100px ' }}>
         {quizzes && quizzes.length ? (
           <QuizCard
             quiz={counter <= quizzes.length - 1 ? quizzes[counter] : null}

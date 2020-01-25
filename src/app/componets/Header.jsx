@@ -9,6 +9,7 @@ export default function Header({ user, handleLogout }) {
       className='navbar is-dark'
       role='navigation'
       aria-label='main navigation'
+      style={{ position: 'fixed', width: '100%', top: '0' }}
     >
       <div className='navbar-brand'>
         <h1
