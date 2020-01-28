@@ -41,66 +41,58 @@ class Score extends Component {
     console.log(thead, 'thead...');
 
     return (
-      <div className='container'>
-        <div className='table-header'>
-          {thead.length
-            ? thead.map(title => {
-                return <span key={title}>{title}</span>;
-              })
-            : ''}
-        </div>
-        <div className='table-body'>
-          {user && user.scores.length ? (
-            user.scores.map((score, i) => {
-              return (
-                <div key={score._id} className='content'>
-                  <div
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'space-between'
-                    }}
-                  >
-                    <div>
-                      <span style={{ margin: '0 20px' }}>{score.score}</span>
-
-                      <span style={{ margin: '0 20px' }}>{score.category}</span>
-
-                      <span style={{ margin: '0 20px' }}>
-                        {score.date
-                          ? new Date(score.date).toLocaleString()
-                          : ''}
-                      </span>
-                    </div>
-
-                    {/* <input
-                    type='button'
-                    value=''
-                    style={{ background: 'transparent', border: 'none' }}
-                  /> */}
-                    <div>
-                      <input
-                        id={score._id}
-                        type='button'
-                        onClick={() => this.deleteScore(score._id)}
-                        value='Delete'
-                      />
-                    </div>
-                  </div>
-                </div>
-              );
-            })
-          ) : (
-            <h3
-              style={{
-                fontSize: '20px',
-                textAlign: 'center',
-                fontWeight: 'bold',
-                padding: '20px 0'
-              }}
-            >
-              No score found...
-            </h3>
-          )}
+      <div style={{ marginTop: '100px' }}>
+        <div className='container'>
+          <div className='table-container'>
+            <table className='table is-bordered is-striped is-narrow is-hoverable is-fullwidth'>
+              <thead>
+                <tr>
+                  <th></th>
+                  {thead.length
+                    ? thead.map((title, i) => {
+                        return <th key={i}>{title}</th>;
+                      })
+                    : ''}
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {user && user.scores.length ? (
+                  user.scores.map((score, i) => {
+                    return (
+                      <tr key={i}>
+                        <th>{i + 1}</th>
+                        <td>{score.score}</td>
+                        <td>{score.category}</td>
+                        <td>
+                          {score.date
+                            ? new Date(score.date).toLocaleString()
+                            : ''}
+                        </td>
+                        <td style={{ textAlign: 'center' }}>
+                          <input
+                            id={score._id}
+                            className='button is-small'
+                            style={{
+                              background: 'transparent',
+                              border: 'none'
+                            }}
+                            type='button'
+                            onClick={() => this.deleteScore(score._id)}
+                            value='Delete'
+                          />
+                        </td>
+                      </tr>
+                    );
+                  })
+                ) : (
+                  <tr>
+                    <td>No score found...</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     );
