@@ -34,7 +34,7 @@ class App extends Component {
       .then(res => res.json())
       .then(data => {
         if (data && data.success) {
-          if (data.token) localStorage.setItem('jwt', data.token);
+          // if (data.token) localStorage.setItem('jwt', data.token);
           if (data.user) this.props.dispatch({ type: 'LOGIN', payload: data });
         } else if (!data.success) {
           this.props.history.push('/users/login');
@@ -56,7 +56,7 @@ class App extends Component {
     return (
       <div className='app' style={{ marginTop: '60px' }}>
         <Header user={user} handleLogout={this.handleLogout} />
-        {user && !user.user ? <PublicRotes /> : ''}
+        {user && !user.user ? <PublicRoutes /> : ''}
 
         {user && user.user && user.user.isAdmin ? (
           <AdminDashboard />
@@ -70,7 +70,7 @@ class App extends Component {
   }
 }
 
-const PublicRotes = () => {
+const PublicRoutes = () => {
   return (
     <Switch>
       <Route exact path='/users/login' component={Login} />

@@ -5,7 +5,7 @@ import QuizCard from './QuizCard';
 import updateScore, { incUsersTotalScore } from '../../utils/updateScore';
 
 const BASE_URL = 'http://localhost:8000/api/v1';
-const { jwt } = localStorage;
+// const { jwt } = localStorage;
 
 class PlayQuiz extends Component {
   state = {
@@ -65,7 +65,8 @@ class PlayQuiz extends Component {
       BASE_URL + '/users/update/total-score',
       jwt
     );
-    this.dispatchUpdateUser({ ...data, currentScore: this.state.score });
+    if (data)
+      this.dispatchUpdateUser({ ...data, currentScore: this.state.score });
   };
 
   updateUserScore = async (score, jwt) => {
@@ -73,12 +74,100 @@ class PlayQuiz extends Component {
     this.dispatchUpdateUser(data);
   };
 
+  // new handleclick
+  //
+  // handleClick = (option, quiz) => {
+  //   const { quizzes, counter } = this.state;
+  //   const { jwt } = localStorage;
+
+  //   if (counter <= quizzes.length - 1) {
+  //     if (quiz && option && option === quiz.answer) {
+  //       if (option && counter < quizzes.length - 1) {
+  //         document.getElementById(quiz._id).classList.add('is-success');
+  //         // document.getElementById(quiz._id).style.pointerEvents = 'none';
+  //       }
+
+  //       this.setState(
+  //         state => {
+  //           return {
+  //             score: state.score + 1,
+  //             isAnswered: !this.state.isAnswered
+  //           };
+  //         },
+  //         () => {
+  //           // this.updateUserScore(this.state.score, jwt);
+
+  //           this.incrementTotalScore(jwt);
+  //         }
+  //       );
+
+  //       setTimeout(
+  //         () =>
+  //           this.setState(
+  //             state => {
+  //               return {
+  //                 counter: state.counter + 1,
+  //                 isAnswered: !state.isAnswered
+  //               };
+  //             },
+  //             () => {
+  //               console.log(this, 'check 12');
+  //               if (this.quiz && option && counter < quizzes.length - 1) {
+  //                 document
+  //                   .getElementById(this.quiz._id)
+  //                   .classList.remove('is-success');
+  //               }
+  //             }
+  //           ),
+  //         2000
+  //       );
+  //       return true;
+  //     } else {
+  //       if (this.quiz && option && counter < quizzes.length - 1) {
+  //         document.getElementById(this.quiz._id).classList.add('is-danger');
+  //         // document.getElementById(this.quiz._id).style.pointerEvents = 'none';
+  //         // document.getElementById(quiz._id).classList.add('disable');
+  //       }
+
+  //       this.setState({ isAnswered: !this.state.isAnswered });
+
+  //       setTimeout(
+  //         () =>
+  //           this.setState(
+  //             state => {
+  //               return {
+  //                 counter: state.counter + 1,
+  //                 isAnswered: !state.isAnswered
+  //               };
+  //             },
+  //             () => {
+  //               if (option && counter < quizzes.length - 1) {
+  //                 // document
+  //                 //   .getElementById(this.quiz._id)
+  //                 //   .classList.remove('is-danger');
+  //               }
+  //             }
+  //           ),
+  //         2000
+  //       );
+  //       return false;
+  //     }
+  //   } else {
+  //     return null;
+  //   }
+  // };
+
+  // first handle click
   handleClick = (option, question) => {
+    const { jwt } = localStorage;
     const { quizzes, counter } = this.state;
+
     if (counter <= quizzes.length - 1) {
       if (option && option === question.answer) {
         if (option && counter < quizzes.length - 1) {
-          document.getElementById(option).classList.add('is-success');
+          console.log(option, 'option...');
+
+          document.getElementById(question._id).classList.add('is-success');
         }
 
         this.setState(
@@ -103,21 +192,21 @@ class PlayQuiz extends Component {
                   counter: state.counter + 1,
                   isAnswered: !state.isAnswered
                 };
-              },
-              () => {
-                if (option && counter < quizzes.length - 1) {
-                  document
-                    .getElementById(option)
-                    .classList.remove('is-success');
-                }
               }
+              // () => {
+              //   if (option && counter < quizzes.length - 1) {
+              //     // document
+              //     //   .getElementById(question._id)
+              //     //   .classList.remove('is-success');
+              //   }
+              // }
             ),
           500
         );
         return true;
       } else {
         if (option && counter < quizzes.length - 1) {
-          document.getElementById(option).classList.add('is-danger');
+          document.getElementById(question._id).classList.add('is-danger');
         }
 
         this.setState({ isAnswered: !this.state.isAnswered });
@@ -129,12 +218,14 @@ class PlayQuiz extends Component {
                   counter: state.counter + 1,
                   isAnswered: !state.isAnswered
                 };
-              },
-              () => {
-                if (option && counter < quizzes.length - 1) {
-                  document.getElementById(option).classList.remove('is-danger');
-                }
               }
+              // () => {
+              //   if (option && counter < quizzes.length - 1) {
+              //     // document
+              //     //   .getElementById(question._id)
+              //     //   .classList.remove('is-danger');
+              //   }
+              // }
             ),
           500
         );
@@ -146,10 +237,17 @@ class PlayQuiz extends Component {
   };
 
   resetCounter = () => {
-    this.setState({ counter: 0, score: 0 });
+    this.setState({ counter: 0, score: 0 }, () => {
+      this.props.dispatch({
+        type: 'UPDATE_CURRENT_SCORE',
+        payload: this.state.score
+      });
+    });
   };
 
   handleDeleteQuiz = id => {
+    const { jwt } = localStorage;
+
     if (jwt) {
       fetch(BASE_URL + '/quizzes/' + id + '/delete', {
         method: 'DELETE',
@@ -169,22 +267,24 @@ class PlayQuiz extends Component {
             window.location.reload();
           }
           if (!data.success) {
-            console.log(data.message, 'delete question unsuccessfull...');
+            console.log(data.message, 'delete quiz unsuccessfull...');
           }
         })
         .catch(err => {
-          console.log(err, 'delete question catch err...');
+          console.log(err, 'delete quiz catch err...');
         });
     }
   };
 
   handleSubmitScore = () => {
     // const { user } = this.props.user;
+    const { jwt } = localStorage;
+
     const { score } = this.state;
     // console.log(this.state, 'state score...');
 
-    this.updateUserScore(score, jwt);
-    this.incrementTotalScore(jwt);
+    this.updateUserScore({ score, category: 'all' }, jwt);
+    // this.incrementTotalScore(jwt);
     this.resetCounter();
   };
 

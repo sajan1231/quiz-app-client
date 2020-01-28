@@ -42,7 +42,14 @@ export default function usersReducer(state = initialState, action) {
           token: null
       };
 
-    default:
-      return state;
+    case 'UPDATE_CURRENT_SCORE':
+      return {
+        ...state,
+        isLoading: false,
+          currentScore: action.payload || 0
+      }
+
+      default:
+        return state;
   }
 }

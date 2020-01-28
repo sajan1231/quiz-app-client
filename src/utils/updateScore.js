@@ -7,13 +7,12 @@ export default async function updateScore(url, jwt, score) {
       'Content-Type': 'application/json',
       Authorization: jwt
     },
-    body: JSON.stringify({
-      // score: score
-      scores: score
-    })
+    body: JSON.stringify(score)
   })
 
   let jsonData = await res.json();
+  console.log(jsonData, "update score jsondata...");
+
   if (jsonData.success) return jsonData;
   else return null;
 };

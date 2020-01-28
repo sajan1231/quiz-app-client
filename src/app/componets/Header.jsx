@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 export default function Header({ user, handleLogout }) {
   // console.log(user, 'header user...');
+  const [toolTip, setTooltip] = useState(false);
+
+  console.log(toolTip, setTooltip, 'setTooltip');
 
   return (
     <nav
@@ -42,6 +45,10 @@ export default function Header({ user, handleLogout }) {
       ) : (
         <div id='navbarBasicExample' className='navbar-menu'>
           <div className='navbar-start'>
+            <Link to='/' className='navbar-item'>
+              Play Game
+            </Link>
+
             <Link to='/quizzes/list-quiz' className='navbar-item'>
               List Quiz
             </Link>
@@ -65,9 +72,12 @@ export default function Header({ user, handleLogout }) {
             ) : (
               <>
                 <button className='button is-light'>
-                  <strong style={{ fontWeight: 'bold', fontSize: '24px' }}>
-                    Total Score : {user && user.user ? user.user.totalScore : 0}
-                  </strong>
+                  <Link to='/users/score'>
+                    <strong style={{ fontWeight: 'bold', fontSize: '24px' }}>
+                      Show score
+                      {/* {user && user.user ? user.user.totalScore : 0} */}
+                    </strong>
+                  </Link>
                 </button>
 
                 <button className='button is-light'>
@@ -84,9 +94,30 @@ export default function Header({ user, handleLogout }) {
                   <strong>Log out</strong>
                 </Link>
 
-                <button className='button is-danger is-rounded'>
-                  <strong>{user && user.user ? user.user.name : ''}</strong>
+                <button
+                  className={`button ${
+                    toolTip ? 'is-danger' : 'is-warning'
+                  } is-rounded`}
+                  onMouseEnter={() => setTooltip(true)}
+                  onMouseLeave={() => setTooltip(!true)}
+                >
+                  <strong>
+                    {toolTip && user && user.user && user.user.isAdmin
+                      ? 'Admin user'
+                      : toolTip && user && user.user && !user.user.isAdmin
+                      ? 'User'
+                      : user && user.user
+                      ? user.user.name
+                      : ''}
+                  </strong>
                 </button>
+                {/* <span
+                  className={`tooltip ${
+                    toolTip ? 'show-tooltip' : 'hide-tooltip'
+                  }`}
+                >
+                  admin
+                </span> */}
               </>
             )}
           </div>

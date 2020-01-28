@@ -4,13 +4,13 @@ import { connect } from 'react-redux';
 import QuizCard from '../components/QuizCard';
 
 import updateScore, { incUsersTotalScore } from '../../utils/updateScore';
+import { TiThSmall } from 'react-icons/ti';
 
 const BASE_URL = 'http://localhost:8000/api/v1';
-const { jwt } = localStorage;
 
 class ListQuiz extends Component {
   state = {
-    seletedCategory: null,
+    seletedCategory: 'all',
     filteredQuiz: [],
     counter: 0,
     score: 0,
@@ -24,6 +24,8 @@ class ListQuiz extends Component {
   };
 
   fetchQuiz = url => {
+    const { jwt } = localStorage;
+
     if (jwt) {
       fetch(url, {
         method: 'GET',
@@ -50,19 +52,23 @@ class ListQuiz extends Component {
   };
 
   // check if the browser window is reloaded
-  checkWindowReload = () => {
-    if (window.performance) {
-      console.info('window.performance works fine on this browser');
-    }
-    if (performance.navigation.type === 1) {
-      console.info('This page is reloaded');
-      this.updateUserScore(this.state.score, jwt);
-    } else {
-      console.info('This page is not reloaded');
-    }
-  };
+  // checkWindowReload = () => {
+  //   const { jwt } = localStorage;
+
+  //   if (window.performance) {
+  //     console.info('window.performance works fine on this browser');
+  //   }
+  //   if (performance.navigation.type === 1) {
+  //     console.info('This page is reloaded');
+  //     this.updateUserScore(this.state.score, jwt);
+  //   } else {
+  //     console.info('This page is not reloaded');
+  //   }
+  // };
 
   handleClick = (option, quiz) => {
+    const { jwt } = localStorage;
+
     if (option === quiz.answer) {
       this.setState(
         state => {
@@ -74,15 +80,18 @@ class ListQuiz extends Component {
         },
         () => {
           this.incrementTotalScore(jwt);
+          this.handleScroll();
+
           // this.updateUserScore(this.state.score, jwt);
-          // setTimeout(() => {
-          // let elm = document.getElementById(option);
-          // if (elm) elm.classList.remove('is-danger');
-          // this.setState(state => ({ isAnswered: !state.isAnswered }));
-          // }, 300);
+          setTimeout(() => {
+            let elm = document.getElementById(option);
+            if (elm) elm.classList.remove('is-danger');
+            // this.setState(state => ({ isAnswered: !state.isAnswered }));
+          }, 300);
         }
       );
     } else {
+      this.handleScroll();
       return null;
     }
   };
@@ -110,11 +119,13 @@ class ListQuiz extends Component {
   };
 
   updateUserScore = async (score, jwt) => {
-    let data = await updateScore(BASE_URL + '/users/update', jwt, score);
+    let data = await updateScore(BASE_URL + '/users/update/score', jwt, score);
     this.dispatchUpdateUser(data);
   };
 
   handleDeleteQuiz = id => {
+    const { jwt } = localStorage;
+
     if (jwt) {
       fetch(BASE_URL + '/quizzes/' + id + '/delete', {
         method: 'DELETE',
@@ -153,15 +164,22 @@ class ListQuiz extends Component {
     // } else
 
     if (!category || category === 'all') {
-      this.setState({ filteredQuiz: [] });
+      this.setState({ filteredQuiz: ['all'] });
     } else {
-      this.setState({ seletedCategory: category }, () => {
-        this.setState({
-          filteredQuiz: this.props.quiz.quiz.filter(
-            quiz => quiz.category === category
-          )
-        });
-      });
+      this.setState(
+        state => ({ seletedCategory: category, score: 0 }),
+        () => {
+          this.setState({
+            filteredQuiz: this.props.quiz.quiz.filter(
+              quiz => quiz.category === category
+            )
+          });
+          this.props.dispatch({
+            type: 'UPDATE_CURRENT_SCORE',
+            payload: this.state.score
+          });
+        }
+      );
     }
   };
 
@@ -169,15 +187,58 @@ class ListQuiz extends Component {
     this.setState({ counter: 0, score: 0 });
   };
 
-  // handleSubmitScore = () => {
-  //   // const { user } = this.props.user;
-  //   const { score } = this.state;
-  //   // console.log(this.state, 'state score...');
+  handleSubmitScore = () => {
+    const { jwt } = localStorage;
 
-  //   this.updateUserScore(score, jwt);
-  //   this.incrementTotalScore(jwt);
-  //   this.resetCounter();
-  // };
+    // const { user } = this.props.user;
+    const { score, seletedCategory } = this.state;
+    // console.log(this.state, 'state score...');
+    if (score) {
+      this.updateUserScore({ score, category: seletedCategory }, jwt);
+      // this.incrementTotalScore(jwt);
+      this.resetCounter();
+      window.scroll('scrollY', 0);
+    }
+  };
+
+  handleScroll = () => {
+    var height = document.querySelector('.notification').clientHeight;
+    // window.scroll('X', 2000);
+    window.scroll('scrollY', window.scrollY + height + 40);
+    // scrollTo(options?: ScrollToOptions): void (+1 overload)
+  };
+
+  footer = () => {
+    return (
+      <div className='notification'>
+        <div className='container'>
+          <div className='notification is-light is-success'>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center'
+              }}
+            >
+              <button className='button is-text'>
+                <h3 className='title is-3'>Quiz end...!</h3>
+              </button>
+              <div>
+                <button
+                  className='button is-warning'
+                  onClick={() => {
+                    this.handleSubmitScore();
+                  }}
+                >
+                  Submit score
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
 
   render() {
     const { quiz, user } = this.props;
@@ -196,7 +257,7 @@ class ListQuiz extends Component {
                   return (
                     <li
                       key={val}
-                      className='title is-4'
+                      className='title is-5'
                       style={{ cursor: 'pointer', textTransform: 'capitalize' }}
                       onClick={() => this.quizCategoryFilter(val)}
                     >
@@ -247,6 +308,7 @@ class ListQuiz extends Component {
                 );
               })
             : 'no quiz found...'}
+          {this.footer()}
         </div>
       </div>
     );

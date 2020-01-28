@@ -47,12 +47,24 @@ class EditQuiz extends Component {
   };
 
   handleQuestionUpdate = () => {
-    const { question, option1, option2, option3, option4, answer } = this.state;
+    const {
+      question,
+      option1,
+      option2,
+      option3,
+      option4,
+      answer,
+      category
+    } = this.state;
     const questionId = window.location.pathname.split('/')[2];
 
     const { jwt } = localStorage;
     if (jwt && question && option1 && option2 && option3 && option4 && answer) {
-      const quiz = { ...this.state, answer: answer.toLowerCase() };
+      const quiz = {
+        ...this.state,
+        category: category.toLowerCase(),
+        answer: answer.toLowerCase()
+      };
 
       fetch(BASE_URL + '/quizzes/' + questionId + '/update', {
         method: 'PUT',
