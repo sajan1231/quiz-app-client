@@ -73,10 +73,7 @@ export default function QuizCard(props) {
                     ? 'is-danger'
                     : ''
                 }`}
-                onClick={() => {
-                  handleClick('option1', quiz);
-                  // if (quizCategoryFilter) quizCategoryFilter(null, quiz._id);
-                }}
+                onClick={() => handleClick('option1', quiz)}
               >
                 <h4 className='title is-5'>{quiz.option1}</h4>
               </div>
@@ -90,10 +87,7 @@ export default function QuizCard(props) {
                     : ''
                 }`}
                 style={isAnswered ? { pointerEvents: 'none' } : {}}
-                onClick={() => {
-                  handleClick('option2', quiz);
-                  // if (quizCategoryFilter) quizCategoryFilter(null, quiz._id);
-                }}
+                onClick={() => handleClick('option2', quiz)}
               >
                 <h4 className='title is-5'>{quiz.option2}</h4>
               </div>
@@ -107,10 +101,7 @@ export default function QuizCard(props) {
                     : ''
                 }`}
                 style={isAnswered ? { pointerEvents: 'none' } : {}}
-                onClick={() => {
-                  handleClick('option3', quiz);
-                  // if (quizCategoryFilter) quizCategoryFilter(null, quiz._id);
-                }}
+                onClick={() => handleClick('option3', quiz)}
               >
                 <h4 className='title is-5'>{quiz.option3}</h4>
               </div>
@@ -124,10 +115,7 @@ export default function QuizCard(props) {
                     : ''
                 }`}
                 style={isAnswered ? { pointerEvents: 'none' } : {}}
-                onClick={() => {
-                  handleClick('option4', quiz);
-                  // if (quizCategoryFilter) quizCategoryFilter(null, quiz._id);
-                }}
+                onClick={() => handleClick('option4', quiz)}
               >
                 <h4 className='title is-5'>{quiz.option4}</h4>
               </div>

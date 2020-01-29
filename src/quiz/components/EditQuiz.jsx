@@ -94,9 +94,7 @@ class EditQuiz extends Component {
               },
               () => this.props.history.push('/')
             );
-          }
-
-          if (!data.success) {
+          } else if (!data.success) {
             console.log('quiz update unsuccessfull...');
           }
         })

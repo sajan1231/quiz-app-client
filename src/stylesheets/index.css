@@ -23,27 +23,10 @@ code {
   pointer-events: none;
 }
 
-/* .tooltip {
-  visibility: hidden;
-  transition: all 1s ease-in-out;
-  -webkit-transition: all 1s ease-in-out;
-  -moz-transition: all 1s ease-in-out;
-  -ms-transition: all 1s ease-in-out;
-  -o-transition: all 1s ease-in-out;
-  position: absolute;
-  display: inline-block;
-  top: 20;
-  right: 0;
-  padding: 10px 20px;
-  color: red;
-  background: #333;
-  border-radius: 5px;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  -ms-border-radius: 5px;
-  -o-border-radius: 5px;
+.bold {
+  font-weight: bold;
 }
 
-.show-tooltip {
-  visibility: visible;
-} */
+.txt-capitalize {
+  text-transform: capitalize;
+}

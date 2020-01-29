@@ -5,7 +5,6 @@ import QuizCard from './QuizCard';
 import updateScore, { incUsersTotalScore } from '../../utils/updateScore';
 
 const BASE_URL = 'http://localhost:8000/api/v1';
-// const { jwt } = localStorage;
 
 class PlayQuiz extends Component {
   state = {
@@ -32,8 +31,6 @@ class PlayQuiz extends Component {
       })
         .then(res => res.json())
         .then(data => {
-          // console.log(data, 'play quiz cdm...');
-
           if (data.success) {
             this.setState({ quizzes: data.quizzes });
             this.props.dispatch({
@@ -59,8 +56,6 @@ class PlayQuiz extends Component {
   };
 
   incrementTotalScore = async jwt => {
-    console.log('incrementTotalScore score called...');
-
     let data = await incUsersTotalScore(
       BASE_URL + '/users/update/total-score',
       jwt
@@ -165,8 +160,6 @@ class PlayQuiz extends Component {
     if (counter <= quizzes.length - 1) {
       if (option && option === question.answer) {
         if (option && counter < quizzes.length - 1) {
-          console.log(option, 'option...');
-
           document.getElementById(question._id).classList.add('is-success');
         }
 
@@ -178,29 +171,18 @@ class PlayQuiz extends Component {
             };
           },
           () => {
-            // this.updateUserScore(this.state.score, jwt);
-
             this.incrementTotalScore(jwt);
           }
         );
 
         setTimeout(
           () =>
-            this.setState(
-              state => {
-                return {
-                  counter: state.counter + 1,
-                  isAnswered: !state.isAnswered
-                };
-              }
-              // () => {
-              //   if (option && counter < quizzes.length - 1) {
-              //     // document
-              //     //   .getElementById(question._id)
-              //     //   .classList.remove('is-success');
-              //   }
-              // }
-            ),
+            this.setState(state => {
+              return {
+                counter: state.counter + 1,
+                isAnswered: !state.isAnswered
+              };
+            }),
           500
         );
         return true;
@@ -212,21 +194,12 @@ class PlayQuiz extends Component {
         this.setState({ isAnswered: !this.state.isAnswered });
         setTimeout(
           () =>
-            this.setState(
-              state => {
-                return {
-                  counter: state.counter + 1,
-                  isAnswered: !state.isAnswered
-                };
-              }
-              // () => {
-              //   if (option && counter < quizzes.length - 1) {
-              //     // document
-              //     //   .getElementById(question._id)
-              //     //   .classList.remove('is-danger');
-              //   }
-              // }
-            ),
+            this.setState(state => {
+              return {
+                counter: state.counter + 1,
+                isAnswered: !state.isAnswered
+              };
+            }),
           500
         );
         return false;
@@ -277,14 +250,10 @@ class PlayQuiz extends Component {
   };
 
   handleSubmitScore = () => {
-    // const { user } = this.props.user;
     const { jwt } = localStorage;
-
     const { score } = this.state;
-    // console.log(this.state, 'state score...');
 
     this.updateUserScore({ score, category: 'all' }, jwt);
-    // this.incrementTotalScore(jwt);
     this.resetCounter();
   };
 
@@ -313,8 +282,6 @@ class PlayQuiz extends Component {
 }
 
 function mapStateToProps(state) {
-  console.log(state, 'playquiz map state');
-
   return state;
 }
 

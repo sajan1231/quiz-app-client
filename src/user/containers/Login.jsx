@@ -35,9 +35,7 @@ class Login extends Component {
           this.setState({ errMsg: data.message }, () =>
             setTimeout(() => this.setState({ errMsg: ' ' }), 2000)
           );
-
           console.log('login user unsuccessfull...');
-          // this.props.history.push('/users/login');
         }
       })
       .catch(err => {

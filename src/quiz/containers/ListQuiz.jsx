@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import QuizCard from '../components/QuizCard';
-
 import updateScore, { incUsersTotalScore } from '../../utils/updateScore';
-import { TiThSmall } from 'react-icons/ti';
 
 const BASE_URL = 'http://localhost:8000/api/v1';
 
@@ -19,7 +17,6 @@ class ListQuiz extends Component {
 
   componentDidMount = () => {
     this.fetchQuiz(BASE_URL + '/quizzes');
-
     // this.checkWindowReload();
   };
 
@@ -51,10 +48,9 @@ class ListQuiz extends Component {
     }
   };
 
-  // check if the browser window is reloaded
+  // function to check if the browser window is reloaded or not
   // checkWindowReload = () => {
   //   const { jwt } = localStorage;
-
   //   if (window.performance) {
   //     console.info('window.performance works fine on this browser');
   //   }
@@ -74,19 +70,15 @@ class ListQuiz extends Component {
         state => {
           return {
             score: state.score + 1
-            // isAnswered is used to show the right and wrong answer heighlights
-            // isAnswered: !state.isAnswered
           };
         },
         () => {
           this.incrementTotalScore(jwt);
           this.handleScroll();
 
-          // this.updateUserScore(this.state.score, jwt);
           setTimeout(() => {
             let elm = document.getElementById(option);
             if (elm) elm.classList.remove('is-danger');
-            // this.setState(state => ({ isAnswered: !state.isAnswered }));
           }, 300);
         }
       );
@@ -153,7 +145,6 @@ class ListQuiz extends Component {
   };
 
   quizCategoryFilter = (category, id) => {
-    console.log(category, id, 'quiz filtere called');
     // TODO: write logic to
     // if (!category && id) {
     //   this.setState({ seletedCategory: category }, () => {
@@ -164,7 +155,7 @@ class ListQuiz extends Component {
     // } else
 
     if (!category || category === 'all') {
-      this.setState({ filteredQuiz: ['all'] });
+      this.setState({ filteredQuiz: [] });
     } else {
       this.setState(
         state => ({ seletedCategory: category, score: 0 }),
@@ -189,13 +180,10 @@ class ListQuiz extends Component {
 
   handleSubmitScore = () => {
     const { jwt } = localStorage;
-
-    // const { user } = this.props.user;
     const { score, seletedCategory } = this.state;
-    // console.log(this.state, 'state score...');
+
     if (score) {
       this.updateUserScore({ score, category: seletedCategory }, jwt);
-      // this.incrementTotalScore(jwt);
       this.resetCounter();
       window.scroll('scrollY', 0);
     }
@@ -203,9 +191,7 @@ class ListQuiz extends Component {
 
   handleScroll = () => {
     var height = document.querySelector('.notification').clientHeight;
-    // window.scroll('X', 2000);
     window.scroll('scrollY', window.scrollY + height + 40);
-    // scrollTo(options?: ScrollToOptions): void (+1 overload)
   };
 
   footer = () => {
@@ -243,7 +229,6 @@ class ListQuiz extends Component {
   render() {
     const { quiz, user } = this.props;
     const { filteredQuiz, isAnswered } = this.state;
-    console.log(filteredQuiz, 'filteredQuiz....');
 
     return (
       <div
@@ -316,8 +301,6 @@ class ListQuiz extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log(state, 'list quiz map state...');
-
   return state;
 };
 

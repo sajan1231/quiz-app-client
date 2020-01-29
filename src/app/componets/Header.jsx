@@ -2,10 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 export default function Header({ user, handleLogout }) {
-  // console.log(user, 'header user...');
   const [toolTip, setTooltip] = useState(false);
-
-  console.log(toolTip, setTooltip, 'setTooltip');
 
   return (
     <nav
@@ -75,7 +72,6 @@ export default function Header({ user, handleLogout }) {
                   <Link to='/users/score'>
                     <strong style={{ fontWeight: 'bold', fontSize: '24px' }}>
                       Show score
-                      {/* {user && user.user ? user.user.totalScore : 0} */}
                     </strong>
                   </Link>
                 </button>
@@ -111,13 +107,6 @@ export default function Header({ user, handleLogout }) {
                       : ''}
                   </strong>
                 </button>
-                {/* <span
-                  className={`tooltip ${
-                    toolTip ? 'show-tooltip' : 'hide-tooltip'
-                  }`}
-                >
-                  admin
-                </span> */}
               </>
             )}
           </div>

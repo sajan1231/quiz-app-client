@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Switch, Route, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { Switch, Route, withRouter } from 'react-router-dom';
 
 import Login from './user/containers/Login';
 import Register from './user/containers/Register';
@@ -34,7 +34,6 @@ class App extends Component {
       .then(res => res.json())
       .then(data => {
         if (data && data.success) {
-          // if (data.token) localStorage.setItem('jwt', data.token);
           if (data.user) this.props.dispatch({ type: 'LOGIN', payload: data });
         } else if (!data.success) {
           this.props.history.push('/users/login');
@@ -52,7 +51,6 @@ class App extends Component {
 
   render() {
     const { user } = this.props;
-
     return (
       <div className='app' style={{ marginTop: '60px' }}>
         <Header user={user} handleLogout={this.handleLogout} />

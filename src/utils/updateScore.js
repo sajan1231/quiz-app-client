@@ -1,6 +1,4 @@
 export default async function updateScore(url, jwt, score) {
-  console.log(score, 'update score helper...');
-
   let res = await fetch(url, {
     method: 'PUT',
     headers: {
@@ -11,8 +9,6 @@ export default async function updateScore(url, jwt, score) {
   })
 
   let jsonData = await res.json();
-  console.log(jsonData, "update score jsondata...");
-
   if (jsonData.success) return jsonData;
   else return null;
 };

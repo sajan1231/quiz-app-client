@@ -49,8 +49,8 @@ class Register extends Component {
               this.props.history.push('/');
             }
           } else if (!data.success) {
-            console.log('register user unsuccessful');
             this.props.history.push('/users/login');
+            console.log('register user unsuccessful...');
           }
         })
         .catch(err => {

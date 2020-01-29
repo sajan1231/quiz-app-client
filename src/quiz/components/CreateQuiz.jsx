@@ -79,7 +79,6 @@ class CreateQuiz extends Component {
             setTimeout(() => {
               this.setState({ errorMsg: '' });
             }, 1000);
-
             console.log('question post unsuccessfull...');
           }
         })
