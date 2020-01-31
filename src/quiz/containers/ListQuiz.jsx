@@ -31,6 +31,10 @@ class ListQuiz extends Component {
           };
         },
         () => {
+          this.props.dispatch({
+            type: 'UPDATE_CURRENT_SCORE',
+            payload: this.state.score
+          });
           this.handleScroll();
           setTimeout(() => {
             let elm = document.getElementById(option);
@@ -46,7 +50,7 @@ class ListQuiz extends Component {
 
   updateUserScore = (score, jwt) => {
     this.props.dispatch(
-      handleUpdateScore(BASE_URL + '/users/update/score', jwt, score)
+      handleUpdateScore(BASE_URL + '/users/score/update', jwt, score)
     );
   };
 
@@ -84,7 +88,12 @@ class ListQuiz extends Component {
   };
 
   resetCounter = () => {
-    this.setState({ counter: 0, score: 0 });
+    this.setState({ counter: 0, score: 0 }, () => {
+      this.props.dispatch({
+        type: 'UPDATE_CURRENT_SCORE',
+        payload: this.state.score
+      });
+    });
   };
 
   handleSubmitScore = () => {

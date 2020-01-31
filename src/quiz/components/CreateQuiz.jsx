@@ -12,9 +12,7 @@ class CreateQuiz extends Component {
     option3: '',
     option4: '',
     answer: '',
-    category: '',
-    successMsg: '',
-    errorMsg: ''
+    category: ''
   };
 
   handleInputChange = e => {
@@ -46,64 +44,9 @@ class CreateQuiz extends Component {
       category
     ) {
       const quiz = { ...this.state, answer: answer.toLowerCase() };
-
-      this.props.dispatch(handleCreateQuiz(BASE_URL + '/quizzes', jwt, quiz));
-      
-      this.setState({
-        question: '',
-        option1: '',
-        option2: '',
-        option3: '',
-        option4: '',
-        answer: '',
-        category: '',
-        successMsg: 'quiz created!'
-      });
-
-      setTimeout(() => {
-        this.setState({ successMsg: '' });
-      }, 1000);
-
-      // fetch(BASE_URL + '/quizzes', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //     Authorization: jwt
-      //   },
-      //   body: JSON.stringify(quiz)
-      // })
-      //   .then(res => res.json())
-      //   .then(data => {
-      //     if (data.success) {
-      //       this.props.dispatch({
-      //         type: 'CREATE_QUIZ',
-      //         payload: data.quiz
-      //       });
-      //       this.setState({
-      //         question: '',
-      //         option1: '',
-      //         option2: '',
-      //         option3: '',
-      //         option4: '',
-      //         answer: '',
-      //         category: '',
-      //         successMsg: 'quiz created!'
-      //       });
-
-      //       setTimeout(() => {
-      //         this.setState({ successMsg: '' });
-      //       }, 1000);
-      //     } else if (!data.success) {
-      //       this.setState({ errorMsg: 'Failed to create question!' });
-      //       setTimeout(() => {
-      //         this.setState({ errorMsg: '' });
-      //       }, 1000);
-      //       console.log('question post unsuccessfull...');
-      //     }
-      //   })
-      //   .catch(err => {
-      //     console.log(err, 'question post catch err...');
-      //   });
+      this.props.dispatch(
+        handleCreateQuiz(BASE_URL + '/quizzes', jwt, quiz, this.props.history)
+      );
     }
   };
 

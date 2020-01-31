@@ -1,6 +1,7 @@
 const initialState = {
   isLoading: true,
-  user: null
+  user: null,
+  currentScore: 0
 }
 
 export default function usersReducer(state = initialState, action) {
@@ -11,7 +12,6 @@ export default function usersReducer(state = initialState, action) {
         isLoading: false,
           token: action.payload.token,
           user: action.payload.user,
-          currentScore: action.payload.currentScore || 0
       };
 
     case 'REGISTER':
@@ -20,7 +20,6 @@ export default function usersReducer(state = initialState, action) {
         isLoading: false,
           token: action.payload.token,
           user: action.payload.user,
-          currentScore: action.payload.currentScore || 0
       };
 
     case 'UPDATE_USER':
@@ -28,7 +27,7 @@ export default function usersReducer(state = initialState, action) {
         ...state,
         isLoading: false,
           user: action.payload.user,
-          currentScore: action.payload.currentScore || 0
+          // currentScore: action.payload.currentScore || 0
       };
 
     case 'LOGOUT':

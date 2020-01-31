@@ -1,4 +1,4 @@
-export function handleCreateQuiz(url, token, data) {
+export function handleCreateQuiz(url, token, data, history) {
   return dispatch => {
     fetch(url, {
         method: 'POST',
@@ -15,10 +15,15 @@ export function handleCreateQuiz(url, token, data) {
             type: 'CREATE_QUIZ',
             payload: data.quiz
           });
+          history.push('/');
         } else if (!data.success) {
-          dispatch({
-            type: 'ERROR',
-            payload: data.massage
+          // dispatch({
+          //   type: 'ERROR',
+          //   payload: data.massage
+          // });
+
+          history.push('/quizzes/create-quiz', {
+            error: 'Failed to create quiz!'
           });
           console.log('create quiz unsuccessfull...');
         }
@@ -30,7 +35,7 @@ export function handleCreateQuiz(url, token, data) {
 }
 
 
-export function handleQuizUpdate(url, token, data) {
+export function handleQuizUpdate(url, token, data, id, history) {
   return dispatch => {
     fetch(url, {
         method: 'PUT',
@@ -47,11 +52,16 @@ export function handleQuizUpdate(url, token, data) {
             type: 'UPDATE_QUIZ',
             payload: data.quiz
           });
+
+          history.push('/');
         } else if (!data.success) {
           console.log('quiz update unsuccessfull...');
-          dispatch({
-            type: 'ERROR',
-            payload: data.massage
+          // dispatch({
+          //   type: 'ERROR',
+          //   payload: data.massage
+          // });
+          history.push('/quizzes/' + id + '/edit', {
+            error: 'Failed to update quiz!'
           });
         }
       })
@@ -62,7 +72,6 @@ export function handleQuizUpdate(url, token, data) {
 }
 
 export function handleFetchQuizzes(url, token) {
-  console.log('handleGetQuizzes action called...1');
   return dispatch => {
     fetch(url, {
         method: 'GET',
@@ -74,17 +83,15 @@ export function handleFetchQuizzes(url, token) {
       .then(res => res.json())
       .then(data => {
         if (data.success) {
-          console.log(data, 'GET_QUIZZES...2');
           dispatch({
             type: 'GET_QUIZZES',
             payload: data.quizzes.reverse()
           });
         } else if (!data.success) {
-          dispatch({
-            type: 'ERROR',
-            payload: data.massage
-          });
-          // this.setState({ err: data.message });
+          // dispatch({
+          //   type: 'ERROR',
+          //   payload: data.massage
+          // });
           console.log(data.message, 'error getting quizzes...');
         }
       })
@@ -112,10 +119,10 @@ export function handleUpdateScore(url, token, score) {
             payload: data
           });
         } else if (!data.success) {
-          dispatch({
-            type: 'ERROR',
-            payload: data.massage
-          });
+          // dispatch({
+          //   type: 'ERROR',
+          //   payload: data.massage
+          // });
           console.log(data, 'update score failed...');
         }
       })
@@ -141,13 +148,13 @@ export function deleteQuiz(url, token, id, history) {
             type: 'DELETE_QUIZ',
             payload: id
           });
-          history.push('/');
+          // history.push('/');
         }
         if (!data.success) {
-          dispatch({
-            type: 'ERROR',
-            payload: data.massage
-          });
+          // dispatch({
+          //   type: 'ERROR',
+          //   payload: data.massage
+          // });
           console.log(data.message, 'delete quiz unsuccessfull...');
         }
       })

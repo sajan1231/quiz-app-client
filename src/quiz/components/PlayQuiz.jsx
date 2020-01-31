@@ -17,26 +17,35 @@ class PlayQuiz extends Component {
   componentDidMount() {
     const { jwt } = localStorage;
     if (jwt) {
-      handleFetchQuizzes(BASE_URL + '/quizzes', jwt);
+      this.props.dispatch(handleFetchQuizzes(BASE_URL + '/quizzes', jwt));
     }
   }
 
   // first handle click
   handleClick = (option, question) => {
-    const { quizzes, counter } = this.state;
+    const { counter } = this.state;
+    const { quiz } = this.props.quiz;
 
-    if (counter <= quizzes.length - 1) {
+    if (counter <= quiz.length - 1) {
       if (option && option === question.answer) {
-        if (option && counter < quizzes.length - 1) {
+        if (option && counter < quiz.length - 1) {
           document.getElementById(question._id).classList.add('is-success');
         }
 
-        this.setState(state => {
-          return {
-            score: state.score + 1,
-            isAnswered: !this.state.isAnswered
-          };
-        });
+        this.setState(
+          state => {
+            return {
+              score: state.score + 1,
+              isAnswered: !state.isAnswered
+            };
+          },
+          () =>
+            this.props.dispatch({
+              type: 'UPDATE_CURRENT_SCORE',
+              payload: this.state.score
+            }),
+          console.log('UPDATE_CURRENT_SCORE')
+        );
 
         setTimeout(
           () =>
@@ -48,9 +57,8 @@ class PlayQuiz extends Component {
             }),
           500
         );
-        return true;
       } else {
-        if (option && counter < quizzes.length - 1) {
+        if (option && counter < quiz.length - 1) {
           document.getElementById(question._id).classList.add('is-danger');
         }
 
@@ -65,7 +73,6 @@ class PlayQuiz extends Component {
             }),
           500
         );
-        return false;
       }
     } else {
       return null;
@@ -103,10 +110,9 @@ class PlayQuiz extends Component {
 
     if (jwt) {
       this.props.dispatch(
-        handleUpdateScore(BASE_URL + '/users/update/score', jwt, scoreData)
+        handleUpdateScore(BASE_URL + '/users/score/update', jwt, scoreData)
       );
     }
-
     this.resetCounter();
   };
 
@@ -137,7 +143,6 @@ class PlayQuiz extends Component {
 }
 
 function mapStateToProps(state) {
-  console.log(state, 'play quiz map state....');
   return state;
 }
 

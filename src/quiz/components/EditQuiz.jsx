@@ -73,57 +73,9 @@ class EditQuiz extends Component {
       };
 
       const url = BASE_URL + '/quizzes/' + questionId + '/update';
-
-      this.props.dispatch(handleQuizUpdate(url, jwt, quiz, this));
-
-      this.setState(
-        {
-          question: '',
-          option1: '',
-          option2: '',
-          option3: '',
-          option4: '',
-          category: '',
-          answer: ''
-        },
-        () => this.props.history.push('/')
+      this.props.dispatch(
+        handleQuizUpdate(url, jwt, quiz, questionId, this.props.history)
       );
-
-      // fetch(BASE_URL + '/quizzes/' + questionId + '/update', {
-      //   method: 'PUT',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //     Authorization: jwt
-      //   },
-      //   body: JSON.stringify(quiz)
-      // })
-      //   .then(res => res.json())
-      //   .then(data => {
-      //     if (data.success) {
-      //       this.props.dispatch({
-      //         type: 'UPDATE_QUIZ',
-      //         payload: data.quiz
-      //       });
-
-      //       this.setState(
-      //         {
-      //           question: '',
-      //           option1: '',
-      //           option2: '',
-      //           option3: '',
-      //           option4: '',
-      //           category: '',
-      //           answer: ''
-      //         },
-      //         () => this.props.history.push('/')
-      //       );
-      //     } else if (!data.success) {
-      //       console.log('quiz update unsuccessfull...');
-      //     }
-      //   })
-      //   .catch(err => {
-      //     console.log(err, 'update quiz catch err...');
-      //   });
     }
   };
 
