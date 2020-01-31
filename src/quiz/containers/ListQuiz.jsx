@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import QuizCard from '../components/QuizCard';
-import updateScore, { incUsersTotalScore } from '../../utils/updateScore';
+import { handleFetchQuizzes, handleUpdateScore, deleteQuiz } from '../actions';
 
 const BASE_URL = 'http://localhost:8000/api/v1';
 
@@ -16,55 +16,13 @@ class ListQuiz extends Component {
   };
 
   componentDidMount = () => {
-    this.fetchQuiz(BASE_URL + '/quizzes');
-    // this.checkWindowReload();
-  };
-
-  fetchQuiz = url => {
     const { jwt } = localStorage;
-
     if (jwt) {
-      fetch(url, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: jwt
-        }
-      })
-        .then(res => res.json())
-        .then(data => {
-          if (data.success) {
-            this.props.dispatch({
-              type: 'GET_QUIZES',
-              payload: data.quizzes.reverse()
-            });
-          } else {
-            this.setState({ err: data.message });
-          }
-        })
-        .catch(err => {
-          console.log('fetch quiz error...');
-        });
+      this.props.dispatch(handleFetchQuizzes(BASE_URL + '/quizzes', jwt));
     }
   };
 
-  // function to check if the browser window is reloaded or not
-  // checkWindowReload = () => {
-  //   const { jwt } = localStorage;
-  //   if (window.performance) {
-  //     console.info('window.performance works fine on this browser');
-  //   }
-  //   if (performance.navigation.type === 1) {
-  //     console.info('This page is reloaded');
-  //     this.updateUserScore(this.state.score, jwt);
-  //   } else {
-  //     console.info('This page is not reloaded');
-  //   }
-  // };
-
   handleClick = (option, quiz) => {
-    const { jwt } = localStorage;
-
     if (option === quiz.answer) {
       this.setState(
         state => {
@@ -73,9 +31,7 @@ class ListQuiz extends Component {
           };
         },
         () => {
-          this.incrementTotalScore(jwt);
           this.handleScroll();
-
           setTimeout(() => {
             let elm = document.getElementById(option);
             if (elm) elm.classList.remove('is-danger');
@@ -88,72 +44,25 @@ class ListQuiz extends Component {
     }
   };
 
-  dispatchUpdateUser = data => {
-    if (data && data.user) {
-      this.props.dispatch({
-        type: 'UPDATE_USER',
-        payload: {
-          ...data,
-          currentScore: this.state.score
-        }
-      });
-    } else if (!data || !data.user) {
-      return null;
-    }
-  };
-
-  incrementTotalScore = async jwt => {
-    let data = await incUsersTotalScore(
-      BASE_URL + '/users/update/total-score',
-      jwt
+  updateUserScore = (score, jwt) => {
+    this.props.dispatch(
+      handleUpdateScore(BASE_URL + '/users/update/score', jwt, score)
     );
-    this.dispatchUpdateUser(data);
-  };
-
-  updateUserScore = async (score, jwt) => {
-    let data = await updateScore(BASE_URL + '/users/update/score', jwt, score);
-    this.dispatchUpdateUser(data);
   };
 
   handleDeleteQuiz = id => {
     const { jwt } = localStorage;
-
-    if (jwt) {
-      fetch(BASE_URL + '/quizzes/' + id + '/delete', {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: jwt
-        }
-      })
-        .then(res => res.json())
-        .then(data => {
-          if (data.success) {
-            this.props.dispatch({
-              type: 'DELETE_QUIZ',
-              payload: id
-            });
-          }
-          if (!data.success) {
-            console.log(data.message, 'delete question unsuccessfull...');
-          }
-        })
-        .catch(err => {
-          console.log(err, 'delete question catch err...');
-        });
-    }
+    this.props.dispatch(
+      deleteQuiz(
+        BASE_URL + '/quizzes/' + id + '/delete',
+        jwt,
+        id,
+        this.props.history
+      )
+    );
   };
 
   quizCategoryFilter = (category, id) => {
-    // TODO: write logic to
-    // if (!category && id) {
-    //   this.setState({ seletedCategory: category }, () => {
-    //     this.setState({
-    //       filteredQuiz: this.props.quiz.quiz.filter(quiz => quiz._id !== id)
-    //     });
-    //   });
-    // } else
-
     if (!category || category === 'all') {
       this.setState({ filteredQuiz: [] });
     } else {

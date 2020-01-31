@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { handleCreateQuiz } from '../actions';
 
 const BASE_URL = 'http://localhost:8000/api/v1';
 
@@ -22,6 +23,8 @@ class CreateQuiz extends Component {
   };
 
   handleQuestionSubmit = () => {
+    const { jwt } = localStorage;
+
     const {
       question,
       option1,
@@ -32,7 +35,6 @@ class CreateQuiz extends Component {
       category
     } = this.state;
 
-    const { jwt } = localStorage;
     if (
       jwt &&
       question &&
@@ -45,46 +47,63 @@ class CreateQuiz extends Component {
     ) {
       const quiz = { ...this.state, answer: answer.toLowerCase() };
 
-      fetch(BASE_URL + '/quizzes', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: jwt
-        },
-        body: JSON.stringify(quiz)
-      })
-        .then(res => res.json())
-        .then(data => {
-          if (data.success) {
-            this.props.dispatch({
-              type: 'CREATE_QUIZ',
-              payload: data.quiz
-            });
-            this.setState({
-              question: '',
-              option1: '',
-              option2: '',
-              option3: '',
-              option4: '',
-              answer: '',
-              category: '',
-              successMsg: 'quiz created!'
-            });
+      this.props.dispatch(handleCreateQuiz(BASE_URL + '/quizzes', jwt, quiz));
+      
+      this.setState({
+        question: '',
+        option1: '',
+        option2: '',
+        option3: '',
+        option4: '',
+        answer: '',
+        category: '',
+        successMsg: 'quiz created!'
+      });
 
-            setTimeout(() => {
-              this.setState({ successMsg: '' });
-            }, 1000);
-          } else if (!data.success) {
-            this.setState({ errorMsg: 'Failed to create question!' });
-            setTimeout(() => {
-              this.setState({ errorMsg: '' });
-            }, 1000);
-            console.log('question post unsuccessfull...');
-          }
-        })
-        .catch(err => {
-          console.log(err, 'question post catch err...');
-        });
+      setTimeout(() => {
+        this.setState({ successMsg: '' });
+      }, 1000);
+
+      // fetch(BASE_URL + '/quizzes', {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //     Authorization: jwt
+      //   },
+      //   body: JSON.stringify(quiz)
+      // })
+      //   .then(res => res.json())
+      //   .then(data => {
+      //     if (data.success) {
+      //       this.props.dispatch({
+      //         type: 'CREATE_QUIZ',
+      //         payload: data.quiz
+      //       });
+      //       this.setState({
+      //         question: '',
+      //         option1: '',
+      //         option2: '',
+      //         option3: '',
+      //         option4: '',
+      //         answer: '',
+      //         category: '',
+      //         successMsg: 'quiz created!'
+      //       });
+
+      //       setTimeout(() => {
+      //         this.setState({ successMsg: '' });
+      //       }, 1000);
+      //     } else if (!data.success) {
+      //       this.setState({ errorMsg: 'Failed to create question!' });
+      //       setTimeout(() => {
+      //         this.setState({ errorMsg: '' });
+      //       }, 1000);
+      //       console.log('question post unsuccessfull...');
+      //     }
+      //   })
+      //   .catch(err => {
+      //     console.log(err, 'question post catch err...');
+      //   });
     }
   };
 

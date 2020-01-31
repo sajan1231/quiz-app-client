@@ -4,8 +4,10 @@ const initialState = {
 };
 
 export default function quizReducer(state = initialState, action) {
+  console.log(action, 'GET_QUIZZES...');
+
   switch (action.type) {
-    case 'GET_QUIZES':
+    case 'GET_QUIZZES':
       return {
         ...state,
         isLoading: false,

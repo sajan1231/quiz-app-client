@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import { handleQuizUpdate } from '../actions';
+
 const BASE_URL = 'http://localhost:8000/api/v1';
 
 class EditQuiz extends Component {
@@ -19,26 +21,30 @@ class EditQuiz extends Component {
     const { jwt } = localStorage;
 
     if (jwt && questionId) {
-      fetch(BASE_URL + '/quizzes/' + questionId, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: jwt
+      this.getQuiz(BASE_URL + '/quizzes/' + questionId, jwt);
+    }
+  };
+
+  getQuiz = (url, token) => {
+    fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: token
+      }
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          this.setState({ ...data.quiz });
+        }
+        if (!data.success) {
+          console.log('get quiz unsuccessfull...');
         }
       })
-        .then(res => res.json())
-        .then(data => {
-          if (data.success) {
-            this.setState({ ...data.quiz });
-          }
-          if (!data.success) {
-            console.log('get quiz unsuccessfull...');
-          }
-        })
-        .catch(err => {
-          console.log(err, 'get quiz catch err...');
-        });
-    }
+      .catch(err => {
+        console.log(err, 'get quiz catch err...');
+      });
   };
 
   handleInputChange = e => {
@@ -66,41 +72,58 @@ class EditQuiz extends Component {
         answer: answer.toLowerCase()
       };
 
-      fetch(BASE_URL + '/quizzes/' + questionId + '/update', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: jwt
-        },
-        body: JSON.stringify(quiz)
-      })
-        .then(res => res.json())
-        .then(data => {
-          if (data.success) {
-            this.props.dispatch({
-              type: 'UPDATE_QUIZ',
-              payload: data.quiz
-            });
+      const url = BASE_URL + '/quizzes/' + questionId + '/update';
 
-            this.setState(
-              {
-                question: '',
-                option1: '',
-                option2: '',
-                option3: '',
-                option4: '',
-                category: '',
-                answer: ''
-              },
-              () => this.props.history.push('/')
-            );
-          } else if (!data.success) {
-            console.log('quiz update unsuccessfull...');
-          }
-        })
-        .catch(err => {
-          console.log(err, 'update quiz catch err...');
-        });
+      this.props.dispatch(handleQuizUpdate(url, jwt, quiz, this));
+
+      this.setState(
+        {
+          question: '',
+          option1: '',
+          option2: '',
+          option3: '',
+          option4: '',
+          category: '',
+          answer: ''
+        },
+        () => this.props.history.push('/')
+      );
+
+      // fetch(BASE_URL + '/quizzes/' + questionId + '/update', {
+      //   method: 'PUT',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //     Authorization: jwt
+      //   },
+      //   body: JSON.stringify(quiz)
+      // })
+      //   .then(res => res.json())
+      //   .then(data => {
+      //     if (data.success) {
+      //       this.props.dispatch({
+      //         type: 'UPDATE_QUIZ',
+      //         payload: data.quiz
+      //       });
+
+      //       this.setState(
+      //         {
+      //           question: '',
+      //           option1: '',
+      //           option2: '',
+      //           option3: '',
+      //           option4: '',
+      //           category: '',
+      //           answer: ''
+      //         },
+      //         () => this.props.history.push('/')
+      //       );
+      //     } else if (!data.success) {
+      //       console.log('quiz update unsuccessfull...');
+      //     }
+      //   })
+      //   .catch(err => {
+      //     console.log(err, 'update quiz catch err...');
+      //   });
     }
   };
 

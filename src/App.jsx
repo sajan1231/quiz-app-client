@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Switch, Route, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
-import Login from './user/containers/Login';
-import Register from './user/containers/Register';
 import Header from './app/componets/Header';
-import AdminDashboard from './admin/containers/AdminDashboard';
-import UserDashboard from './user/containers/UserDashboard';
+import AdminRoutes from './admin/components/AdminRoutes';
+import UserRoutes from './user/components/UserRoutes';
+import PublicRoutes from './app/componets/PublicRoutes';
+
+import { handleAutoLogin } from './user/actions';
 
 const BASE_URL = 'http://localhost:8000/api/v1';
 
@@ -17,31 +18,12 @@ class App extends Component {
     const { jwt } = localStorage;
 
     if (jwt) {
-      this.fetchData(BASE_URL + '/users/me', jwt);
+      this.props.dispatch(
+        handleAutoLogin(BASE_URL + '/users/me', jwt, this.props.history)
+      );
     } else if (!jwt) {
       this.props.history.push('/users/login');
     }
-  };
-
-  fetchData = (url, jwt) => {
-    fetch(url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: jwt
-      }
-    })
-      .then(res => res.json())
-      .then(data => {
-        if (data && data.success) {
-          if (data.user) this.props.dispatch({ type: 'LOGIN', payload: data });
-        } else if (!data.success) {
-          this.props.history.push('/users/login');
-        }
-      })
-      .catch(err => {
-        console.log(err, 'auto login catch err');
-      });
   };
 
   handleLogout = () => {
@@ -54,12 +36,12 @@ class App extends Component {
     return (
       <div className='app' style={{ marginTop: '60px' }}>
         <Header user={user} handleLogout={this.handleLogout} />
-        {user && !user.user ? <PublicRoutes /> : ''}
+        {!user.user ? <PublicRoutes /> : ''}
 
         {user && user.user && user.user.isAdmin ? (
-          <AdminDashboard />
+          <AdminRoutes />
         ) : user && user.user && !user.user.isAdmin ? (
-          <UserDashboard />
+          <UserRoutes />
         ) : (
           ''
         )}
@@ -67,15 +49,6 @@ class App extends Component {
     );
   }
 }
-
-const PublicRoutes = () => {
-  return (
-    <Switch>
-      <Route exact path='/users/login' component={Login} />
-      <Route path='/users/register' component={Register} />
-    </Switch>
-  );
-};
 
 function mapStateToProps(state) {
   return state;

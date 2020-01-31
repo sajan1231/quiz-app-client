@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import { handleUserLogin } from '../actions';
+
 const BASE_URL = 'http://localhost:8000/api/v1';
 
 class Login extends Component {
@@ -9,38 +11,16 @@ class Login extends Component {
     user: {
       email: '',
       password: ''
-    },
-    errMsg: ''
+    }
   };
 
   handleLogin = e => {
     e.preventDefault();
+    const { user } = this.state;
 
-    fetch(BASE_URL + '/users/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(this.state.user)
-    })
-      .then(res => res.json())
-      .then(data => {
-        console.log(data, 'user login data');
-        if (data && data.success) {
-          if (data.token) localStorage.setItem('jwt', data.token);
-
-          this.props.dispatch({ type: 'LOGIN', payload: data });
-          this.props.history.push('/');
-        } else if (data && !data.success) {
-          this.setState({ errMsg: data.message }, () =>
-            setTimeout(() => this.setState({ errMsg: ' ' }), 2000)
-          );
-          console.log('login user unsuccessfull...');
-        }
-      })
-      .catch(err => {
-        console.log(err, 'login user catch err...');
-      });
+    this.props.dispatch(
+      handleUserLogin(BASE_URL + '/users/login', user, this.props.history)
+    );
   };
 
   handleInputChange = e => {
@@ -138,8 +118,4 @@ class Login extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  return state;
-}
-
-export default connect(mapStateToProps)(Login);
+export default connect()(Login);

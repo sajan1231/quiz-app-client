@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
+import { handleUserRegister } from '../actions';
+
 const BASE_URL = 'http://localhost:8000/api/v1';
 
 class Register extends Component {
@@ -30,35 +32,21 @@ class Register extends Component {
       password.length >= 8 &&
       password === confirmPassword
     ) {
-      fetch(BASE_URL + '/users/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ name, email, password })
-      })
-        .then(res => res.json())
-        .then(data => {
-          if (data.success) {
-            if (data && data.user) {
-              if (data.token) {
-                localStorage.setItem('jwt', data.token);
-              }
+      const user = { name, email, password };
 
-              this.props.dispatch({ type: 'REGISTER', payload: data });
-              this.props.history.push('/');
-            }
-          } else if (!data.success) {
-            this.props.history.push('/users/login');
-            console.log('register user unsuccessful...');
-          }
-        })
-        .catch(err => {
-          console.log(err, 'register user catch err');
-        });
+      this.props.dispatch(
+        handleUserRegister(
+          BASE_URL + '/users/register',
+          user,
+          this.props.history
+        )
+      );
     } else {
-      this.setState({ error: 'required field is missing' }, () =>
-        setTimeout(() => this.setState({ error: '' }), 2000)
+      this.setState(
+        {
+          error: 'Required field is missing'
+        },
+        () => setTimeout(() => this.setState({ error: '' }), 2000)
       );
     }
   };

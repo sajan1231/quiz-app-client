@@ -1,37 +1,20 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import handleDeleteScore from '../actions';
+
 const BASE_URL = 'http://localhost:8000/api/v1';
 
 class Score extends Component {
   deleteScore = id => {
     const { jwt } = localStorage;
-
-    fetch(BASE_URL + '/users/update/score/' + id + '/delete', {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: jwt
-      }
-    })
-      .then(res => res.json())
-      .then(data => {
-        console.log(data, 'delete score....');
-
-        if (data.success) {
-          this.props.dispatch({ type: 'UPDATE_USER', payload: data });
-          console.log(data, 'deleted score sucessfull......');
-        } else if (!data.success) {
-          console.log(data, 'deleted score failed...');
-        }
-      })
-      .catch(err => {
-        console.log(err, 'delete score catch error...');
-      });
+    this.props.dispatch(
+      handleDeleteScore(BASE_URL + '/users/score/' + id + '/delete', jwt)
+    );
   };
 
   render() {
-    const { user } = this.props.user;
+    const { user } = this.props;
     const thead =
       user && user.scores.length
         ? Object.keys(user.scores[0]).filter(v => v !== '_id')
@@ -105,7 +88,7 @@ class Score extends Component {
 }
 
 function mapStateToProps(state) {
-  return state;
+  return state.user;
 }
 
 export default connect(mapStateToProps)(Score);
