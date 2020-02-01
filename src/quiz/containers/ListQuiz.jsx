@@ -35,8 +35,10 @@ class ListQuiz extends Component {
             type: 'UPDATE_CURRENT_SCORE',
             payload: this.state.score
           });
+          
           var div = document.getElementById(quiz._id);
           if(div) div.style.pointerEvents = "none";
+
           this.handleScroll();
           setTimeout(() => {
             let elm = document.getElementById(option);
