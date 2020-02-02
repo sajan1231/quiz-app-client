@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import QuizCard from '../components/QuizCard';
 import { handleFetchQuizzes, handleUpdateScore, deleteQuiz } from '../actions';
 
-const BASE_URL = 'http://localhost:8000/api/v1';
+const BASE_URL = 'https://nodejs-quiz-app.herokuapp.com/api/v1';
 
 class ListQuiz extends Component {
   state = {
@@ -47,6 +47,9 @@ class ListQuiz extends Component {
         }
       );
     } else {
+      var div = document.getElementById(quiz._id);
+      if(div) div.style.pointerEvents = "none";
+      
       this.handleScroll();
       return null;
     }

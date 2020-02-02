@@ -9,7 +9,7 @@ import PublicRoutes from './app/componets/PublicRoutes';
 
 import { handleAutoLogin } from './user/actions';
 
-const BASE_URL = 'http://localhost:8000/api/v1';
+const BASE_URL = 'https://nodejs-quiz-app.herokuapp.com/api/v1';
 
 class App extends Component {
   state = {};

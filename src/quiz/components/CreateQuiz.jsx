@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { handleCreateQuiz } from '../actions';
 
-const BASE_URL = 'http://localhost:8000/api/v1';
+const BASE_URL = 'https://nodejs-quiz-app.herokuapp.com/api/v1';
 
 class CreateQuiz extends Component {
   state = {

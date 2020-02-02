@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import { handleUserLogin } from '../actions';
 
-const BASE_URL = 'http://localhost:8000/api/v1';
+const BASE_URL = 'https://nodejs-quiz-app.herokuapp.com/api/v1';
 
 class Login extends Component {
   state = {

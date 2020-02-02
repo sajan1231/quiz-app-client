@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import QuizCard from './QuizCard';
 import { handleFetchQuizzes, handleUpdateScore, deleteQuiz } from '../actions';
 
-const BASE_URL = 'http://localhost:8000/api/v1';
+const BASE_URL = 'https://nodejs-quiz-app.herokuapp.com/api/v1';
 
 class PlayQuiz extends Component {
   state = {
@@ -44,7 +44,6 @@ class PlayQuiz extends Component {
               type: 'UPDATE_CURRENT_SCORE',
               payload: this.state.score
             }),
-          console.log('UPDATE_CURRENT_SCORE')
         );
 
         setTimeout(
@@ -119,8 +118,6 @@ class PlayQuiz extends Component {
   render() {
     const { counter, isAnswered } = this.state;
     const { quiz, user } = this.props;
-
-    console.log(quiz, user, '....');
 
     return (
       <div style={{ marginTop: '100px ' }}>

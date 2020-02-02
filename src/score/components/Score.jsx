@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import handleDeleteScore from '../actions';
 
-const BASE_URL = 'http://localhost:8000/api/v1';
+const BASE_URL = 'https://nodejs-quiz-app.herokuapp.com/api/v1';
 
 class Score extends Component {
   deleteScore = id => {
