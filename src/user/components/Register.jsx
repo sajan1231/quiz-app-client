@@ -23,10 +23,7 @@ class Register extends Component {
     const { name, email, password, confirmPassword } = this.state.user;
 
     if (password !== confirmPassword) {
-      console.log('pass match fail');
-
       this.handleFormValidation('formValidationError', "password didn't match");
-
       window.setTimeout(
         () => this.handleFormValidation('formValidationError', ''),
         2000
@@ -76,7 +73,6 @@ class Register extends Component {
         'formValidationError',
         'Name must be more than or equal to 4 charectors'
       );
-      console.log('name err...');
     } else if (
       name === 'email' &&
       (!value.includes('@gmail.com') || !value.includes('@yahoo.com'))
@@ -85,13 +81,11 @@ class Register extends Component {
         'formValidationError',
         'Enter a valid email address'
       );
-      console.log('mail err...');
     } else if (name === 'password' && value.length < 8) {
       this.handleFormValidation(
         'formValidationError',
         'Password must be more than or equal to 8 charectors'
       );
-      console.log('password err...');
     } else {
       this.handleFormValidation('formValidationError', '');
       this.updateState(name, value);
@@ -102,9 +96,7 @@ class Register extends Component {
   render() {
     const { name, email, password, confirmPassword } = this.state.user;
     const { formValidationError } = this.state;
-
     const { isLoading } = this.props.user;
-    // console.log(isLoading);
 
     return (
       <section className='hero is-primary is-fullheight'>

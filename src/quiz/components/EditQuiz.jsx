@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import { handleQuizUpdate } from '../actions';
 
-import {BASE_URL}  from '../../static'; 
+import { BASE_URL } from '../../static';
 
 class EditQuiz extends Component {
   state = {
@@ -39,7 +39,6 @@ class EditQuiz extends Component {
           this.setState({ ...data.quiz });
         }
         if (!data.success) {
-          console.log('get quiz unsuccessfull...');
         }
       })
       .catch(err => {

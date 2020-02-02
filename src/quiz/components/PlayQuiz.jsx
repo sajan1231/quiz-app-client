@@ -120,7 +120,6 @@ class PlayQuiz extends Component {
   render() {
     const { counter, isAnswered } = this.state;
     const { quiz, user } = this.props;
-    console.log(quiz, 'play quiz rndr props...');
     const { isLoading } = quiz;
 
     return (

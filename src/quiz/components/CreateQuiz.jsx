@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { handleCreateQuiz } from '../actions';
 
-import {BASE_URL} from '../../static';
+import { BASE_URL } from '../../static';
 
 class CreateQuiz extends Component {
   state = {

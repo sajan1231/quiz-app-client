@@ -39,8 +39,6 @@ class Login extends Component {
     const { email, password } = this.state.user;
     const { isLoading, error } = this.props;
 
-    console.log(this.props.user, 'login props user...');
-
     return (
       <section className='hero is-primary is-fullheight'>
         {!isLoading ? (

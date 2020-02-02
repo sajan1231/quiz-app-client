@@ -9,7 +9,7 @@ import PublicRoutes from './app/componets/PublicRoutes';
 
 import { handleAutoLogin } from './user/actions';
 
-import {BASE_URL} from './static';
+import { BASE_URL } from './static';
 
 class App extends Component {
   state = {};

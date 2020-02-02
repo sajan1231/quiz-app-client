@@ -51,7 +51,9 @@ export default function Header({ user, handleLogout }) {
             </Link>
           </div>
         </div>
-      ) : ""}
+      ) : (
+        ''
+      )}
 
       <div className='navbar-end'>
         <div className='navbar-item'>
