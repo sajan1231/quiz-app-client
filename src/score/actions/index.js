@@ -14,13 +14,13 @@ export default function handleDeleteScore(url, token) {
             type: 'UPDATE_USER',
             payload: data
           });
-          console.log(data, 'deleted score sucessfull...');
+          console.log('deleted score sucessfull...');
         } else if (!data.success) {
           dispatch({
             type: 'ERROR',
             payload: data.message
           });
-          console.log(data, 'deleted score failed...');
+          console.log('deleted score failed...');
         }
       })
       .catch(err => {
