@@ -12,9 +12,7 @@ import { handleAutoLogin } from './user/actions';
 import { BASE_URL } from './static';
 
 class App extends Component {
-  state = {};
-
-  componentDidMount = () => {
+  componentDidMount() {
     const { jwt } = localStorage;
 
     if (jwt) {
@@ -24,15 +22,16 @@ class App extends Component {
     } else if (!jwt) {
       this.props.history.push('/users/login');
     }
-  };
+  }
 
   handleLogout = () => {
-    localStorage.clear();
-    window.location.reload();
+    this.props.dispatch({ type: 'LOGOUT', payload: null });
+    this.props.history.push('/users/login');
   };
 
   render() {
     const { user } = this.props;
+
     return (
       <div className='app' style={{ marginTop: '60px' }}>
         <Header user={user} handleLogout={this.handleLogout} />
