@@ -92,7 +92,7 @@ class CreateQuiz extends Component {
                   className='input'
                   type='text'
                   name='category'
-                  placeholder='e.g What does ISRO stands for?'
+                  placeholder='e.g science'
                   required
                   value={category}
                   onChange={this.handleInputChange}

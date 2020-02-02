@@ -75,7 +75,7 @@ class ListQuiz extends Component {
     );
   };
 
-  quizCategoryFilter = (category, id) => {
+  quizCategoryFilter = category => {
     if (!category || category === 'all') {
       this.setState({ filteredQuiz: [] });
     } else {
@@ -105,6 +105,12 @@ class ListQuiz extends Component {
     });
   };
 
+  resetGame = () => {
+    this.resetCounter();
+    this.enablePointerEvent();
+    window.scroll('scrollY', 0);
+  };
+
   handleSubmitScore = () => {
     const { jwt } = localStorage;
     const { score, seletedCategory } = this.state;
@@ -112,7 +118,32 @@ class ListQuiz extends Component {
     if (score) {
       this.updateUserScore({ score, category: seletedCategory }, jwt);
       this.resetCounter();
+      this.enablePointerEvent();
       window.scroll('scrollY', 0);
+    }
+    if (!score) {
+      this.setState({ noScore: 'No score to submit' });
+
+      setTimeout(() => this.setState({ noScore: '' }), 1000);
+    }
+  };
+
+  enablePointerEvent = () => {
+    const { quiz } = this.props;
+    const { filteredQuiz } = this.state;
+    var arr = filteredQuiz.length
+      ? filteredQuiz
+      : quiz && quiz.quiz && quiz.quiz.length
+      ? quiz.quiz
+      : [];
+
+    if (arr.length) {
+      arr.forEach(elm => {
+        var div = document.getElementById(elm._id);
+        if (div) {
+          div.style.pointerEvents = 'all';
+        }
+      });
     }
   };
 
@@ -122,6 +153,8 @@ class ListQuiz extends Component {
   };
 
   footer = () => {
+    const { noScore } = this.state;
+
     return (
       <div className='notification'>
         <div className='container'>
@@ -143,7 +176,16 @@ class ListQuiz extends Component {
                     this.handleSubmitScore();
                   }}
                 >
-                  Submit score
+                  {noScore ? noScore : 'Submit score'}
+                </button>
+                <span style={{ margin: '0 10px' }}></span>
+                <button
+                  className='button is-warning'
+                  onClick={() => {
+                    this.resetGame();
+                  }}
+                >
+                  Reset Game
                 </button>
               </div>
             </div>
@@ -202,7 +244,6 @@ class ListQuiz extends Component {
                               handleDeleteQuiz={this.handleDeleteQuiz}
                               resetCounter={this.resetCounter}
                               isAnswered={isAnswered}
-                              quizCategoryFilter={this.quizCategoryFilter}
                             />
                           </div>
                         </div>
@@ -221,7 +262,6 @@ class ListQuiz extends Component {
                             handleDeleteQuiz={this.handleDeleteQuiz}
                             resetCounter={this.resetCounter}
                             isAnswered={isAnswered}
-                            quizCategoryFilter={this.quizCategoryFilter}
                           />
                         </div>
                       </div>

@@ -36,7 +36,8 @@ export default function usersReducer(state = initialState, action) {
         ...state,
         isLoading: true,
           user: null,
-          token: null
+          token: null,
+          error: ""
       };
 
     case 'UPDATE_CURRENT_SCORE':

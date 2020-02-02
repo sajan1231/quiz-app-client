@@ -14,7 +14,6 @@ import { BASE_URL } from './static';
 class App extends Component {
   componentDidMount() {
     const { jwt } = localStorage;
-
     if (jwt) {
       this.props.dispatch(
         handleAutoLogin(BASE_URL + '/users/me', jwt, this.props.history)

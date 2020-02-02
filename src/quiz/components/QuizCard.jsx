@@ -12,8 +12,7 @@ export default function QuizCard(props) {
     resetCounter,
     isAnswered,
     handleDeleteQuiz,
-    submitScore,
-    quizCategoryFilter
+    submitScore
   } = props;
 
   return (
