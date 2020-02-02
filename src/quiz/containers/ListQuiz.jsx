@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import QuizCard from '../components/QuizCard';
+import Loader from '../../app/componets/Loader';
+
 import { handleFetchQuizzes, handleUpdateScore, deleteQuiz } from '../actions';
 
-const BASE_URL = 'https://nodejs-quiz-app.herokuapp.com/api/v1';
+import { BASE_URL } from '../../static';
 
 class ListQuiz extends Component {
   state = {
@@ -35,9 +37,9 @@ class ListQuiz extends Component {
             type: 'UPDATE_CURRENT_SCORE',
             payload: this.state.score
           });
-          
+
           var div = document.getElementById(quiz._id);
-          if(div) div.style.pointerEvents = "none";
+          if (div) div.style.pointerEvents = 'none';
 
           this.handleScroll();
           setTimeout(() => {
@@ -48,8 +50,8 @@ class ListQuiz extends Component {
       );
     } else {
       var div = document.getElementById(quiz._id);
-      if(div) div.style.pointerEvents = "none";
-      
+      if (div) div.style.pointerEvents = 'none';
+
       this.handleScroll();
       return null;
     }
@@ -154,73 +156,83 @@ class ListQuiz extends Component {
   render() {
     const { quiz, user } = this.props;
     const { filteredQuiz, isAnswered } = this.state;
+    const { isLoading } = quiz;
 
     return (
-      <div
-        className=''
-        style={{ display: 'flex', justifyContent: 'space-between' }}
-      >
-        <aside style={{ padding: '30px' }}>
-          <ul>
-            {quiz && quiz.category
-              ? quiz.category.map(val => {
-                  return (
-                    <li
-                      key={val}
-                      className='title is-5'
-                      style={{ cursor: 'pointer', textTransform: 'capitalize' }}
-                      onClick={() => this.quizCategoryFilter(val)}
-                    >
-                      {val}
-                    </li>
-                  );
-                })
-              : ''}
-          </ul>
-        </aside>
-        <div className='container'>
-          {filteredQuiz && filteredQuiz.length
-            ? filteredQuiz.map((quiz, index) => {
-                return (
-                  <div className='container' key={index}>
-                    <div className='container'>
-                      <div style={{ margin: '40px 0' }}>
-                        <QuizCard
-                          quiz={quiz}
-                          handleClick={this.handleClick}
-                          user={user.user}
-                          handleDeleteQuiz={this.handleDeleteQuiz}
-                          resetCounter={this.resetCounter}
-                          isAnswered={isAnswered}
-                          quizCategoryFilter={this.quizCategoryFilter}
-                        />
+      <>
+        {isLoading ? (
+          <Loader />
+        ) : (
+          <div
+            className=''
+            style={{ display: 'flex', justifyContent: 'space-between' }}
+          >
+            <aside style={{ padding: '30px' }}>
+              <ul>
+                {quiz && quiz.category
+                  ? quiz.category.map(val => {
+                      return (
+                        <li
+                          key={val}
+                          className='title is-5'
+                          style={{
+                            cursor: 'pointer',
+                            textTransform: 'capitalize'
+                          }}
+                          onClick={() => this.quizCategoryFilter(val)}
+                        >
+                          {val}
+                        </li>
+                      );
+                    })
+                  : ''}
+              </ul>
+            </aside>
+            <div className='container'>
+              {filteredQuiz && filteredQuiz.length
+                ? filteredQuiz.map((quiz, index) => {
+                    return (
+                      <div className='container' key={index}>
+                        <div className='container'>
+                          <div style={{ margin: '40px 0' }}>
+                            <QuizCard
+                              quiz={quiz}
+                              handleClick={this.handleClick}
+                              user={user.user}
+                              handleDeleteQuiz={this.handleDeleteQuiz}
+                              resetCounter={this.resetCounter}
+                              isAnswered={isAnswered}
+                              quizCategoryFilter={this.quizCategoryFilter}
+                            />
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                );
-              })
-            : quiz && quiz.quiz && user && user.user
-            ? quiz.quiz.map((question, index) => {
-                return (
-                  <div className='container' key={index}>
-                    <div style={{ margin: '40px 0' }}>
-                      <QuizCard
-                        quiz={question}
-                        handleClick={this.handleClick}
-                        user={user.user}
-                        handleDeleteQuiz={this.handleDeleteQuiz}
-                        resetCounter={this.resetCounter}
-                        isAnswered={isAnswered}
-                        quizCategoryFilter={this.quizCategoryFilter}
-                      />
-                    </div>
-                  </div>
-                );
-              })
-            : 'no quiz found...'}
-          {this.footer()}
-        </div>
-      </div>
+                    );
+                  })
+                : quiz && quiz.quiz && user && user.user
+                ? quiz.quiz.map((question, index) => {
+                    return (
+                      <div className='container' key={index}>
+                        <div style={{ margin: '40px 0' }}>
+                          <QuizCard
+                            quiz={question}
+                            handleClick={this.handleClick}
+                            user={user.user}
+                            handleDeleteQuiz={this.handleDeleteQuiz}
+                            resetCounter={this.resetCounter}
+                            isAnswered={isAnswered}
+                            quizCategoryFilter={this.quizCategoryFilter}
+                          />
+                        </div>
+                      </div>
+                    );
+                  })
+                : 'no quiz found...'}
+              {this.footer()}
+            </div>
+          </div>
+        )}
+      </>
     );
   }
 }

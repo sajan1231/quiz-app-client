@@ -39,7 +39,7 @@ export default function Header({ user, handleLogout }) {
             </Link>
           </div>
         </div>
-      ) : (
+      ) : user && user.user ? (
         <div id='navbarBasicExample' className='navbar-menu'>
           <div className='navbar-start'>
             <Link to='/' className='navbar-item'>
@@ -51,7 +51,7 @@ export default function Header({ user, handleLogout }) {
             </Link>
           </div>
         </div>
-      )}
+      ) : ""}
 
       <div className='navbar-end'>
         <div className='navbar-item'>

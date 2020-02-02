@@ -1,7 +1,8 @@
 const initialState = {
   isLoading: true,
   user: null,
-  currentScore: 0
+  currentScore: 0,
+  error: ''
 }
 
 export default function usersReducer(state = initialState, action) {
@@ -44,9 +45,15 @@ export default function usersReducer(state = initialState, action) {
         ...state,
         isLoading: false,
           currentScore: action.payload || 0
-      }
+      };
 
-      default:
-        return state;
+    case 'AUTH_ERROR':
+      return {
+        ...state,
+        error: action.payload
+      };
+
+    default:
+      return state;
   }
 }

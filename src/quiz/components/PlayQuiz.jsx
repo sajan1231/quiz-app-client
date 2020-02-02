@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import QuizCard from './QuizCard';
+import Loader from '../../app/componets/Loader';
+
 import { handleFetchQuizzes, handleUpdateScore, deleteQuiz } from '../actions';
 
-const BASE_URL = 'https://nodejs-quiz-app.herokuapp.com/api/v1';
+import { BASE_URL } from '../../static';
 
 class PlayQuiz extends Component {
   state = {
@@ -43,7 +45,7 @@ class PlayQuiz extends Component {
             this.props.dispatch({
               type: 'UPDATE_CURRENT_SCORE',
               payload: this.state.score
-            }),
+            })
         );
 
         setTimeout(
@@ -118,10 +120,14 @@ class PlayQuiz extends Component {
   render() {
     const { counter, isAnswered } = this.state;
     const { quiz, user } = this.props;
+    console.log(quiz, 'play quiz rndr props...');
+    const { isLoading } = quiz;
 
     return (
       <div style={{ marginTop: '100px ' }}>
-        {quiz.quiz && quiz.quiz.length ? (
+        {isLoading ? (
+          <Loader />
+        ) : quiz.quiz && quiz.quiz.length ? (
           <QuizCard
             quiz={counter <= quiz.quiz.length - 1 ? quiz.quiz[counter] : null}
             handleClick={this.handleClick}

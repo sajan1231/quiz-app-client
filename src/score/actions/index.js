@@ -17,13 +17,17 @@ export default function handleDeleteScore(url, token) {
           console.log('deleted score sucessfull...');
         } else if (!data.success) {
           dispatch({
-            type: 'ERROR',
+            type: 'AUTH_ERROR',
             payload: data.message
           });
           console.log('deleted score failed...');
         }
       })
       .catch(err => {
+        dispatch({
+          type: 'AUTH_ERROR',
+          payload: 'something went wrong. sorry for the trouble.'
+        });
         console.log(err, 'delete score catch error...');
       });
   }

@@ -10,10 +10,12 @@ export function handleAutoLogin(url, jwt, history) {
       .then(res => res.json())
       .then(data => {
         if (data && data.success) {
-          if (data.user) return dispatch({
-            type: 'LOGIN',
-            payload: data
-          });
+          if (data.user) {
+            return dispatch({
+              type: 'LOGIN',
+              payload: data
+            });
+          }
         } else if (!data.success) {
           history.push('/users/login');
         }
@@ -44,13 +46,18 @@ export function handleUserLogin(url, user, history) {
           history.push('/');
         } else if (data && !data.success) {
           dispatch({
-            type: 'LOGIN',
+            type: 'AUTH_ERROR',
             payload: data.message
           });
+
           console.log('login user unsuccessfull...');
         }
       })
       .catch(err => {
+        dispatch({
+          type: 'AUTH_ERROR',
+          payload: 'something went wrong. sorry for the trouble.'
+        });
         console.log(err, 'login user catch err...');
       });
   }
@@ -70,23 +77,25 @@ export function handleUserRegister(url, user, history) {
         if (data.success) {
           if (data && data.user) {
             if (data.token) localStorage.setItem('jwt', data.token);
-
             dispatch({
               type: 'REGISTER',
               payload: data
             });
-
             history.push('/');
           }
         } else if (!data.success) {
           dispatch({
-            type: 'LOGIN',
+            type: 'AUTH_ERROR',
             payload: data.message
           });
           console.log('register user unsuccessful...');
         }
       })
       .catch(err => {
+        dispatch({
+          type: 'AUTH_ERROR',
+          payload: 'something went wrong. sorry for the trouble.'
+        });
         console.log(err, 'register user catch err');
       });
   }

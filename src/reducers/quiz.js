@@ -1,6 +1,7 @@
 const initialState = {
   isLoading: true,
-  quiz: []
+  quiz: [],
+  error: ""
 };
 
 export default function quizReducer(state = initialState, action) {
@@ -34,6 +35,12 @@ export default function quizReducer(state = initialState, action) {
         isLoading: false,
           quiz: state.quiz.filter(question => question._id !== action.payload),
           category: ['all', ...new Set(state.quiz.filter(question => question._id !== action.payload).map(quiz => quiz.category))]
+      };
+
+    case 'QUIZ_ERROR':
+      return {
+        ...state,
+        error: action.payload
       };
 
     default:

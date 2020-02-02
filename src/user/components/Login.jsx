@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import Loader from '../../app/componets/Loader';
+
 import { handleUserLogin } from '../actions';
 
-const BASE_URL = 'https://nodejs-quiz-app.herokuapp.com/api/v1';
+import { BASE_URL } from '../../static';
 
 class Login extends Component {
   state = {
@@ -35,87 +37,101 @@ class Login extends Component {
 
   render() {
     const { email, password } = this.state.user;
+    const { isLoading, error } = this.props;
+
+    console.log(this.props.user, 'login props user...');
 
     return (
       <section className='hero is-primary is-fullheight'>
-        <div className='hero-body'>
-          <div className='container'>
-            <div className='columns is-centered'>
-              <div className='column is-5-tablet is-4-desktop is-3-widescreen'>
-                {this.state.errMsg ? (
-                  <label
-                    htmlFor=''
-                    className='label'
-                    style={{ textAlign: 'center' }}
-                  >
-                    {this.state.errMsg}
-                  </label>
-                ) : (
-                  ''
-                )}
-                <form action='' className='box'>
-                  <div className='field'>
-                    <label htmlFor='email' className='label'>
-                      Email
-                    </label>
-                    <div className='control has-icons-left'>
-                      <input
-                        type='email'
-                        placeholder='e.g. bobsmith@gmail.com'
-                        className='input'
-                        name='email'
-                        required
-                        value={email}
-                        onChange={this.handleInputChange}
-                      />
-                      <span className='icon is-small is-left'>
-                        <i className='fa fa-envelope'></i>
-                      </span>
-                    </div>
-                  </div>
-                  <div className='field'>
-                    <label htmlFor='password' className='label'>
-                      Password
-                    </label>
-                    <div className='control has-icons-left'>
-                      <input
-                        placeholder='*******'
-                        className='input'
-                        type='password'
-                        name='password'
-                        required
-                        value={password}
-                        onChange={this.handleInputChange}
-                      />
-                      <span className='icon is-small is-left'>
-                        <i className='fa fa-lock'></i>
-                      </span>
-                    </div>
-                  </div>
-                  <div className='field'>
-                    <label htmlFor='' className='checkbox'>
-                      Don't have an account?
-                    </label>
-                    <Link to='/users/register'>
-                      <span style={{ margin: '0 10px' }}>SignUp</span>
-                    </Link>
-                  </div>
-                  <div className='field'>
-                    <button
-                      className='button is-success'
-                      onClick={this.handleLogin}
+        {!isLoading ? (
+          <Loader />
+        ) : (
+          <div className='hero-body'>
+            <div className='container'>
+              <div className='columns is-centered'>
+                <div className='column is-5-tablet is-4-desktop is-3-widescreen'>
+                  {error ? (
+                    <label
+                      htmlFor=''
+                      className='label'
+                      style={{
+                        color: 'red',
+                        textAlign: 'center',
+                        textTransform: 'capitalize'
+                      }}
                     >
-                      Login
-                    </button>
-                  </div>
-                </form>
+                      {error}
+                    </label>
+                  ) : (
+                    ''
+                  )}
+                  <form action='' className='box'>
+                    <div className='field'>
+                      <label htmlFor='email' className='label'>
+                        Email
+                      </label>
+                      <div className='control has-icons-left'>
+                        <input
+                          type='email'
+                          placeholder='e.g. bobsmith@gmail.com'
+                          className='input'
+                          name='email'
+                          required
+                          value={email}
+                          onChange={this.handleInputChange}
+                        />
+                        <span className='icon is-small is-left'>
+                          <i className='fa fa-envelope'></i>
+                        </span>
+                      </div>
+                    </div>
+                    <div className='field'>
+                      <label htmlFor='password' className='label'>
+                        Password
+                      </label>
+                      <div className='control has-icons-left'>
+                        <input
+                          placeholder='*******'
+                          className='input'
+                          type='password'
+                          name='password'
+                          required
+                          value={password}
+                          onChange={this.handleInputChange}
+                        />
+                        <span className='icon is-small is-left'>
+                          <i className='fa fa-lock'></i>
+                        </span>
+                      </div>
+                    </div>
+                    <div className='field'>
+                      <label htmlFor='' className='checkbox'>
+                        Don't have an account?
+                      </label>
+                      <Link to='/users/register'>
+                        <span style={{ margin: '0 10px' }}>SignUp</span>
+                      </Link>
+                    </div>
+                    <div className='field'>
+                      <button
+                        className='button is-success'
+                        onClick={this.handleLogin}
+                      >
+                        Login
+                      </button>
+                    </div>
+                  </form>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
       </section>
     );
   }
 }
 
-export default connect()(Login);
+function mapStateToProps(state) {
+  return state.user;
+}
+export default connect(mapStateToProps)(Login);

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import { handleQuizUpdate } from '../actions';
 
-const BASE_URL = 'https://nodejs-quiz-app.herokuapp.com/api/v1';
+import {BASE_URL}  from '../../static'; 
 
 class EditQuiz extends Component {
   state = {
