@@ -46,7 +46,7 @@ export default function Header({ user, handleLogout }) {
               Play Game
             </Link>
 
-            <Link to='/quizzes/list-quiz' className='navbar-item'>
+            <Link to='/quizzes/list-quizzes' className='navbar-item'>
               List Quiz
             </Link>
           </div>
