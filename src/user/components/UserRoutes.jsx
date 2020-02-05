@@ -12,7 +12,7 @@ export default class UserRoutes extends Component {
       <div>
         <Switch>
           <Route exact path='/' component={PlayQuiz} />
-          <Route exact path='/quizzes/list-quiz' component={ListQuiz} />
+          <Route exact path='/quizzes/list-quizzes' component={ListQuiz} />
           <Route path='/users/score' component={Score} />
           <Route path='/*' component={ErrorPage} />
         </Switch>

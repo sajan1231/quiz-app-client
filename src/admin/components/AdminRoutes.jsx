@@ -14,7 +14,7 @@ export default class AdminRoutes extends Component {
       <div>
         <Switch>
           <Route exact path='/' component={PlayQuiz} />
-          <Route path='/quizzes/list-quiz' component={ListQuiz} />
+          <Route path='/quizzes/list-quizzes' component={ListQuiz} />
           <Route path='/quizzes/create-quiz' component={CreateQuiz} />
           <Route path='/quizzes/:id/edit' component={EditQuiz} />
           <Route path='/users/score' component={Score} />
