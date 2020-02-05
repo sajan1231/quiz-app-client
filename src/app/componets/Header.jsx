@@ -31,7 +31,7 @@ export default function Header({ user, handleLogout }) {
             <Link to='/' className='navbar-item'>
               Play Game
             </Link>
-            <Link to='/quizzes/list-quiz' className='navbar-item'>
+            <Link to='/quizzes/list-quizzes' className='navbar-item'>
               List Quiz
             </Link>
             <Link to='/quizzes/create-quiz' className='navbar-item'>
