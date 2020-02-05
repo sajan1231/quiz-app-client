@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 
 import QuizCard from '../components/QuizCard';
 import Loader from '../../app/componets/Loader';
+import NoQuiz from '../components/NoQuiz';
+import QuizFooter from '../components/QuizFooter';
 
 import { handleFetchQuizzes, handleUpdateScore, deleteQuiz } from '../actions';
 
@@ -152,53 +154,10 @@ class ListQuiz extends Component {
     window.scroll('scrollY', window.scrollY + height + 40);
   };
 
-  footer = () => {
-    const { noScore } = this.state;
-
-    return (
-      <div className='notification'>
-        <div className='container'>
-          <div className='notification is-light is-success'>
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center'
-              }}
-            >
-              <button className='button is-text'>
-                <h3 className='title is-3'>Quiz end...!</h3>
-              </button>
-              <div>
-                <button
-                  className='button is-warning'
-                  onClick={() => {
-                    this.handleSubmitScore();
-                  }}
-                >
-                  {noScore ? noScore : 'Submit score'}
-                </button>
-                <span style={{ margin: '0 10px' }}></span>
-                <button
-                  className='button is-warning'
-                  onClick={() => {
-                    this.resetGame();
-                  }}
-                >
-                  Reset Game
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  };
-
   render() {
-    const { quiz, user } = this.props;
-    const { filteredQuiz, isAnswered } = this.state;
-    const { isLoading } = quiz;
+    const { questions, user } = this.props;
+    const { filteredQuiz, isAnswered, noScore } = this.state;
+    const { isLoading } = questions;
 
     return (
       <>
@@ -211,8 +170,8 @@ class ListQuiz extends Component {
           >
             <aside style={{ padding: '30px' }}>
               <ul>
-                {quiz && quiz.category
-                  ? quiz.category.map(val => {
+                {questions && questions.category
+                  ? questions.category.map(val => {
                       return (
                         <li
                           key={val}
@@ -231,28 +190,29 @@ class ListQuiz extends Component {
               </ul>
             </aside>
             <div className='container'>
-              {filteredQuiz && filteredQuiz.length
-                ? filteredQuiz.map((quiz, index) => {
-                    return (
-                      <div className='container' key={index}>
-                        <div className='container'>
-                          <div style={{ margin: '40px 0' }}>
-                            <QuizCard
-                              quiz={quiz}
-                              handleClick={this.handleClick}
-                              user={user.user}
-                              handleDeleteQuiz={this.handleDeleteQuiz}
-                              resetCounter={this.resetCounter}
-                              isAnswered={isAnswered}
-                            />
-                          </div>
+              {filteredQuiz && filteredQuiz.length ? (
+                filteredQuiz.map((quiz, index) => {
+                  return (
+                    <div className='container' key={index}>
+                      <div className='container'>
+                        <div style={{ margin: '40px 0' }}>
+                          <QuizCard
+                            quiz={quiz}
+                            handleClick={this.handleClick}
+                            user={user.user}
+                            handleDeleteQuiz={this.handleDeleteQuiz}
+                            resetCounter={this.resetCounter}
+                            isAnswered={isAnswered}
+                          />
                         </div>
                       </div>
-                    );
-                  })
-                : quiz && quiz.quiz && user && user.user
-                ? quiz.quiz.map((question, index) => {
-                    return (
+                    </div>
+                  );
+                })
+              ) : questions && questions.questions && user && user.user ? (
+                questions.questions.map((question, index) => {
+                  return (
+                    <>
                       <div className='container' key={index}>
                         <div style={{ margin: '40px 0' }}>
                           <QuizCard
@@ -265,10 +225,17 @@ class ListQuiz extends Component {
                           />
                         </div>
                       </div>
-                    );
-                  })
-                : 'no quiz found...'}
-              {this.footer()}
+                      <QuizFooter
+                        noScore={noScore}
+                        handleSubmitScore={this.handleSubmitScore}
+                        resetGame={this.resetGame}
+                      />
+                    </>
+                  );
+                })
+              ) : (
+                <NoQuiz />
+              )}
             </div>
           </div>
         )}

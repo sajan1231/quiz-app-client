@@ -99,142 +99,138 @@ class Register extends Component {
   render() {
     const { name, email, password, confirmPassword } = this.state.user;
     const { formValidationError } = this.state;
-    const { isLoading, error, authInProcess } = this.props.user;
+    const { isLoading, error } = this.props.user;
 
     console.log(error, 'register');
 
     return (
       <section className='hero is-primary is-fullheight'>
-        {!isLoading ? (
-          <Loader />
-        ) : (
-          <div className='hero-body'>
-            <div className='container'>
-              <div className='columns is-centered'>
-                <div className='column is-5-tablet is-4-desktop is-3-widescreen'>
-                  {formValidationError ? (
-                    <label
-                      htmlFor=''
-                      className='label'
-                      style={{ color: '#b10000', textAlign: 'center' }}
-                    >
-                      {formValidationError}
+        <div className='hero-body'>
+          <div className='container'>
+            <div className='columns is-centered'>
+              <div className='column is-5-tablet is-4-desktop is-3-widescreen'>
+                {formValidationError ? (
+                  <label
+                    htmlFor=''
+                    className='label'
+                    style={{ color: '#b10000', textAlign: 'center' }}
+                  >
+                    {formValidationError}
+                  </label>
+                ) : error ? (
+                  <label
+                    htmlFor=''
+                    className='label'
+                    style={{
+                      color: '#b10000',
+                      textAlign: 'center',
+                      textTransform: 'capitalize'
+                    }}
+                  >
+                    {error}
+                  </label>
+                ) : (
+                  ''
+                )}
+                <form className='box' onSubmit={this.handleRegister}>
+                  <div className='field'>
+                    <label htmlFor='' className='label'>
+                      Username
                     </label>
-                  ) : error ? (
-                    <label
-                      htmlFor=''
-                      className='label'
-                      style={{
-                        color: '#b10000',
-                        textAlign: 'center',
-                        textTransform: 'capitalize'
-                      }}
-                    >
-                      {error}
+                    <div className='control has-icons-left'>
+                      <input
+                        className='input'
+                        type='text'
+                        name='name'
+                        placeholder='bob'
+                        required
+                        value={name}
+                        onChange={this.handleInputChange}
+                      />
+                      <span className='icon is-small is-left'>
+                        <i className='fa fa-user'></i>
+                      </span>
+                    </div>
+                  </div>
+                  <div className='field'>
+                    <label htmlFor='' className='label'>
+                      Email
                     </label>
-                  ) : (
-                    ''
-                  )}
-                  <form className='box' onSubmit={this.handleRegister}>
-                    <div className='field'>
-                      <label htmlFor='' className='label'>
-                        Username
-                      </label>
-                      <div className='control has-icons-left'>
-                        <input
-                          className='input'
-                          type='text'
-                          name='name'
-                          placeholder='bob'
-                          required
-                          value={name}
-                          onChange={this.handleInputChange}
-                        />
-                        <span className='icon is-small is-left'>
-                          <i className='fa fa-user'></i>
-                        </span>
-                      </div>
+                    <div className='control has-icons-left'>
+                      <input
+                        className='input'
+                        type='email'
+                        name='email'
+                        placeholder='exapmle@gmail.com'
+                        required
+                        value={email}
+                        onChange={this.handleInputChange}
+                      />
+                      <span className='icon is-small is-left'>
+                        <i className='fa fa-envelope'></i>
+                      </span>
                     </div>
-                    <div className='field'>
-                      <label htmlFor='' className='label'>
-                        Email
-                      </label>
-                      <div className='control has-icons-left'>
-                        <input
-                          className='input'
-                          type='email'
-                          name='email'
-                          placeholder='exapmle@gmail.com'
-                          required
-                          value={email}
-                          onChange={this.handleInputChange}
-                        />
-                        <span className='icon is-small is-left'>
-                          <i className='fa fa-envelope'></i>
-                        </span>
-                      </div>
+                  </div>
+                  <div className='field'>
+                    <label htmlFor='' className='label'>
+                      Password
+                    </label>
+                    <div className='control has-icons-left'>
+                      <input
+                        placeholder='*******'
+                        className='input'
+                        type='password'
+                        name='password'
+                        required
+                        value={password}
+                        onChange={this.handleInputChange}
+                      />
+                      <span className='icon is-small is-left'>
+                        <i className='fa fa-lock'></i>
+                      </span>
                     </div>
-                    <div className='field'>
-                      <label htmlFor='' className='label'>
-                        Password
-                      </label>
-                      <div className='control has-icons-left'>
-                        <input
-                          placeholder='*******'
-                          className='input'
-                          type='password'
-                          name='password'
-                          required
-                          value={password}
-                          onChange={this.handleInputChange}
-                        />
-                        <span className='icon is-small is-left'>
-                          <i className='fa fa-lock'></i>
-                        </span>
-                      </div>
+                  </div>
+                  <div className='field'>
+                    <label htmlFor='' className='label'>
+                      Confirm Password
+                    </label>
+                    <div className='control has-icons-left'>
+                      <input
+                        placeholder='*******'
+                        className='input'
+                        type='password'
+                        name='confirmPassword'
+                        required
+                        value={confirmPassword}
+                        onChange={this.handleInputChange}
+                      />
+                      <span className='icon is-small is-left'>
+                        <i className='fa fa-lock'></i>
+                      </span>
                     </div>
-                    <div className='field'>
-                      <label htmlFor='' className='label'>
-                        Confirm Password
-                      </label>
-                      <div className='control has-icons-left'>
-                        <input
-                          placeholder='*******'
-                          className='input'
-                          type='password'
-                          name='confirmPassword'
-                          required
-                          value={confirmPassword}
-                          onChange={this.handleInputChange}
-                        />
-                        <span className='icon is-small is-left'>
-                          <i className='fa fa-lock'></i>
-                        </span>
-                      </div>
-                    </div>
-                    <div className='field'>
-                      <label htmlFor='' className='checkbox'>
-                        Already have an account?
-                      </label>
-                      <Link to='/users/login'>
-                        <span style={{ margin: '0 10px' }}>Login</span>
-                      </Link>
-                    </div>
-                    <div className='field'>
-                      <button
-                        className={`button is-success ${
-                          authInProcess ? 'is-loading' : ''
-                        }`}
-                      >
-                        Sign Up
-                      </button>
-                    </div>
-                  </form>
-                </div>
+                  </div>
+                  <div className='field'>
+                    <label htmlFor='' className='checkbox'>
+                      Already have an account?
+                    </label>
+                    <Link to='/users/login'>
+                      <span style={{ margin: '0 10px' }}>Login</span>
+                    </Link>
+                  </div>
+                  <div className='field'>
+                    <button
+                      className={`button is-success ${
+                        isLoading ? 'is-loading' : ''
+                      }`}
+                    >
+                      Sign Up
+                    </button>
+                  </div>
+                </form>
               </div>
             </div>
           </div>
-        )}
+        </div>
       </section>
     );
   }

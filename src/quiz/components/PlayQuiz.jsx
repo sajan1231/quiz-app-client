@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 import QuizCard from './QuizCard';
 import Loader from '../../app/componets/Loader';
+import NoQuiz from './NoQuiz';
 
 import { handleFetchQuizzes, handleUpdateScore, deleteQuiz } from '../actions';
 
@@ -119,16 +120,20 @@ class PlayQuiz extends Component {
 
   render() {
     const { counter, isAnswered } = this.state;
-    const { quiz, user } = this.props;
-    const { isLoading } = quiz;
+    const { questions, user } = this.props;
+    const { isLoading } = questions;
 
     return (
-      <div style={{ marginTop: '100px ' }}>
+      <div style={{ marginTop: '100px ' }} className='container'>
         {isLoading ? (
           <Loader />
-        ) : quiz.quiz && quiz.quiz.length ? (
+        ) : questions.questions && questions.questions.length ? (
           <QuizCard
-            quiz={counter <= quiz.quiz.length - 1 ? quiz.quiz[counter] : null}
+            quiz={
+              counter <= questions.questions.length - 1
+                ? questions.questions[counter]
+                : null
+            }
             handleClick={this.handleClick}
             user={user.user}
             resetCounter={this.resetCounter}
@@ -137,7 +142,7 @@ class PlayQuiz extends Component {
             submitScore={this.handleSubmitScore}
           />
         ) : (
-          ''
+          <NoQuiz />
         )}
       </div>
     );
@@ -145,6 +150,8 @@ class PlayQuiz extends Component {
 }
 
 function mapStateToProps(state) {
+  console.log(state, 'play quiz map state');
+
   return state;
 }
 

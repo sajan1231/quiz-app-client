@@ -10,13 +10,13 @@ import {
 import Thunk from 'redux-thunk';
 
 import usersReducer from './users';
-
-import quizReducer from './quiz';
-
+import questionReducer from './question';
+import quizSetReducer from './quizSet'
 
 const rootReducer = combineReducers({
   user: usersReducer,
-  quiz: quizReducer,
+  questions: questionReducer,
+  quizSet: quizSetReducer,
 });
 
 export const store = createStore(rootReducer, applyMiddleware(Thunk));

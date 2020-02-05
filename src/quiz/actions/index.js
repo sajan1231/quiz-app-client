@@ -1,5 +1,11 @@
+import {
+  action
+} from '../../utils/helper';
+
 export function handleCreateQuiz(url, token, data, history) {
   return dispatch => {
+    dispatch(action('GET_QUIZSETS', true));
+
     fetch(url, {
         method: 'POST',
         headers: {

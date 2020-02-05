@@ -4,7 +4,7 @@ import { handleCreateQuiz } from '../actions';
 
 import { BASE_URL } from '../../static';
 
-class CreateQuiz extends Component {
+class CreateQuestion extends Component {
   state = {
     question: '',
     option1: '',
@@ -72,13 +72,13 @@ class CreateQuiz extends Component {
 
     return (
       <div style={{ marginTop: '100px' }}>
-        <select name='quizSetId' id='' onChange={this.handleInputChange}>
+        {/* <select name='quizSetId' id='' onChange={this.handleInputChange}>
           <option value='000'>science</option>
           <option value='111'>art</option>
           <option value='222'>space</option>
           <option value='333'>film</option>
           <option value='444'>programming</option>
-        </select>
+        </select> */}
         <div className='container'>
           <div className='notification'>
             <label className='label' style={{ textAlign: 'center' }}>
@@ -201,4 +201,4 @@ class CreateQuiz extends Component {
   }
 }
 
-export default connect()(CreateQuiz);
+export default connect()(CreateQuestion);

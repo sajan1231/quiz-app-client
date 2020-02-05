@@ -34,8 +34,11 @@ export default function Header({ user, handleLogout }) {
             <Link to='/quizzes/list-quizzes' className='navbar-item'>
               List Quiz
             </Link>
+            <Link to='/quizzes/create-quizset' className='navbar-item'>
+              Create Quizset
+            </Link>
             <Link to='/quizzes/create-quiz' className='navbar-item'>
-              Create Quiz
+              Create Question
             </Link>
           </div>
         </div>
@@ -47,7 +50,7 @@ export default function Header({ user, handleLogout }) {
             </Link>
 
             <Link to='/quizzes/list-quizzes' className='navbar-item'>
-              List Quiz
+              List Quizzes
             </Link>
           </div>
         </div>

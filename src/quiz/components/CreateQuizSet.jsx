@@ -6,7 +6,8 @@ import { BASE_URL } from '../../static';
 
 class CreateQuizSet extends Component {
   state = {
-    name: ''
+    name: '',
+    error: ''
   };
 
   handleCreateQuizSet = e => {
@@ -16,32 +17,66 @@ class CreateQuizSet extends Component {
     if (jwt && name) {
       this.props.dispatch(
         createQuizSet(
-          BASE_URL + '/quiz-sets',
+          BASE_URL + '/quizsets',
           jwt,
           this.state,
           this.props.history
         )
       );
-    } else {
-      this.setState({ error: 'required field is missing' });
+    } else if (!name) {
+      this.setState({ error: 'Quizset name is required!' });
     }
   };
 
+  handleInputChange = e => {
+    const { name, value } = e.target;
+    this.setState({ [name]: value });
+  };
+
   render() {
+    const { name, error } = this.state;
+
     return (
-      <div>
-        <form onSubmit={this.handleCreateQuizSet}>
-          <input
-            type='text'
-            name='category'
-            value={this.state.category}
-            placeholder='e.g science'
-          />
-          <button>Create</button>
-        </form>
+      <div style={{ marginTop: '100px' }}>
+        <div className='container'>
+          <div className='notification'>
+            <label className='label' style={{ textAlign: 'center' }}>
+              {error || ''}
+            </label>
+
+            <div className='field'>
+              <label className='label'>Answer</label>
+              <div className='control'>
+                <input
+                  className='input'
+                  type='text'
+                  name='name'
+                  value={name}
+                  required
+                  onChange={this.handleInputChange}
+                  placeholder='e.g. science'
+                />
+              </div>
+            </div>
+
+            <div className='control'>
+              <button
+                className='button is-primary'
+                onClick={this.handleCreateQuizSet}
+              >
+                Submit
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
 }
 
-export default connect()(CreateQuizSet);
+function mapStateToProps(state) {
+  console.log(state, 'create quizset map state...');
+  return state;
+}
+
+export default connect(mapStateToProps)(CreateQuizSet);

@@ -1,46 +1,49 @@
 const initialState = {
-  isLoading: true,
+  isLoading: false,
   quiz: [],
   error: ""
 };
 
-export default function quizReducer(state = initialState, action) {
+export default function quizSetReducer(state = initialState, action) {
   switch (action.type) {
     case 'GET_QUIZSETS':
       return {
         ...state,
         isLoading: false,
-          quiz: action.payload,
-          category: ['all', ...new Set(action.payload.map(quiz => quiz.category))]
+          quizSet: action.payload,
       };
 
     case 'CREATE_QUIZSET':
       return {
         ...state,
         isLoading: false,
-          quiz: [...state.quiz, action.payload],
-          category: ['all', ...new Set([...state.quiz, action.payload].map(quiz => quiz.category))]
+          quizSet: [...state.quizSet, action.payload],
       };
+
     case 'UPDATE_QUIZSET':
       return {
         ...state,
         isLoading: false,
-          quiz: [...state.quiz, action.payload],
-          category: ['all', ...new Set([...state.quiz, action.payload].map(quiz => quiz.category))]
+          quizSet: [...state.quizSet, action.payload],
       };
 
     case 'DELETE_QUIZSET':
       return {
         ...state,
         isLoading: false,
-          quiz: state.quiz.filter(question => question._id !== action.payload),
-          category: ['all', ...new Set(state.quiz.filter(question => question._id !== action.payload).map(quiz => quiz.category))]
+          quizSet: state.quizSet.filter(question => question._id !== action.payload),
       };
 
     case 'QUIZSET_ERROR':
       return {
         ...state,
         error: action.payload
+      };
+
+    case 'QUIZSET_IN_PROCESS':
+      return {
+        ...state,
+        isLoading: action.payload
       };
 
     default:
