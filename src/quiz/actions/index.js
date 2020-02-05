@@ -13,7 +13,7 @@ export function handleCreateQuiz(url, token, data, history) {
         if (data.success) {
           dispatch({
             type: 'CREATE_QUIZ',
-            payload: data.quiz
+            payload: data.question
           });
           history.push('/');
         } else if (!data.success) {
@@ -50,7 +50,7 @@ export function handleQuizUpdate(url, token, data, id, history) {
         if (data.success) {
           dispatch({
             type: 'UPDATE_QUIZ',
-            payload: data.quiz
+            payload: data.question
           });
 
           history.push('/');
@@ -86,7 +86,7 @@ export function handleFetchQuizzes(url, token) {
         if (data.success) {
           dispatch({
             type: 'GET_QUIZZES',
-            payload: data.quizzes.reverse()
+            payload: data.questions.reverse()
           });
         } else if (!data.success) {
           dispatch({
@@ -169,6 +169,43 @@ export function deleteQuiz(url, token, id, history) {
       .catch(err => {
         dispatch({
           type: 'QUIZ_ERROR',
+          payload: 'something went wrong. sorry for the trouble.'
+        });
+        console.log(err, 'delete quiz catch err...');
+      });
+  }
+}
+
+
+export function createQuizSet(url, token, data, history) {
+  return dispatch => {
+    fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token
+        },
+        body: JSON.stringify(data)
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          dispatch({
+            type: 'CREATE_QUIZSET',
+            payload: data.quizSet
+          });
+        }
+        if (!data.success) {
+          dispatch({
+            type: 'QUIZSET_ERROR',
+            payload: data.massage
+          });
+          console.log(data.message, 'delete quiz unsuccessfull...');
+        }
+      })
+      .catch(err => {
+        dispatch({
+          type: 'QUIZSET_ERROR',
           payload: 'something went wrong. sorry for the trouble.'
         });
         console.log(err, 'delete quiz catch err...');

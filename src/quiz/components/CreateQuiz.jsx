@@ -12,7 +12,8 @@ class CreateQuiz extends Component {
     option3: '',
     option4: '',
     answer: '',
-    category: ''
+    category: '',
+    quizSetId: ''
   };
 
   handleInputChange = e => {
@@ -50,6 +51,11 @@ class CreateQuiz extends Component {
     }
   };
 
+  // handleSelectChange = e => {
+  //   const { name, value } = e.target;
+  //   console.log(name, value, 'handleSelectChange...');
+  // };
+
   render() {
     const {
       question,
@@ -60,11 +66,19 @@ class CreateQuiz extends Component {
       answer,
       category,
       errorMsg,
-      successMsg
+      successMsg,
+      quizSetId
     } = this.state;
 
     return (
       <div style={{ marginTop: '100px' }}>
+        <select name='quizSetId' id='' onChange={this.handleInputChange}>
+          <option value='000'>science</option>
+          <option value='111'>art</option>
+          <option value='222'>space</option>
+          <option value='333'>film</option>
+          <option value='444'>programming</option>
+        </select>
         <div className='container'>
           <div className='notification'>
             <label className='label' style={{ textAlign: 'center' }}>

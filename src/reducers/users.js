@@ -1,4 +1,5 @@
 const initialState = {
+  authInProcess: false,
   isLoading: true,
   user: null,
   currentScore: 0,
@@ -6,6 +7,7 @@ const initialState = {
 }
 
 export default function usersReducer(state = initialState, action) {
+
   switch (action.type) {
     case 'LOGIN':
       return {
@@ -13,6 +15,7 @@ export default function usersReducer(state = initialState, action) {
         isLoading: false,
           token: action.payload.token,
           user: action.payload.user,
+          authInProcess: false,
       };
 
     case 'REGISTER':
@@ -21,6 +24,7 @@ export default function usersReducer(state = initialState, action) {
         isLoading: false,
           token: action.payload.token,
           user: action.payload.user,
+          authInProcess: false,
       };
 
     case 'UPDATE_USER':
@@ -28,6 +32,7 @@ export default function usersReducer(state = initialState, action) {
         ...state,
         isLoading: false,
           user: action.payload.user,
+          authInProcess: false,
       };
 
     case 'LOGOUT':
@@ -44,13 +49,20 @@ export default function usersReducer(state = initialState, action) {
       return {
         ...state,
         isLoading: false,
-          currentScore: action.payload || 0
+          currentScore: action.payload || 0,
+          authInProcess: false,
       };
 
     case 'AUTH_ERROR':
       return {
         ...state,
-        error: action.payload
+        error: action.payload,
+          authInProcess: false,
+      };
+    case 'AUTH_IN_PROCESS':
+      return {
+        ...state,
+        authInProcess: action.payload
       };
 
     default:

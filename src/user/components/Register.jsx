@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import Loader from '../../app/componets/Loader';
 
 import { handleUserRegister } from '../actions';
+import validateEmail from '../../utils/helper';
 
 import { BASE_URL } from '../../static';
 
@@ -71,12 +72,9 @@ class Register extends Component {
     if (name === 'name' && value.length < 4) {
       this.handleFormValidation(
         'formValidationError',
-        'Name must be more than or equal to 4 charectors'
+        'Name shold be at least 4 charectors'
       );
-    } else if (
-      name === 'email' &&
-      (!value.includes('@gmail.com') || !value.includes('@yahoo.com'))
-    ) {
+    } else if (name === 'email' && !validateEmail(value)) {
       this.handleFormValidation(
         'formValidationError',
         'Enter a valid email address'
@@ -84,7 +82,12 @@ class Register extends Component {
     } else if (name === 'password' && value.length < 8) {
       this.handleFormValidation(
         'formValidationError',
-        'Password must be more than or equal to 8 charectors'
+        'Password should be at least 8 charectors'
+      );
+    } else if (name === 'confirmPassword' && value.length < 8) {
+      this.handleFormValidation(
+        'formValidationError',
+        'Password should be at least 8 charectors'
       );
     } else {
       this.handleFormValidation('formValidationError', '');
@@ -96,7 +99,9 @@ class Register extends Component {
   render() {
     const { name, email, password, confirmPassword } = this.state.user;
     const { formValidationError } = this.state;
-    const { isLoading } = this.props.user;
+    const { isLoading, error, authInProcess } = this.props.user;
+
+    console.log(error, 'register');
 
     return (
       <section className='hero is-primary is-fullheight'>
@@ -111,9 +116,21 @@ class Register extends Component {
                     <label
                       htmlFor=''
                       className='label'
-                      style={{ color: 'red', textAlign: 'center' }}
+                      style={{ color: '#b10000', textAlign: 'center' }}
                     >
                       {formValidationError}
+                    </label>
+                  ) : error ? (
+                    <label
+                      htmlFor=''
+                      className='label'
+                      style={{
+                        color: '#b10000',
+                        textAlign: 'center',
+                        textTransform: 'capitalize'
+                      }}
+                    >
+                      {error}
                     </label>
                   ) : (
                     ''
@@ -204,7 +221,13 @@ class Register extends Component {
                       </Link>
                     </div>
                     <div className='field'>
-                      <button className='button is-success'>Sign Up</button>
+                      <button
+                        className={`button is-success ${
+                          authInProcess ? 'is-loading' : ''
+                        }`}
+                      >
+                        Sign Up
+                      </button>
                     </div>
                   </form>
                 </div>

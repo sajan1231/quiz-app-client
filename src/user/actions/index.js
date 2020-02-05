@@ -1,5 +1,11 @@
+import {
+  action
+} from '../../utils/helper';
+
 export function handleAutoLogin(url, jwt, history) {
   return dispatch => {
+    dispatch(action('AUTH_IN_PROCESS', true));
+
     fetch(url, {
         method: 'GET',
         headers: {
@@ -11,23 +17,25 @@ export function handleAutoLogin(url, jwt, history) {
       .then(data => {
         if (data && data.success) {
           if (data.user) {
-            return dispatch({
-              type: 'LOGIN',
-              payload: data
-            });
+            dispatch(action('LOGIN', data));
           }
         } else if (!data.success) {
           history.push('/users/login');
         }
       })
       .catch(err => {
+        dispatch(
+          action('AUTH_ERROR', 'something went wrong. sorry for the trouble.')
+        );
         console.log(err, 'auto login catch err...');
       });
-  }
+  };
 }
 
 export function handleUserLogin(url, user, history) {
   return dispatch => {
+    dispatch(action('AUTH_IN_PROCESS', true));
+
     fetch(url, {
         method: 'POST',
         headers: {
@@ -39,32 +47,26 @@ export function handleUserLogin(url, user, history) {
       .then(data => {
         if (data && data.success) {
           if (data.token) localStorage.setItem('jwt', data.token);
-          dispatch({
-            type: 'LOGIN',
-            payload: data
-          });
+          dispatch(action('LOGIN', data));
           history.push('/');
         } else if (data && !data.success) {
-          dispatch({
-            type: 'AUTH_ERROR',
-            payload: data.message
-          });
-
+          dispatch(action('AUTH_ERROR', data.message));
           console.log('login user unsuccessfull...');
         }
       })
       .catch(err => {
-        dispatch({
-          type: 'AUTH_ERROR',
-          payload: 'something went wrong. sorry for the trouble.'
-        });
+        dispatch(
+          action('AUTH_ERROR', 'something went wrong. sorry for the trouble.')
+        );
         console.log(err, 'login user catch err...');
       });
-  }
+  };
 }
 
 export function handleUserRegister(url, user, history) {
   return dispatch => {
+    dispatch(action('AUTH_IN_PROCESS', true));
+
     fetch(url, {
         method: 'POST',
         headers: {
@@ -77,26 +79,19 @@ export function handleUserRegister(url, user, history) {
         if (data.success) {
           if (data && data.user) {
             if (data.token) localStorage.setItem('jwt', data.token);
-            dispatch({
-              type: 'REGISTER',
-              payload: data
-            });
+            dispatch(action('REGISTER', data));
             history.push('/');
           }
         } else if (!data.success) {
-          dispatch({
-            type: 'AUTH_ERROR',
-            payload: data.message
-          });
+          dispatch(action('AUTH_ERROR', data.message));
           console.log('register user unsuccessful...');
         }
       })
       .catch(err => {
-        dispatch({
-          type: 'AUTH_ERROR',
-          payload: 'something went wrong. sorry for the trouble.'
-        });
+        dispatch(
+          action('AUTH_ERROR', 'something went wrong. sorry for the trouble.')
+        );
         console.log(err, 'register user catch err');
       });
-  }
+  };
 }

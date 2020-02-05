@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import Loader from '../../app/componets/Loader';
 
 import { handleUserLogin } from '../actions';
+import validateEmail from '../../utils/helper';
 
 import { BASE_URL } from '../../static';
 
@@ -13,20 +14,36 @@ class Login extends Component {
     user: {
       email: '',
       password: ''
-    }
+    },
+    formValidationError: ''
   };
 
   handleLogin = e => {
     e.preventDefault();
-    const { user } = this.state;
-
-    this.props.dispatch(
-      handleUserLogin(BASE_URL + '/users/login', user, this.props.history)
-    );
+    const { email, password } = this.state.user;
+    if (email && validateEmail(email) && password && password.length >= 8) {
+      this.props.dispatch(
+        handleUserLogin(
+          BASE_URL + '/users/login',
+          this.state.user,
+          this.props.history
+        )
+      );
+    } else if (!email) {
+      this.handleFormValidation('formValidationError', 'Email is required');
+    } else if (!validateEmail(email)) {
+      this.handleFormValidation('formValidationError', 'Invalid email address');
+    } else if (!password) {
+      this.handleFormValidation('formValidationError', 'Password is required');
+    } else if (password < 8) {
+      this.handleFormValidation(
+        'formValidationError',
+        'Password should be at least 8 charectors'
+      );
+    }
   };
 
-  handleInputChange = e => {
-    const { name, value } = e.target;
+  updateState = (name, value) => {
     this.setState({
       user: {
         ...this.state.user,
@@ -35,9 +52,34 @@ class Login extends Component {
     });
   };
 
+  handleFormValidation = (error, value) => {
+    this.setState({
+      [error]: value
+    });
+  };
+
+  handleInputChange = e => {
+    const { name, value } = e.target;
+    if (name === 'email' && !validateEmail(value)) {
+      this.handleFormValidation('formValidationError', 'Invalid email address');
+    } else if (name === 'password' && value.length < 8) {
+      this.handleFormValidation(
+        'formValidationError',
+        'Password should be at least 8 charectors'
+      );
+    } else {
+      this.handleFormValidation('formValidationError', '');
+      this.updateState(name, value);
+    }
+    this.updateState(name, value);
+  };
+
   render() {
     const { email, password } = this.state.user;
-    const { isLoading, error } = this.props;
+    const { isLoading, authInProcess, error } = this.props;
+    const { formValidationError } = this.state;
+
+    console.log(authInProcess, 'authInProcess...');
 
     return (
       <section className='hero is-primary is-fullheight'>
@@ -48,12 +90,20 @@ class Login extends Component {
             <div className='container'>
               <div className='columns is-centered'>
                 <div className='column is-5-tablet is-4-desktop is-3-widescreen'>
-                  {error ? (
+                  {formValidationError ? (
+                    <label
+                      htmlFor=''
+                      className='label'
+                      style={{ color: '#b10000', textAlign: 'center' }}
+                    >
+                      {formValidationError}
+                    </label>
+                  ) : error ? (
                     <label
                       htmlFor=''
                       className='label'
                       style={{
-                        color: 'red',
+                        color: '#b10000',
                         textAlign: 'center',
                         textTransform: 'capitalize'
                       }}
@@ -112,7 +162,9 @@ class Login extends Component {
                     </div>
                     <div className='field'>
                       <button
-                        className='button is-success'
+                        className={`button is-success ${
+                          authInProcess ? 'is-loading' : ''
+                        }`}
                         onClick={this.handleLogin}
                       >
                         Login
@@ -130,6 +182,8 @@ class Login extends Component {
 }
 
 function mapStateToProps(state) {
+  console.log(state, 'login map state');
+
   return state.user;
 }
 export default connect(mapStateToProps)(Login);
