@@ -15,7 +15,8 @@ class CreateQuestion extends Component {
     option3: '',
     option4: '',
     answer: '',
-    quizsetId: ''
+    quizsetId: '',
+    error: ''
   };
 
   componentDidMount = () => {
@@ -27,9 +28,63 @@ class CreateQuestion extends Component {
     }
   };
 
-  handleInputChange = e => {
-    const { name, value } = e.target;
+  handleError = value => {
+    this.setState({ error: value }, () =>
+      setTimeout(() => this.setState({ error: '' }), 3000)
+    );
+  };
+
+  handleSetState = (name, value) => {
     this.setState({ [name]: value });
+  };
+
+  handleInputChange = e => {
+    const {
+      question,
+      option1,
+      option2,
+      option3,
+      option4,
+      answer,
+      quizsetId
+    } = this.state;
+
+    const { name, value } = e.target;
+
+    if (name === 'question' && !value) {
+      this.handleError('Question is required!');
+    } else if (
+      name === 'option1' &&
+      (value === option2 || value === option3 || value === option4)
+    ) {
+      this.handleError('option must be qnique!');
+    } else if (
+      name === 'option2' &&
+      (value === option1 || value === option3 || value === option4)
+    ) {
+      this.handleError('option must be qnique!');
+    } else if (
+      name === 'option3' &&
+      (value === option1 || value === option2 || value === option4)
+    ) {
+      this.handleError('option must be qnique!');
+    } else if (
+      name === 'option4' &&
+      (value === option1 || value === option2 || value === option3)
+    ) {
+      this.handleError('option must be qnique!');
+    } else if (
+      name === 'answer' &&
+      (value !== option1 ||
+        value !== option2 ||
+        value !== option3 ||
+        value !== option4)
+    ) {
+      this.handleError('answer must be one of the option field e.g option1');
+    } else {
+      this.setState({ error: '' });
+    }
+    this.handleSetState(name, value);
   };
 
   handleQuestionSubmit = () => {
@@ -49,16 +104,54 @@ class CreateQuestion extends Component {
       jwt &&
       question &&
       option1 &&
+      option1 !== option2 &&
+      option1 !== option3 &&
+      option1 !== option4 &&
       option2 &&
+      option2 !== option1 &&
+      option2 !== option3 &&
+      option2 !== option4 &&
       option3 &&
+      option3 !== option1 &&
+      option3 !== option2 &&
+      option3 !== option4 &&
       option4 &&
+      option4 !== option1 &&
+      option4 !== option2 &&
+      option4 !== option3 &&
       answer &&
+      (answer === 'option1' ||
+        answer === 'option2' ||
+        answer === 'option3' ||
+        answer === 'option4') &&
       quizsetId
     ) {
       const quiz = { ...this.state, answer: answer.toLowerCase() };
       this.props.dispatch(
         handleCreateQuiz(BASE_URL + '/questions', jwt, quiz, this.props.history)
       );
+    } else if (
+      option1 === option2 ||
+      option1 === option3 ||
+      option1 === option4 ||
+      option2 === option1 ||
+      option2 === option3 ||
+      option2 === option4 ||
+      option3 === option1 ||
+      option3 === option2 ||
+      option3 === option4 ||
+      option4 === option1 ||
+      option4 === option2 ||
+      option4 === option3
+    ) {
+      this.handleError('optinons must be unique!');
+    } else if (
+      answer !== 'option1' ||
+      answer !== 'option2' ||
+      answer !== 'option3' ||
+      answer !== 'option4'
+    ) {
+      this.handleError('answer must be one of the above options e.g option1!');
     }
   };
 
@@ -70,8 +163,7 @@ class CreateQuestion extends Component {
       option3,
       option4,
       answer,
-      errorMsg,
-      successMsg
+      error
     } = this.state;
 
     const { quizsets } = this.props;
@@ -86,6 +178,13 @@ class CreateQuestion extends Component {
           ) : quizsets && quizsets.quizsets && quizsets.quizsets.length ? (
             <>
               <div className='notification'>
+                <label
+                  className='label'
+                  style={{ textAlign: 'center', color: 'red' }}
+                >
+                  {error ? error : ''}
+                </label>
+
                 <div className='select'>
                   <select
                     name='quizsetId'
@@ -102,9 +201,6 @@ class CreateQuestion extends Component {
                   </select>
                 </div>
 
-                <label className='label' style={{ textAlign: 'center' }}>
-                  {successMsg || errorMsg || ''}
-                </label>
                 <div className='field'>
                   <label className='label'>Question</label>
                   <div className='control'>

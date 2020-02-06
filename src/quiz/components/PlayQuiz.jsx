@@ -22,20 +22,23 @@ class PlayQuiz extends Component {
   };
 
   componentDidMount() {
+    const quizsetId = window.location.pathname.split('/')[2];
     const { jwt } = localStorage;
     if (jwt) {
-      this.props.dispatch(handleFetchQuestions(BASE_URL + '/quizzes', jwt));
+      this.props.dispatch(
+        handleFetchQuestions(BASE_URL + '/quizsets/' + quizsetId, jwt)
+      );
     }
   }
 
   // first handle click
   handleClick = (option, question) => {
     const { counter } = this.state;
-    const { quiz } = this.props.quiz;
+    const { questions } = this.props.questions;
 
-    if (counter <= quiz.length - 1) {
+    if (counter <= questions.length - 1) {
       if (option && option === question.answer) {
-        if (option && counter < quiz.length - 1) {
+        if (option && counter < questions.length - 1) {
           document.getElementById(question._id).classList.add('is-success');
         }
 
@@ -64,7 +67,7 @@ class PlayQuiz extends Component {
           500
         );
       } else {
-        if (option && counter < quiz.length - 1) {
+        if (option && counter < questions.length - 1) {
           document.getElementById(question._id).classList.add('is-danger');
         }
 
@@ -112,7 +115,11 @@ class PlayQuiz extends Component {
   handleSubmitScore = () => {
     const { jwt } = localStorage;
     const { score } = this.state;
-    const scoreData = { score, category: 'all' };
+    const { questions } = this.props.questions;
+    const category = questions[0].quizsetId.name || '';
+    console.log(category, 'category handleSubmitScore...');
+
+    const scoreData = { score, category };
 
     if (jwt) {
       this.props.dispatch(
@@ -126,6 +133,8 @@ class PlayQuiz extends Component {
     const { counter, isAnswered } = this.state;
     const { questions, user } = this.props;
     const { isLoading } = questions;
+
+    console.log(this.props.questions, 'props..................');
 
     return (
       <div style={{ marginTop: '100px ' }} className='container'>

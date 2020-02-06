@@ -75,7 +75,7 @@ export function handleFetchQuestions(url, token) {
       .then(res => res.json())
       .then(data => {
         if (data.success) {
-          dispatch(action('GET_QUESTIONS', data.questions));
+          dispatch(action('GET_QUESTIONS', data.quizset.questions));
         } else if (!data.success) {
           dispatch(action('QUESTION_ERROR', data.massage));
           console.log(data.message, 'error getting quizzes...');

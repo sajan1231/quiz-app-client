@@ -17,8 +17,8 @@ export default class AdminRoutes extends Component {
     return (
       <div>
         <Switch>
-          {/* <Route exact path='/' component={PlayQuiz} /> */}
           <Route exact path='/' component={ListQuizsets} />
+          <Route exact path='/quizsets/:id/play-quiz' component={PlayQuiz} />
           <Route exact path='/quizsets/:id/update' component={EditQuizset} />
           <Route path='/quizzes/create-quizset' component={CreateQuizset} />
 
