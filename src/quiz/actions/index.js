@@ -4,7 +4,7 @@ import {
 
 export function handleCreateQuiz(url, token, data, history) {
   return dispatch => {
-    dispatch(action('GET_QUIZSETS', true));
+    dispatch(action('QUESTION_IN_PROCESS', true));
 
     fetch(url, {
         method: 'POST',
@@ -17,32 +17,25 @@ export function handleCreateQuiz(url, token, data, history) {
       .then(res => res.json())
       .then(data => {
         if (data.success) {
-          dispatch({
-            type: 'CREATE_QUIZ',
-            payload: data.question
-          });
+          dispatch(action('CREATE_QUESTION', data.question));
           history.push('/');
         } else if (!data.success) {
-          dispatch({
-            type: 'QUIZ_ERROR',
-            payload: data.massage
-          });
+          dispatch(action('QUESTION_ERROR', data.massage));
           console.log('create quiz unsuccessfull...');
         }
       })
       .catch(err => {
-        dispatch({
-          type: 'QUIZ_ERROR',
-          payload: 'something went wrong. sorry for the trouble.'
-        });
+        dispatch(action('QUESTION_ERROR', 'something went wrong sorry for the trouble.'));
         console.log(err, 'question post catch err...');
       });
   }
 }
 
 
-export function handleQuizUpdate(url, token, data, id, history) {
+export function handleUpdateQuestion(url, token, data, id, history) {
   return dispatch => {
+    dispatch(action('QUESTION_IN_PROCESS', true));
+
     fetch(url, {
         method: 'PUT',
         headers: {
@@ -54,32 +47,24 @@ export function handleQuizUpdate(url, token, data, id, history) {
       .then(res => res.json())
       .then(data => {
         if (data.success) {
-          dispatch({
-            type: 'UPDATE_QUIZ',
-            payload: data.question
-          });
-
+          dispatch(action('UPDATE_QUESTION', data.question));
           history.push('/');
         } else if (!data.success) {
+          dispatch(action('QUESTION_ERROR', data.massage));
           console.log('quiz update unsuccessfull...');
-          dispatch({
-            type: 'QUIZ_ERROR',
-            payload: data.massage
-          });
         }
       })
       .catch(err => {
-        dispatch({
-          type: 'QUIZ_ERROR',
-          payload: 'something went wrong. sorry for the trouble.'
-        });
+        dispatch(action('QUESTION_ERROR', 'something went wrong. sorry for the trouble.'));
         console.log(err, 'update quiz catch err...');
       });
   }
 }
 
-export function handleFetchQuizzes(url, token) {
+export function handleFetchQuestions(url, token) {
   return dispatch => {
+    dispatch(action('QUESTION_IN_PROCESS', true));
+
     fetch(url, {
         method: 'GET',
         headers: {
@@ -90,23 +75,14 @@ export function handleFetchQuizzes(url, token) {
       .then(res => res.json())
       .then(data => {
         if (data.success) {
-          dispatch({
-            type: 'GET_QUIZZES',
-            payload: data.questions.reverse()
-          });
+          dispatch(action('GET_QUESTIONS', data.questions));
         } else if (!data.success) {
-          dispatch({
-            type: 'QUIZ_ERROR',
-            payload: data.massage
-          });
+          dispatch(action('QUESTION_ERROR', data.massage));
           console.log(data.message, 'error getting quizzes...');
         }
       })
       .catch(err => {
-        dispatch({
-          type: 'QUIZ_ERROR',
-          payload: 'something went wrong. sorry for the trouble.'
-        });
+        dispatch(action('QUESTION_ERROR', 'something went wrong. sorry for the trouble.'));
         console.log(err, 'fetch quiz error...');
       });
   }
@@ -114,6 +90,8 @@ export function handleFetchQuizzes(url, token) {
 
 export function handleUpdateScore(url, token, score) {
   return dispatch => {
+    dispatch(action('QUESTION_IN_PROCESS', true));
+
     fetch(url, {
         method: 'PUT',
         headers: {
@@ -125,30 +103,23 @@ export function handleUpdateScore(url, token, score) {
       .then(res => res.json())
       .then(data => {
         if (data.success) {
-          dispatch({
-            type: 'UPDATE_USER',
-            payload: data
-          });
+          dispatch(action('UPDATE_USER', data));
         } else if (!data.success) {
-          dispatch({
-            type: 'QUIZ_ERROR',
-            payload: data.massage
-          });
+          dispatch(action('QUESTION_ERROR', data.massage));
           console.log(data, 'update score failed...');
         }
       })
       .catch(err => {
-        dispatch({
-          type: 'QUIZ_ERROR',
-          payload: 'something went wrong. sorry for the trouble.'
-        });
+        dispatch(action('QUESTION_ERROR', 'something went wrong. sorry for the trouble.'));
         console.log(err, 'update score catch error...');
       });
   }
 };
 
-export function deleteQuiz(url, token, id, history) {
+export function deleteQuestion(url, token, id, history) {
   return dispatch => {
+    dispatch(action('QUESTION_IN_PROCESS', true));
+
     fetch(url, {
         method: 'DELETE',
         headers: {
@@ -159,61 +130,15 @@ export function deleteQuiz(url, token, id, history) {
       .then(res => res.json())
       .then(data => {
         if (data.success) {
-          dispatch({
-            type: 'DELETE_QUIZ',
-            payload: id
-          });
+          dispatch(action('DELETE_QUESTION', id));
         }
         if (!data.success) {
-          dispatch({
-            type: 'QUIZ_ERROR',
-            payload: data.massage
-          });
+          dispatch(action('QUESTION_ERROR', data.massage));
           console.log(data.message, 'delete quiz unsuccessfull...');
         }
       })
       .catch(err => {
-        dispatch({
-          type: 'QUIZ_ERROR',
-          payload: 'something went wrong. sorry for the trouble.'
-        });
-        console.log(err, 'delete quiz catch err...');
-      });
-  }
-}
-
-
-export function createQuizSet(url, token, data, history) {
-  return dispatch => {
-    fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: token
-        },
-        body: JSON.stringify(data)
-      })
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          dispatch({
-            type: 'CREATE_QUIZSET',
-            payload: data.quizSet
-          });
-        }
-        if (!data.success) {
-          dispatch({
-            type: 'QUIZSET_ERROR',
-            payload: data.massage
-          });
-          console.log(data.message, 'delete quiz unsuccessfull...');
-        }
-      })
-      .catch(err => {
-        dispatch({
-          type: 'QUIZSET_ERROR',
-          payload: 'something went wrong. sorry for the trouble.'
-        });
+        dispatch(action('QUESTION_ERROR', 'something went wrong. sorry for the trouble.'));
         console.log(err, 'delete quiz catch err...');
       });
   }

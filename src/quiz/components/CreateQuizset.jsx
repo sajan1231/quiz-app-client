@@ -1,30 +1,34 @@
 import React, { Component } from 'react';
-import { createQuizSet } from '../actions/index';
 import { connect } from 'react-redux';
+
+import { createQuizset } from '../actions/actions.quizset';
 
 import { BASE_URL } from '../../static';
 
-class CreateQuizSet extends Component {
+class CreateQuizset extends Component {
   state = {
     name: '',
     error: ''
   };
 
-  handleCreateQuizSet = e => {
+  handleCreateQuizset = e => {
     e.preventDefault();
     const { jwt } = localStorage;
     const { name } = this.state;
     if (jwt && name) {
       this.props.dispatch(
-        createQuizSet(
+        createQuizset(
           BASE_URL + '/quizsets',
           jwt,
           this.state,
           this.props.history
         )
       );
+      this.setState({ name: '' });
     } else if (!name) {
       this.setState({ error: 'Quizset name is required!' });
+    } else if (!jwt) {
+      this.setState({ error: 'Not Authorized!' });
     }
   };
 
@@ -45,7 +49,7 @@ class CreateQuizSet extends Component {
             </label>
 
             <div className='field'>
-              <label className='label'>Answer</label>
+              <label className='label'>Quizset name</label>
               <div className='control'>
                 <input
                   className='input'
@@ -62,7 +66,7 @@ class CreateQuizSet extends Component {
             <div className='control'>
               <button
                 className='button is-primary'
-                onClick={this.handleCreateQuizSet}
+                onClick={this.handleCreateQuizset}
               >
                 Submit
               </button>
@@ -79,4 +83,4 @@ function mapStateToProps(state) {
   return state;
 }
 
-export default connect(mapStateToProps)(CreateQuizSet);
+export default connect(mapStateToProps)(CreateQuizset);

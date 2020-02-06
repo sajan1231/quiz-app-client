@@ -6,7 +6,11 @@ import Loader from '../../app/componets/Loader';
 import NoQuiz from '../components/NoQuiz';
 import QuizFooter from '../components/QuizFooter';
 
-import { handleFetchQuizzes, handleUpdateScore, deleteQuiz } from '../actions';
+import {
+  handleFetchQuestions,
+  handleUpdateScore,
+  deleteQuestion
+} from '../actions';
 
 import { BASE_URL } from '../../static';
 
@@ -22,7 +26,7 @@ class ListQuiz extends Component {
   componentDidMount = () => {
     const { jwt } = localStorage;
     if (jwt) {
-      this.props.dispatch(handleFetchQuizzes(BASE_URL + '/quizzes', jwt));
+      this.props.dispatch(handleFetchQuestions(BASE_URL + '/quizzes', jwt));
     }
   };
 
@@ -68,7 +72,7 @@ class ListQuiz extends Component {
   handleDeleteQuiz = id => {
     const { jwt } = localStorage;
     this.props.dispatch(
-      deleteQuiz(
+      deleteQuestion(
         BASE_URL + '/quizzes/' + id + '/delete',
         jwt,
         id,

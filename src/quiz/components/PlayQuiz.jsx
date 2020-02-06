@@ -5,7 +5,11 @@ import QuizCard from './QuizCard';
 import Loader from '../../app/componets/Loader';
 import NoQuiz from './NoQuiz';
 
-import { handleFetchQuizzes, handleUpdateScore, deleteQuiz } from '../actions';
+import {
+  handleFetchQuestions,
+  handleUpdateScore,
+  deleteQuestion
+} from '../actions';
 
 import { BASE_URL } from '../../static';
 
@@ -20,7 +24,7 @@ class PlayQuiz extends Component {
   componentDidMount() {
     const { jwt } = localStorage;
     if (jwt) {
-      this.props.dispatch(handleFetchQuizzes(BASE_URL + '/quizzes', jwt));
+      this.props.dispatch(handleFetchQuestions(BASE_URL + '/quizzes', jwt));
     }
   }
 
@@ -95,7 +99,7 @@ class PlayQuiz extends Component {
 
     if (jwt) {
       this.props.dispatch(
-        deleteQuiz(
+        deleteQuestion(
           BASE_URL + '/quizzes/' + id + '/delete',
           jwt,
           id,

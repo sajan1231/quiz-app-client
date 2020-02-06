@@ -51,7 +51,8 @@ export default function usersReducer(state = initialState, action) {
     case 'AUTH_ERROR':
       return {
         ...state,
-        error: action.payload,
+        isLoading: false,
+          error: action.payload,
       };
 
     case 'AUTH_IN_PROCESS':
