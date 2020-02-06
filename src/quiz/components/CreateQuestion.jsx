@@ -15,7 +15,6 @@ class CreateQuestion extends Component {
     option3: '',
     option4: '',
     answer: '',
-    category: '',
     quizsetId: ''
   };
 
@@ -43,7 +42,6 @@ class CreateQuestion extends Component {
       option3,
       option4,
       answer,
-      category,
       quizsetId
     } = this.state;
 
@@ -55,7 +53,6 @@ class CreateQuestion extends Component {
       option3 &&
       option4 &&
       answer &&
-      category &&
       quizsetId
     ) {
       const quiz = { ...this.state, answer: answer.toLowerCase() };
@@ -65,11 +62,6 @@ class CreateQuestion extends Component {
     }
   };
 
-  // handleSelectChange = e => {
-  //   const { name, value } = e.target;
-  //   console.log(name, value, 'handleSelectChange...');
-  // };
-
   render() {
     const {
       question,
@@ -78,15 +70,13 @@ class CreateQuestion extends Component {
       option3,
       option4,
       answer,
-      category,
       errorMsg,
       successMsg
     } = this.state;
 
-    console.log(this.state, 'state', this.props, 'create questions rndr...');
     const { quizsets } = this.props;
     const { isLoading } = quizsets;
-    console.log(isLoading, quizsets, quizsets.length, 'quizsets.length...');
+    console.log(this.state);
 
     return (
       <div style={{ marginTop: '100px' }}>
@@ -125,21 +115,6 @@ class CreateQuestion extends Component {
                       placeholder='e.g What does ISRO stands for?'
                       required
                       value={question}
-                      onChange={this.handleInputChange}
-                    />
-                  </div>
-                </div>
-
-                <div className='field'>
-                  <label className='label'>Category</label>
-                  <div className='control'>
-                    <input
-                      className='input'
-                      type='text'
-                      name='category'
-                      placeholder='e.g science'
-                      required
-                      value={category}
                       onChange={this.handleInputChange}
                     />
                   </div>

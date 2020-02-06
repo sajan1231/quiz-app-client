@@ -1,24 +1,27 @@
-import { action } from '../../utils/helper';
+import {
+  action
+} from '../../utils/helper';
 
 export function createQuizset(url, token, data, history) {
   return dispatch => {
     dispatch(action('QUIZSET_IN_PROCESS', true));
 
     fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: token
-      },
-      body: JSON.stringify(data)
-    })
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token
+        },
+        body: JSON.stringify(data)
+      })
       .then(res => res.json())
       .then(data => {
         if (data.success) {
           dispatch(action('CREATE_QUIZSET', data.quizset));
+          history.push('/');
         }
         if (!data.success) {
-          dispatch(action('QUIZSET_ERROR', data.massage));
+          dispatch(action('QUIZSET_ERROR', data.message));
           console.log(data.message, 'delete quiz unsuccessfull...');
         }
       })
@@ -39,12 +42,12 @@ export function getQuizsets(url, token) {
     dispatch(action('QUIZSET_IN_PROCESS', true));
 
     fetch(url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: token
-      }
-    })
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token
+        }
+      })
       .then(res => res.json())
       .then(data => {
         console.log(data, 'quizsets...');
@@ -53,7 +56,7 @@ export function getQuizsets(url, token) {
           dispatch(action('GET_QUIZSETS', data.quizsets));
         }
         if (!data.success) {
-          dispatch(action('QUIZSET_ERROR', data.massage));
+          dispatch(action('QUIZSET_ERROR', data.message));
           console.log(data.message, 'delete quiz unsuccessfull...');
         }
       })
@@ -70,19 +73,19 @@ export function getQuizsets(url, token) {
 }
 
 export function updateQuizset(url, token, data, history) {
-  console.log(url, data, token);
-
   return dispatch => {
     dispatch(action('QUIZSET_IN_PROCESS', true));
 
     fetch(url, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: token
-      },
-      body: data
-    })
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token
+        },
+        body: JSON.stringify({
+          name: data
+        })
+      })
       .then(res => res.json())
       .then(data => {
         if (data.success) {
@@ -90,7 +93,7 @@ export function updateQuizset(url, token, data, history) {
           history.push('/');
         }
         if (!data.success) {
-          dispatch(action('QUIZSET_ERROR', data.massage));
+          dispatch(action('QUIZSET_ERROR', data.message));
           console.log(data.message, 'edit quiz unsuccessfull...');
         }
       })
@@ -106,24 +109,24 @@ export function updateQuizset(url, token, data, history) {
   };
 }
 
-export function handleDeleteQuizset(url, token, history) {
+export function handleDeleteQuizset(url, token, id) {
   return dispatch => {
     dispatch(action('QUIZSET_IN_PROCESS', true));
 
     fetch(url, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: token
-      }
-    })
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token
+        }
+      })
       .then(res => res.json())
       .then(data => {
         if (data.success) {
-          dispatch(action('DELETE_UIZSETS', data.quizsets));
+          dispatch(action('DELETE_QUIZSET', id));
         }
         if (!data.success) {
-          dispatch(action('QUIZSET_ERROR', data.massage));
+          dispatch(action('QUIZSET_ERROR', data.message));
           console.log(data.message, 'delete quiz unsuccessfull...');
         }
       })

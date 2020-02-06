@@ -72,10 +72,16 @@ class EditQuizset extends Component {
       );
       this.setState({ name: '' });
     } else if (!name) {
-      this.setState({ error: 'Quizset name is required!' });
+      this.handleError('Quizset name is required!');
     } else if (!jwt) {
-      this.setState({ error: 'Not Authorized!' });
+      this.handleError('Not Authorized!');
     }
+  };
+
+  handleError = error => {
+    this.setState({ error }, () =>
+      setTimeout(() => this.setState({ error: ' ' }), 2000)
+    );
   };
 
   handleInputChange = e => {
@@ -86,20 +92,21 @@ class EditQuizset extends Component {
   render() {
     const { name, error, isLoading } = this.state;
 
+    console.log(this.props.error, 'estit err');
+
     return (
       <div>
         {isLoading ? (
           <Loader />
-        ) : error ? (
-          <p className='title h4 txt-center' style={{ color: 'red' }}>
-            {error}!
-          </p>
         ) : (
           <div style={{ marginTop: '100px' }}>
             <div className='container'>
               <div className='notification'>
-                <label className='label' style={{ textAlign: 'center' }}>
-                  {error || ''}
+                <label
+                  className='label'
+                  style={{ textAlign: 'center', color: 'red' }}
+                >
+                  {error || this.props.error || ''}
                 </label>
 
                 <div className='field'>
@@ -134,4 +141,6 @@ class EditQuizset extends Component {
   }
 }
 
-export default connect()(EditQuizset);
+const mapStateToProps = state => state.quizsets;
+
+export default connect(mapStateToProps)(EditQuizset);

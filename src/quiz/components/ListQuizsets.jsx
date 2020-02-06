@@ -20,13 +20,9 @@ class ListQuizsets extends Component {
 
   deleteQuizset = id => {
     const { jwt } = localStorage;
-    if (jwt) {
+    if (jwt && id) {
       this.props.dispatch(
-        handleDeleteQuizset(
-          BASE_URL + '/quizsets' + id + 'delete',
-          jwt,
-          this.props.history
-        )
+        handleDeleteQuizset(BASE_URL + '/quizsets/' + id + '/delete', jwt, id)
       );
     }
   };

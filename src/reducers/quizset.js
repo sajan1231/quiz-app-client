@@ -10,6 +10,7 @@ export default function quizSetReducer(state = initialState, action) {
       return {
         ...state,
         isLoading: false,
+          error: '',
           quizsets: action.payload,
       };
 
@@ -17,6 +18,7 @@ export default function quizSetReducer(state = initialState, action) {
       return {
         ...state,
         isLoading: false,
+          error: '',
           quizsets: [...state.quizsets, action.payload],
       };
 
@@ -24,6 +26,7 @@ export default function quizSetReducer(state = initialState, action) {
       return {
         ...state,
         isLoading: false,
+          error: '',
           quizsets: [...state.quizsets, action.payload],
       };
 
@@ -31,6 +34,7 @@ export default function quizSetReducer(state = initialState, action) {
       return {
         ...state,
         isLoading: false,
+          error: '',
           quizsets: state.quizsets.filter(quizset => quizset._id !== action.payload),
       };
 
@@ -44,7 +48,8 @@ export default function quizSetReducer(state = initialState, action) {
     case 'QUIZSET_IN_PROCESS':
       return {
         ...state,
-        isLoading: action.payload
+        error: '',
+          isLoading: action.payload
       };
 
     default:

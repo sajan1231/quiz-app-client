@@ -6,36 +6,40 @@ export default function QuizsetCard(props) {
 
   return (
     <div>
-      <div className='card'>
-        <div className='card-content'>
-          <p className='title txt-center capitalize'>{quizset.name}</p>
-        </div>
-        <footer className='card-footer'>
-          {user.isAdmin ? (
-            <>
+      {quizset ? (
+        <div className='card'>
+          <div className='card-content'>
+            <p className='title txt-center capitalize'>{quizset.name}</p>
+          </div>
+          <footer className='card-footer'>
+            {user.isAdmin ? (
+              <>
+                <Link className='card-footer-item pointer' to='/quizzes/play'>
+                  Play
+                </Link>
+                <Link
+                  className='card-footer-item pointer'
+                  to={`/quizsets/${quizset._id}/update`}
+                >
+                  Edit
+                </Link>
+                <p
+                  className='card-footer-item pointer'
+                  onClick={() => deleteQuizset(quizset._id)}
+                >
+                  Delete
+                </p>
+              </>
+            ) : (
               <Link className='card-footer-item pointer' to='/quizzes/play'>
                 Play
               </Link>
-              <Link
-                className='card-footer-item pointer'
-                to={`/quizsets/${quizset._id}/update`}
-              >
-                Edit
-              </Link>
-              <p
-                className='card-footer-item pointer'
-                onClick={() => deleteQuizset(quizset._id)}
-              >
-                Delete
-              </p>
-            </>
-          ) : (
-            <Link className='card-footer-item pointer' to='/quizzes/play'>
-              Play
-            </Link>
-          )}
-        </footer>
-      </div>
+            )}
+          </footer>
+        </div>
+      ) : (
+        ''
+      )}
     </div>
   );
 }
