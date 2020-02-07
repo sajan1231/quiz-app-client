@@ -48,8 +48,6 @@ class App extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  return state;
-}
+const mapStateToProps = state => state;
 
 export default withRouter(connect(mapStateToProps)(App));

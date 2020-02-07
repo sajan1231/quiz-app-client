@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+
+import NoQuiz from '../components/NoQuiz';
+
 import { handleCreateQuiz } from '../actions';
-
 import { getQuizsets } from '../actions/actions.quizset';
-
 import { BASE_URL } from '../../static';
-import { FaSellsy } from 'react-icons/fa';
 
-class CreateQuestion extends Component {
+class CreateQuiz extends Component {
   state = {
     question: '',
     option1: '',
@@ -37,15 +37,7 @@ class CreateQuestion extends Component {
   };
 
   handleInputChange = e => {
-    const {
-      question,
-      option1,
-      option2,
-      option3,
-      option4,
-      answer,
-      quizsetId
-    } = this.state;
+    const { option1, option2, option3, option4 } = this.state;
 
     const { name, value } = e.target;
 
@@ -308,7 +300,7 @@ class CreateQuestion extends Component {
               </div>
             </>
           ) : (
-            'no quizsets...'
+            <NoQuiz body='Please create a quizset first to create a quiz.' />
           )}
         </div>
       </div>
@@ -317,4 +309,4 @@ class CreateQuestion extends Component {
 }
 const mapStateToProps = state => state;
 
-export default connect(mapStateToProps)(CreateQuestion);
+export default connect(mapStateToProps)(CreateQuiz);

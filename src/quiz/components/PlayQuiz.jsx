@@ -5,12 +5,8 @@ import QuizCard from './QuizCard';
 import Loader from '../../app/componets/Loader';
 import NoQuiz from './NoQuiz';
 
-import {
-  handleFetchQuestions,
-  handleUpdateScore,
-  deleteQuestion
-} from '../actions';
-
+import { handleFetchQuestions, deleteQuestion } from '../actions';
+import { createScore } from '../actions/action.score';
 import { BASE_URL } from '../../static';
 
 class PlayQuiz extends Component {
@@ -103,7 +99,7 @@ class PlayQuiz extends Component {
     if (jwt) {
       this.props.dispatch(
         deleteQuestion(
-          BASE_URL + '/quizzes/' + id + '/delete',
+          BASE_URL + '/questions/' + id + '/delete',
           jwt,
           id,
           this.props.history
@@ -121,12 +117,7 @@ class PlayQuiz extends Component {
 
     if (jwt) {
       this.props.dispatch(
-        handleUpdateScore(
-          BASE_URL + '/users/score/update',
-          jwt,
-          scoreData,
-          this.props.history
-        )
+        createScore(BASE_URL + '/scores', jwt, scoreData, this.props.history)
       );
     }
     this.resetCounter();
@@ -156,7 +147,7 @@ class PlayQuiz extends Component {
             submitScore={this.handleSubmitScore}
           />
         ) : (
-          <NoQuiz />
+          <NoQuiz body='no quiz found!' />
         )}
       </div>
     );

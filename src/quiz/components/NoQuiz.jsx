@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function NoQuiz() {
+export default function NoQuiz({ body }) {
   return (
     <div className='notification'>
       <div className='container'>
@@ -12,7 +12,7 @@ export default function NoQuiz() {
               alignItems: 'center'
             }}
           >
-            <h3 className='title is-3'>No Quiz found...!</h3>
+            <h3 className='title is-4'>{body}</h3>
           </div>
         </div>
       </div>

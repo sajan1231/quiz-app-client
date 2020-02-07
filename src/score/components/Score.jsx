@@ -3,14 +3,13 @@ import { connect } from 'react-redux';
 
 import Loader from '../../app/componets/Loader';
 import handleDeleteScore from '../actions';
-
 import { BASE_URL } from '../../static';
 
 class Score extends Component {
   deleteScore = id => {
     const { jwt } = localStorage;
     this.props.dispatch(
-      handleDeleteScore(BASE_URL + '/users/score/' + id + '/delete', jwt)
+      handleDeleteScore(BASE_URL + '/scores/' + id + '/delete', jwt, id)
     );
   };
 
@@ -43,7 +42,10 @@ class Score extends Component {
                           );
                         })
                       : null}
-                    {user && user.isAdmin ? (
+                    {user &&
+                    user.isAdmin &&
+                    user.scores &&
+                    user.scores.length ? (
                       <th className='bold txt-capitalize'>other</th>
                     ) : null}
                   </tr>

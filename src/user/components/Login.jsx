@@ -2,11 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import Loader from '../../app/componets/Loader';
-
 import { handleUserLogin } from '../actions';
 import validateEmail from '../../utils/helper';
-
 import { BASE_URL } from '../../static';
 
 class Login extends Component {
@@ -175,7 +172,6 @@ class Login extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  return state.user;
-}
+const mapStateToProps = state => state.user;
+
 export default connect(mapStateToProps)(Login);

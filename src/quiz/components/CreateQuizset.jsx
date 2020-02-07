@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { createQuizset } from '../actions/actions.quizset';
-
 import { BASE_URL } from '../../static';
 
 class CreateQuizset extends Component {
@@ -34,7 +33,7 @@ class CreateQuizset extends Component {
 
   handleInputChange = e => {
     const { name, value } = e.target;
-    this.setState({ [name]: value.toLowerCase() });
+    this.setState({ [name]: value });
   };
 
   render() {

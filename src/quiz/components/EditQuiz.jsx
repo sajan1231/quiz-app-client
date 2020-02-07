@@ -57,7 +57,7 @@ class EditQuiz extends Component {
 
   handleInputChange = e => {
     const { name, value } = e.target;
-    this.setState({ [name]: value.toLowerCase() });
+    this.setState({ [name]: value });
   };
 
   handleQuestionUpdate = () => {

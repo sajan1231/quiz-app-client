@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import Loader from '../../app/componets/Loader';
 
 import { handleUserRegister } from '../actions';
 import validateEmail from '../../utils/helper';
-
 import { BASE_URL } from '../../static';
 
 class Register extends Component {
@@ -234,8 +232,6 @@ class Register extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  return state;
-}
+const mapStateToProps = state => state;
 
 export default connect(mapStateToProps)(Register);

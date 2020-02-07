@@ -4,6 +4,7 @@ import { uuid } from 'uuidv4';
 
 import QuizsetCard from './QuizsetCard';
 import Loader from '../../app/componets/Loader';
+import NoQuiz from '../components/NoQuiz';
 
 import { handleDeleteQuizset, getQuizsets } from '../actions/actions.quizset';
 import { BASE_URL } from '../../static';
@@ -50,7 +51,7 @@ class ListQuizsets extends Component {
             </div>
           </div>
         ) : (
-          <p className='title h4'>No Quizsets!</p>
+          <NoQuiz body='No quizsets!' />
         )}
       </div>
     );

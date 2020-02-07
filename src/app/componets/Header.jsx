@@ -28,9 +28,9 @@ export default function Header({ user, handleLogout }) {
       {user && user.user && user.user.isAdmin ? (
         <div id='navbarBasicExample' className='navbar-menu'>
           <div className='navbar-start'>
-            {/* <Link to='/' className='navbar-item'>
+            <Link to='/' className='navbar-item'>
               Play Game
-            </Link> */}
+            </Link>
             {/* <Link to='/quizzes/list-quizzes' className='navbar-item'>
               List Quiz
             </Link> */}
@@ -38,16 +38,16 @@ export default function Header({ user, handleLogout }) {
               Create Quizset
             </Link>
             <Link to='/quizzes/create-quiz' className='navbar-item'>
-              Create Question
+              Create Quiz
             </Link>
           </div>
         </div>
       ) : user && user.user ? (
         <div id='navbarBasicExample' className='navbar-menu'>
           <div className='navbar-start'>
-            {/* <Link to='/' className='navbar-item'>
+            <Link to='/' className='navbar-item'>
               Play Game
-            </Link> */}
+            </Link>
 
             {/* <Link to='/quizzes/list-quizzes' className='navbar-item'>
               List Quizzes
@@ -75,15 +75,7 @@ export default function Header({ user, handleLogout }) {
               <>
                 <button className='button is-info is-light'>
                   <Link to='/users/score'>
-                    <strong
-                    // style={{
-                    //   fontWeight: 'bold',
-                    //   fontSize: '24px',
-                    //   verticalAlign: 'middle'
-                    // }}
-                    >
-                      Show score
-                    </strong>
+                    <strong>Show score</strong>
                   </Link>
                 </button>
 

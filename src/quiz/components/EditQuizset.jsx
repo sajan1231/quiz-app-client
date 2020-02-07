@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { updateQuizset, getQuizsets } from '../actions/actions.quizset';
-import { action } from '../../utils/helper';
-
-import { BASE_URL } from '../../static';
 import Loader from '../../app/componets/Loader';
+
+import { updateQuizset } from '../actions/actions.quizset';
+import { BASE_URL } from '../../static';
 
 class EditQuizset extends Component {
   state = {
@@ -20,7 +19,7 @@ class EditQuizset extends Component {
     const { jwt } = localStorage;
 
     if ((jwt, quizsetId)) {
-      this.getQuizsets(BASE_URL + '/quizsets/' + quizsetId, jwt);
+      this.getQuizset(BASE_URL + '/quizsets/' + quizsetId, jwt);
     } else if (!jwt) {
       this.setState({ error: 'Unauthorized!' });
     } else if (!quizsetId) {

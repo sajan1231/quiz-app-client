@@ -85,34 +85,6 @@ export function handleFetchQuestions(url, token) {
   }
 }
 
-export function handleUpdateScore(url, token, score, history) {
-  return dispatch => {
-    dispatch(action('QUESTION_IN_PROCESS', true));
-
-    fetch(url, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: token
-        },
-        body: JSON.stringify(score)
-      })
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          dispatch(action('UPDATE_USER', data));
-          history.push('/');
-        } else if (!data.success) {
-          dispatch(action('QUESTION_ERROR', data.massage));
-        }
-      })
-      .catch(err => {
-        dispatch(action('QUESTION_ERROR', 'something went wrong. sorry for the trouble.'));
-        console.log(err, 'update user score catch err...');
-      });
-  }
-};
-
 export function deleteQuestion(url, token, id, history) {
   return dispatch => {
     dispatch(action('QUESTION_IN_PROCESS', true));
@@ -128,6 +100,7 @@ export function deleteQuestion(url, token, id, history) {
       .then(data => {
         if (data.success) {
           dispatch(action('DELETE_QUESTION', id));
+          history.push('/');
         }
         if (!data.success) {
           dispatch(action('QUESTION_ERROR', data.massage));

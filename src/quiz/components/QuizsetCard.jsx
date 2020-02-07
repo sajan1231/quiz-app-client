@@ -16,7 +16,7 @@ export default function QuizsetCard(props) {
               <>
                 <Link
                   className='card-footer-item pointer'
-                  to={`/quizsets/${quizset._id}/play-quiz`}
+                  to={`/quizzes/${quizset._id}/play-quiz`}
                 >
                   Play
                 </Link>
@@ -36,7 +36,7 @@ export default function QuizsetCard(props) {
             ) : (
               <Link
                 className='card-footer-item pointer'
-                to={`/quizsets/${quizset._id}/play-quiz`}
+                to={`/quizzes/${quizset._id}/play-quiz`}
               >
                 Play
               </Link>

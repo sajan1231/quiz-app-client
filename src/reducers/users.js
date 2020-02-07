@@ -31,6 +31,26 @@ export default function usersReducer(state = initialState, action) {
           user: action.payload.user,
       };
 
+    case 'UPDATE_USER_SCORE':
+      return {
+        ...state,
+        isLoading: false,
+          user: {
+            ...state.user,
+            scores: [...state.user.scores, action.payload]
+          }
+      };
+
+    case 'DELETE_USER_SCORE':
+      return {
+        ...state,
+        isLoading: false,
+          user: {
+            ...state.user,
+            scores: state.user.scores.filter(score => score._id !== action.payload)
+          }
+      };
+
     case 'LOGOUT':
       localStorage.clear();
       return {
