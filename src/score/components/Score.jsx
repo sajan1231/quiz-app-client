@@ -24,7 +24,7 @@ class Score extends Component {
         : [];
 
     return (
-      <div style={{ marginTop: '100px' }}>
+      <div style={{ paddingTop: '100px' }}>
         {isLoading ? (
           <Loader />
         ) : (

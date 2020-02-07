@@ -117,8 +117,6 @@ class PlayQuiz extends Component {
     const { score } = this.state;
     const { questions } = this.props.questions;
     const category = questions[0].quizsetId.name || '';
-    console.log(category, 'category handleSubmitScore...');
-
     const scoreData = { score, category };
 
     if (jwt) {
@@ -139,10 +137,8 @@ class PlayQuiz extends Component {
     const { questions, user } = this.props;
     const { isLoading } = questions;
 
-    console.log(this.props.questions, 'props..................');
-
     return (
-      <div style={{ marginTop: '100px ' }} className='container'>
+      <div style={{ paddingTop: '100px ' }} className='container'>
         {isLoading ? (
           <Loader />
         ) : questions.questions && questions.questions.length ? (
@@ -168,8 +164,6 @@ class PlayQuiz extends Component {
 }
 
 function mapStateToProps(state) {
-  console.log(state, 'play quiz map state');
-
   return state;
 }
 

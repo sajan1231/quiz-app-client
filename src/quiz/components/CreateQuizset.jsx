@@ -42,7 +42,7 @@ class CreateQuizset extends Component {
     const resError = this.props.quizsets.error;
 
     return (
-      <div style={{ marginTop: '100px' }}>
+      <div style={{ paddingTop: '100px' }}>
         <div className='container'>
           <div className='notification'>
             <label
@@ -83,7 +83,6 @@ class CreateQuizset extends Component {
 }
 
 function mapStateToProps(state) {
-  console.log(state, 'create quizset map state...');
   return state;
 }
 

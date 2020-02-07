@@ -23,8 +23,6 @@ class CreateQuestion extends Component {
     const { jwt } = localStorage;
     if (jwt) {
       this.props.dispatch(getQuizsets(BASE_URL + '/quizsets', jwt));
-    } else {
-      console.log('not authorized!');
     }
   };
 
@@ -80,7 +78,9 @@ class CreateQuestion extends Component {
         value !== option3 ||
         value !== option4)
     ) {
-      this.handleError('answer must be one of the option field e.g option1');
+      this.handleError('Answer must be one of the option field e.g option1');
+    } else if (name === 'quizsetId' && !value) {
+      this.handleError('Please select a quizset from the above select options');
     } else {
       this.setState({ error: '' });
     }
@@ -146,9 +146,9 @@ class CreateQuestion extends Component {
     ) {
       this.handleError('optinons must be unique!');
     } else if (
-      answer !== 'option1' ||
-      answer !== 'option2' ||
-      answer !== 'option3' ||
+      answer !== 'option1' &&
+      answer !== 'option2' &&
+      answer !== 'option3' &&
       answer !== 'option4'
     ) {
       this.handleError('answer must be one of the above options e.g option1!');
@@ -174,10 +174,9 @@ class CreateQuestion extends Component {
 
     const { quizsets } = this.props;
     const { isLoading } = quizsets;
-    console.log(this.state);
 
     return (
-      <div style={{ marginTop: '100px' }}>
+      <div style={{ paddingTop: '100px' }}>
         <div className='container'>
           {isLoading ? (
             'loading...'

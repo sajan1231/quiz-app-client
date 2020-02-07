@@ -15,8 +15,6 @@ export default function QuizCard(props) {
     submitScore
   } = props;
 
-  console.log(quiz, 'question card...');
-
   return (
     <div className='container'>
       <div className='notification'>

@@ -101,8 +101,6 @@ class Register extends Component {
     const { formValidationError } = this.state;
     const { isLoading, error } = this.props.user;
 
-    console.log(error, 'register');
-
     return (
       <section className='hero is-primary is-fullheight'>
         <div className='hero-body'>

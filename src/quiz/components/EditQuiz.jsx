@@ -38,8 +38,6 @@ class EditQuiz extends Component {
     })
       .then(res => res.json())
       .then(data => {
-        console.log(data, 'edit question cdm..');
-
         if (data.success) {
           this.setState({ ...data.question, isLoading: false });
         }
@@ -47,14 +45,13 @@ class EditQuiz extends Component {
           this.setState({
             error: 'quiz not forund...'
           });
-          console.log('edit quiz not found');
         }
       })
       .catch(err => {
         this.setState({
           error: 'something went wrong. sorry for the trouble.'
         });
-        console.log(err, 'get quiz catch err...');
+        console.log(err, 'edit question fetch catch err...');
       });
   };
 
@@ -125,8 +122,6 @@ class EditQuiz extends Component {
       option4 === option2 ||
       option4 === option3
     ) {
-      console.log(option1, option2, option3, option4, 'option err...');
-
       this.handleError('Options must have to be qnique!');
     }
   };

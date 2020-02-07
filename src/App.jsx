@@ -32,7 +32,7 @@ class App extends Component {
     const { user } = this.props;
 
     return (
-      <div className='app' style={{ marginTop: '60px' }}>
+      <div className='app' style={{ paddingTop: '60px' }}>
         <Header user={user} handleLogout={this.handleLogout} />
         {!user.user ? <PublicRoutes /> : ''}
 

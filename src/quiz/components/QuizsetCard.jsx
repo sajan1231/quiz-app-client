@@ -7,7 +7,7 @@ export default function QuizsetCard(props) {
   return (
     <div>
       {quizset ? (
-        <div className='card'>
+        <div className='card card-1'>
           <div className='card-content'>
             <p className='title txt-center capitalize'>{quizset.name}</p>
           </div>

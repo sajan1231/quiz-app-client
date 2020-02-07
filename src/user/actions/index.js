@@ -20,8 +20,6 @@ export function handleAutoLogin(url, jwt, history) {
             dispatch(action('LOGIN', data));
           }
         } else if (!data.success) {
-          console.log(data, 'err auto login...');
-
           dispatch(
             action('AUTH_ERROR', '')
           );
@@ -56,14 +54,13 @@ export function handleUserLogin(url, user, history) {
           history.push('/');
         } else if (data && !data.success) {
           dispatch(action('AUTH_ERROR', data.message));
-          console.log('login user unsuccessfull...');
         }
       })
       .catch(err => {
         dispatch(
           action('AUTH_ERROR', 'something went wrong. sorry for the trouble.')
         );
-        console.log(err, 'login user catch err...');
+        console.log(err, 'user login catch err...');
       });
   };
 }
@@ -89,14 +86,13 @@ export function handleUserRegister(url, user, history) {
           }
         } else if (!data.success) {
           dispatch(action('AUTH_ERROR', data.message));
-          console.log('register user unsuccessful...');
         }
       })
       .catch(err => {
         dispatch(
           action('AUTH_ERROR', 'something went wrong. sorry for the trouble.')
         );
-        console.log(err, 'register user catch err');
+        console.log(err, 'user register catch err');
       });
   };
 }

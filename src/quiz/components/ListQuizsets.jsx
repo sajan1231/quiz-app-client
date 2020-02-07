@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { uuid } from 'uuidv4';
 
 import QuizsetCard from './QuizsetCard';
 import Loader from '../../app/componets/Loader';
 
 import { handleDeleteQuizset, getQuizsets } from '../actions/actions.quizset';
-
 import { BASE_URL } from '../../static';
 
 class ListQuizsets extends Component {
@@ -13,8 +13,6 @@ class ListQuizsets extends Component {
     const { jwt } = localStorage;
     if (jwt) {
       this.props.dispatch(getQuizsets(BASE_URL + '/quizsets', jwt));
-    } else {
-      console.log('not authorized!');
     }
   };
 
@@ -30,7 +28,6 @@ class ListQuizsets extends Component {
   render() {
     const { user, quizsets } = this.props;
     const { isLoading } = quizsets;
-    console.log(isLoading, 'isLoading...', quizsets, 'list quizsets rndr...');
 
     return (
       <div>
@@ -39,9 +36,9 @@ class ListQuizsets extends Component {
         ) : quizsets.quizsets && quizsets.quizsets.length ? (
           <div className='container'>
             <div className='quizset-card-grid'>
-              {quizsets.quizsets.map(quizset => {
+              {quizsets.quizsets.map((quizset, i) => {
                 return (
-                  <div key={quizset._id}>
+                  <div key={uuid()}>
                     <QuizsetCard
                       quizset={quizset}
                       user={user.user}

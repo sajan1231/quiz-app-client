@@ -38,18 +38,16 @@ class EditQuizset extends Component {
     })
       .then(res => res.json())
       .then(data => {
-        console.log(data, 'cdm edit quizset...');
         if (data.success) {
           this.setState({ name: data.quizset.name, isLoading: false });
         }
         if (!data.success) {
           this.setState({ error: data.message, isLoading: false });
-          console.log(data.message, 'delete quiz unsuccessfull...');
         }
       })
       .catch(err => {
         this.setState({ error: 'Something went wrong', isLoading: false });
-        console.log(err, 'delete quiz catch err...');
+        console.log(err, 'get quiz editQuizset catch err...');
       });
   };
 
@@ -58,8 +56,6 @@ class EditQuizset extends Component {
     const { jwt } = localStorage;
     const { name } = this.state;
     const quizsetId = window.location.pathname.split('/')[2];
-
-    console.log(jwt, 'jwt...');
 
     if (jwt && name && quizsetId) {
       this.props.dispatch(
@@ -92,14 +88,12 @@ class EditQuizset extends Component {
   render() {
     const { name, error, isLoading } = this.state;
 
-    console.log(this.props.error, 'estit err');
-
     return (
       <div>
         {isLoading ? (
           <Loader />
         ) : (
-          <div style={{ marginTop: '100px' }}>
+          <div style={{ paddingTop: '100px' }}>
             <div className='container'>
               <div className='notification'>
                 <label
