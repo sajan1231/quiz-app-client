@@ -15,6 +15,8 @@ export default function QuizCard(props) {
     submitScore
   } = props;
 
+  console.log(quiz, 'question card...');
+
   return (
     <div className='container'>
       <div className='notification'>
@@ -30,7 +32,7 @@ export default function QuizCard(props) {
                     alignItems: 'center'
                   }}
                 >
-                  <Link to={`/quizzes/${quiz._id}/edit`}>
+                  <Link to={`/questions/${quiz._id}/update`}>
                     <span>
                       <FaRegEdit
                         color='green'

@@ -34,7 +34,10 @@ export default function QuizsetCard(props) {
                 </p>
               </>
             ) : (
-              <Link className='card-footer-item pointer' to='/quizzes/play'>
+              <Link
+                className='card-footer-item pointer'
+                to={`/quizsets/${quizset._id}/play-quiz`}
+              >
                 Play
               </Link>
             )}

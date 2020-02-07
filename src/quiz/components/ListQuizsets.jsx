@@ -41,7 +41,7 @@ class ListQuizsets extends Component {
             <div className='quizset-card-grid'>
               {quizsets.quizsets.map(quizset => {
                 return (
-                  <div key={quizsets._id}>
+                  <div key={quizset._id}>
                     <QuizsetCard
                       quizset={quizset}
                       user={user.user}

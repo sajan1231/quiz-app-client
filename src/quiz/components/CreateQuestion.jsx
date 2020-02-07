@@ -152,6 +152,12 @@ class CreateQuestion extends Component {
       answer !== 'option4'
     ) {
       this.handleError('answer must be one of the above options e.g option1!');
+    } else if (!quizsetId) {
+      this.handleError(
+        'please select a quizset form the select box related to your question.'
+      );
+    } else {
+      this.handleError('required field is missing!');
     }
   };
 
@@ -185,14 +191,15 @@ class CreateQuestion extends Component {
                   {error ? error : ''}
                 </label>
 
-                <div className='select'>
+                <div className='select is-info'>
                   <select
+                    className='txt-capitalize'
                     name='quizsetId'
                     id=''
                     onChange={this.handleInputChange}
                   >
                     {' '}
-                    <option value=''>Please select a quizset</option>
+                    <option value=''>please select a quizset</option>
                     {quizsets.quizsets.map(quizset => (
                       <option value={quizset._id} key={quizset._id}>
                         {quizset.name}
@@ -200,6 +207,9 @@ class CreateQuestion extends Component {
                     ))}
                   </select>
                 </div>
+
+                <br />
+                <br />
 
                 <div className='field'>
                   <label className='label'>Question</label>

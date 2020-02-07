@@ -28,12 +28,12 @@ export default function Header({ user, handleLogout }) {
       {user && user.user && user.user.isAdmin ? (
         <div id='navbarBasicExample' className='navbar-menu'>
           <div className='navbar-start'>
-            <Link to='/' className='navbar-item'>
+            {/* <Link to='/' className='navbar-item'>
               Play Game
-            </Link>
-            <Link to='/quizzes/list-quizzes' className='navbar-item'>
+            </Link> */}
+            {/* <Link to='/quizzes/list-quizzes' className='navbar-item'>
               List Quiz
-            </Link>
+            </Link> */}
             <Link to='/quizzes/create-quizset' className='navbar-item'>
               Create Quizset
             </Link>
@@ -45,13 +45,13 @@ export default function Header({ user, handleLogout }) {
       ) : user && user.user ? (
         <div id='navbarBasicExample' className='navbar-menu'>
           <div className='navbar-start'>
-            <Link to='/' className='navbar-item'>
+            {/* <Link to='/' className='navbar-item'>
               Play Game
-            </Link>
+            </Link> */}
 
-            <Link to='/quizzes/list-quizzes' className='navbar-item'>
+            {/* <Link to='/quizzes/list-quizzes' className='navbar-item'>
               List Quizzes
-            </Link>
+            </Link> */}
           </div>
         </div>
       ) : (
@@ -73,19 +73,25 @@ export default function Header({ user, handleLogout }) {
               </>
             ) : (
               <>
-                <button className='button is-light'>
+                <button className='button is-info is-light'>
                   <Link to='/users/score'>
-                    <strong style={{ fontWeight: 'bold', fontSize: '24px' }}>
+                    <strong
+                    // style={{
+                    //   fontWeight: 'bold',
+                    //   fontSize: '24px',
+                    //   verticalAlign: 'middle'
+                    // }}
+                    >
                       Show score
                     </strong>
                   </Link>
                 </button>
 
-                <button className='button is-light'>
+                {/* <button className='button is-light'>
                   <strong style={{ fontWeight: 'bold', fontSize: '24px' }}>
                     Score : {user && user.user ? user.currentScore : 0}
                   </strong>
-                </button>
+                </button> */}
 
                 <Link
                   to='/users/register'

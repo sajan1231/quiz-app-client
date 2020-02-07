@@ -22,7 +22,7 @@ export function createQuizset(url, token, data, history) {
         }
         if (!data.success) {
           dispatch(action('QUIZSET_ERROR', data.message));
-          console.log(data.message, 'delete quiz unsuccessfull...');
+          console.log(data.message, 'crete quiz unsuccessfull...');
         }
       })
       .catch(err => {
@@ -32,7 +32,7 @@ export function createQuizset(url, token, data, history) {
             'something went wrong. sorry for the trouble.'
           )
         );
-        console.log(err, 'delete quiz catch err...');
+        console.log(err, 'create quiz catch err...');
       });
   };
 }
@@ -110,6 +110,8 @@ export function updateQuizset(url, token, data, history) {
 }
 
 export function handleDeleteQuizset(url, token, id) {
+  console.log(url, token, id, 'handleDeleteQuizset action...');
+
   return dispatch => {
     dispatch(action('QUIZSET_IN_PROCESS', true));
 
@@ -127,7 +129,7 @@ export function handleDeleteQuizset(url, token, id) {
         }
         if (!data.success) {
           dispatch(action('QUIZSET_ERROR', data.message));
-          console.log(data.message, 'delete quiz unsuccessfull...');
+          console.log(data.message, 'delete quizset unsuccessfull...');
         }
       })
       .catch(err => {
@@ -137,7 +139,7 @@ export function handleDeleteQuizset(url, token, id) {
             'something went wrong. sorry for the trouble.'
           )
         );
-        console.log(err, 'delete quiz catch err...');
+        console.log(err, 'delete quizset catch err...');
       });
   };
 }

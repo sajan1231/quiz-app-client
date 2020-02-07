@@ -39,13 +39,17 @@ class CreateQuizset extends Component {
 
   render() {
     const { name, error } = this.state;
+    const resError = this.props.quizsets.error;
 
     return (
       <div style={{ marginTop: '100px' }}>
         <div className='container'>
           <div className='notification'>
-            <label className='label' style={{ textAlign: 'center' }}>
-              {error || ''}
+            <label
+              className='label'
+              style={{ textAlign: 'center', color: 'red' }}
+            >
+              {error || resError || ''}
             </label>
 
             <div className='field'>

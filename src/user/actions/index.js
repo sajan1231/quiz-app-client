@@ -20,6 +20,11 @@ export function handleAutoLogin(url, jwt, history) {
             dispatch(action('LOGIN', data));
           }
         } else if (!data.success) {
+          console.log(data, 'err auto login...');
+
+          dispatch(
+            action('AUTH_ERROR', '')
+          );
           history.push('/users/login');
         }
       })

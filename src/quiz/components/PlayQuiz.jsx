@@ -123,7 +123,12 @@ class PlayQuiz extends Component {
 
     if (jwt) {
       this.props.dispatch(
-        handleUpdateScore(BASE_URL + '/users/score/update', jwt, scoreData)
+        handleUpdateScore(
+          BASE_URL + '/users/score/update',
+          jwt,
+          scoreData,
+          this.props.history
+        )
       );
     }
     this.resetCounter();

@@ -50,7 +50,7 @@ class Score extends Component {
                 </thead>
                 <tbody>
                   {user && user.scores.length ? (
-                    user.scores.map((score, i) => {
+                    user.scores.reverse().map((score, i) => {
                       return (
                         <tr key={i}>
                           <th className='bold'>{i + 1}</th>

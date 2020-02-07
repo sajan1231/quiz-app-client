@@ -88,7 +88,7 @@ export function handleFetchQuestions(url, token) {
   }
 }
 
-export function handleUpdateScore(url, token, score) {
+export function handleUpdateScore(url, token, score, history) {
   return dispatch => {
     dispatch(action('QUESTION_IN_PROCESS', true));
 
@@ -104,6 +104,7 @@ export function handleUpdateScore(url, token, score) {
       .then(data => {
         if (data.success) {
           dispatch(action('UPDATE_USER', data));
+          history.push('/');
         } else if (!data.success) {
           dispatch(action('QUESTION_ERROR', data.massage));
           console.log(data, 'update score failed...');

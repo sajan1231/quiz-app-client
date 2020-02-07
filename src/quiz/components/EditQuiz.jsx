@@ -14,7 +14,6 @@ class EditQuiz extends Component {
     option2: '',
     option3: '',
     option4: '',
-    category: '',
     answer: '',
     error: '',
     isLoading: true
@@ -25,7 +24,7 @@ class EditQuiz extends Component {
     const { jwt } = localStorage;
 
     if (jwt && questionId) {
-      this.getQuiz(BASE_URL + '/quizzes/' + questionId, jwt);
+      this.getQuiz(BASE_URL + '/questions/' + questionId, jwt);
     }
   };
 
@@ -39,8 +38,10 @@ class EditQuiz extends Component {
     })
       .then(res => res.json())
       .then(data => {
+        console.log(data, 'edit question cdm..');
+
         if (data.success) {
-          this.setState({ ...data.quiz, isLoading: false });
+          this.setState({ ...data.question, isLoading: false });
         }
         if (!data.success) {
           this.setState({
@@ -63,30 +64,77 @@ class EditQuiz extends Component {
   };
 
   handleQuestionUpdate = () => {
-    const {
-      question,
-      option1,
-      option2,
-      option3,
-      option4,
-      answer,
-      category
-    } = this.state;
+    const { question, option1, option2, option3, option4, answer } = this.state;
     const questionId = window.location.pathname.split('/')[2];
 
     const { jwt } = localStorage;
-    if (jwt && question && option1 && option2 && option3 && option4 && answer) {
+    if (
+      jwt &&
+      question &&
+      option1 &&
+      option1 !== option2 &&
+      option1 !== option3 &&
+      option1 !== option4 &&
+      option2 &&
+      option2 !== option1 &&
+      option2 !== option3 &&
+      option2 !== option4 &&
+      option3 &&
+      option3 !== option1 &&
+      option3 !== option2 &&
+      option3 !== option4 &&
+      option4 &&
+      option4 !== option1 &&
+      option4 !== option2 &&
+      option4 !== option3 &&
+      answer &&
+      (answer === 'option1' ||
+        answer === 'option2' ||
+        answer === 'option3' ||
+        answer === 'option4')
+    ) {
       const quiz = {
         ...this.state,
-        category: category.toLowerCase(),
         answer: answer.toLowerCase()
       };
 
-      const url = BASE_URL + '/quizzes/' + questionId + '/update';
+      const url = BASE_URL + '/questions/' + questionId + '/update';
       this.props.dispatch(
         handleUpdateQuestion(url, jwt, quiz, questionId, this.props.history)
       );
+    } else if (
+      answer !== 'option1' &&
+      answer !== 'option2' &&
+      answer !== 'option3' &&
+      answer !== 'option4'
+    ) {
+      this.handleError(
+        'Answer must include the one of the above options e.g option1'
+      );
+    } else if (
+      option1 === option2 ||
+      option1 === option3 ||
+      option1 === option4 ||
+      option2 === option1 ||
+      option2 === option3 ||
+      option2 === option4 ||
+      option3 === option1 ||
+      option3 === option2 ||
+      option3 === option4 ||
+      option4 === option1 ||
+      option4 === option2 ||
+      option4 === option3
+    ) {
+      console.log(option1, option2, option3, option4, 'option err...');
+
+      this.handleError('Options must have to be qnique!');
     }
+  };
+
+  handleError = msg => {
+    this.setState({ error: msg }, () =>
+      setTimeout(() => this.setState({ error: '' }), 3000)
+    );
   };
 
   render() {
@@ -97,19 +145,20 @@ class EditQuiz extends Component {
       option3,
       option4,
       answer,
-      category,
       error,
       isLoading
     } = this.state;
 
     return (
       <div style={{ margin: '100px 0' }}>
-        {error ? <h1 className='title h4'>{error}</h1> : ''}
         <div className='container'>
           {isLoading ? (
             <Loader />
           ) : (
             <div className='notification'>
+              <label className='label txt-center' style={{ color: 'red' }}>
+                {error ? error : ''}
+              </label>
               <div className='field'>
                 <label className='label'>Question</label>
                 <div className='control'>
@@ -121,21 +170,6 @@ class EditQuiz extends Component {
                     required
                     value={question}
                     onChange={this.handleInputChange}
-                  />
-                </div>
-              </div>
-
-              <div className='field'>
-                <label className='label'>Category</label>
-                <div className='control'>
-                  <input
-                    className='input'
-                    type='text'
-                    name='category'
-                    value={category}
-                    required
-                    onChange={this.handleInputChange}
-                    placeholder='e.g. science'
                   />
                 </div>
               </div>
