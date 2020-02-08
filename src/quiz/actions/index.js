@@ -1,19 +1,17 @@
-import {
-  action
-} from '../../utils/helper';
+import { action, handleCatchError, removeError } from '../../utils/helper';
 
 export function handleCreateQuiz(url, token, data, history) {
   return dispatch => {
     dispatch(action('QUESTION_IN_PROCESS', true));
 
     fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: token
-        },
-        body: JSON.stringify(data)
-      })
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: token
+      },
+      body: JSON.stringify(data)
+    })
       .then(res => res.json())
       .then(data => {
         if (data.success) {
@@ -24,25 +22,26 @@ export function handleCreateQuiz(url, token, data, history) {
         }
       })
       .catch(err => {
-        dispatch(action('QUESTION_ERROR', 'something went wrong sorry for the trouble.'));
         console.log(err, 'create question catch err...');
-      });
-  }
-}
 
+        handleCatchError(dispatch, action, 'QUESTION_ERROR');
+        removeError(dispatch, action, 'QUESTION_ERROR');
+      });
+  };
+}
 
 export function handleUpdateQuestion(url, token, data, id, history) {
   return dispatch => {
     dispatch(action('QUESTION_IN_PROCESS', true));
 
     fetch(url, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: token
-        },
-        body: JSON.stringify(data)
-      })
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: token
+      },
+      body: JSON.stringify(data)
+    })
       .then(res => res.json())
       .then(data => {
         if (data.success) {
@@ -53,10 +52,12 @@ export function handleUpdateQuestion(url, token, data, id, history) {
         }
       })
       .catch(err => {
-        dispatch(action('QUESTION_ERROR', 'something went wrong. sorry for the trouble.'));
         console.log(err, 'update question catch err...');
+
+        handleCatchError(dispatch, action, 'QUESTION_ERROR');
+        removeError(dispatch, action, 'QUESTION_ERROR');
       });
-  }
+  };
 }
 
 export function handleFetchQuestions(url, token) {
@@ -64,12 +65,12 @@ export function handleFetchQuestions(url, token) {
     dispatch(action('QUESTION_IN_PROCESS', true));
 
     fetch(url, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: token
-        }
-      })
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: token
+      }
+    })
       .then(res => res.json())
       .then(data => {
         if (data.success) {
@@ -79,10 +80,12 @@ export function handleFetchQuestions(url, token) {
         }
       })
       .catch(err => {
-        dispatch(action('QUESTION_ERROR', 'something went wrong. sorry for the trouble.'));
         console.log(err, 'get questions catch err...');
+
+        handleCatchError(dispatch, action, 'QUESTION_ERROR');
+        removeError(dispatch, action, 'QUESTION_ERROR');
       });
-  }
+  };
 }
 
 export function deleteQuestion(url, token, id, history) {
@@ -90,12 +93,12 @@ export function deleteQuestion(url, token, id, history) {
     dispatch(action('QUESTION_IN_PROCESS', true));
 
     fetch(url, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: token
-        }
-      })
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: token
+      }
+    })
       .then(res => res.json())
       .then(data => {
         if (data.success) {
@@ -107,8 +110,10 @@ export function deleteQuestion(url, token, id, history) {
         }
       })
       .catch(err => {
-        dispatch(action('QUESTION_ERROR', 'something went wrong. sorry for the trouble.'));
         console.log(err, 'delete question catch err...');
+
+        handleCatchError(dispatch, action, 'QUESTION_ERROR');
+        removeError(dispatch, action, 'QUESTION_ERROR');
       });
-  }
+  };
 }

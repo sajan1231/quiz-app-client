@@ -1,7 +1,7 @@
 const initialState = {
   isLoading: false,
   quizsets: [],
-  error: ""
+  error: ''
 };
 
 export default function quizSetReducer(state = initialState, action) {
@@ -10,46 +10,54 @@ export default function quizSetReducer(state = initialState, action) {
       return {
         ...state,
         isLoading: false,
-          error: '',
-          quizsets: action.payload,
+        error: '',
+        quizsets: action.payload
       };
 
     case 'CREATE_QUIZSET':
       return {
         ...state,
         isLoading: false,
-          error: '',
-          quizsets: [...state.quizsets, action.payload],
+        error: '',
+        quizsets: [...state.quizsets, action.payload]
       };
 
     case 'UPDATE_QIZSET':
       return {
         ...state,
         isLoading: false,
-          error: '',
-          quizsets: [...state.quizsets, action.payload],
+        error: '',
+        quizsets: state.quizsets.map(quizset => {
+          if (quizset._id === action.payload._id) {
+            return action.payload;
+          } else {
+            return quizset;
+          }
+        })
       };
 
     case 'DELETE_QUIZSET':
       return {
         ...state,
         isLoading: false,
-          error: '',
-          quizsets: state.quizsets.filter(quizset => quizset._id !== action.payload),
+        error: '',
+        quizsets: state.quizsets.filter(
+          quizset => quizset._id !== action.payload
+        )
       };
 
     case 'QUIZSET_ERROR':
       return {
         ...state,
         isLoading: false,
-          error: action.payload
+        error: action.payload
       };
 
     case 'QUIZSET_IN_PROCESS':
       return {
         ...state,
         error: '',
-          isLoading: action.payload
+        isLoading: action.payload
       };
 
     default:

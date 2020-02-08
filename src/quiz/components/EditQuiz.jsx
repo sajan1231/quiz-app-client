@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import Loader from '../../app/componets/Loader';
-
 import { handleUpdateQuestion } from '../actions';
-
 import { BASE_URL } from '../../static';
 
 class EditQuiz extends Component {
@@ -144,10 +142,13 @@ class EditQuiz extends Component {
       isLoading
     } = this.state;
 
+    const loading = this.props.quizsets.quizsets.isLoading;
+    console.log(loading, 'edid quiz loading...');
+
     return (
       <div style={{ margin: '100px 0' }}>
         <div className='container'>
-          {isLoading ? (
+          {isLoading || loading ? (
             <Loader />
           ) : (
             <div className='notification'>

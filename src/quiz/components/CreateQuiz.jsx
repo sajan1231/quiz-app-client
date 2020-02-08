@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import NoQuiz from '../components/NoQuiz';
-
+import Loader from '../../app/componets/Loader';
 import { handleCreateQuiz } from '../actions';
 import { getQuizsets } from '../actions/actions.quizset';
 import { BASE_URL } from '../../static';
@@ -21,7 +21,11 @@ class CreateQuiz extends Component {
 
   componentDidMount = () => {
     const { jwt } = localStorage;
-    if (jwt) {
+    const { quizsets } = this.props.quizsets;
+
+    console.log(quizsets, 'cdm create quiz');
+
+    if (jwt && quizsets && !quizsets.length) {
       this.props.dispatch(getQuizsets(BASE_URL + '/quizsets', jwt));
     }
   };
@@ -171,7 +175,7 @@ class CreateQuiz extends Component {
       <div style={{ paddingTop: '100px' }}>
         <div className='container'>
           {isLoading ? (
-            'loading...'
+            <Loader />
           ) : quizsets && quizsets.quizsets && quizsets.quizsets.length ? (
             <>
               <div className='notification'>
@@ -186,10 +190,8 @@ class CreateQuiz extends Component {
                   <select
                     className='txt-capitalize'
                     name='quizsetId'
-                    id=''
                     onChange={this.handleInputChange}
                   >
-                    {' '}
                     <option value=''>please select a quizset</option>
                     {quizsets.quizsets.map(quizset => (
                       <option value={quizset._id} key={quizset._id}>

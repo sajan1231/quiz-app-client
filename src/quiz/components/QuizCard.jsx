@@ -12,7 +12,8 @@ export default function QuizCard(props) {
     resetCounter,
     isAnswered,
     handleDeleteQuiz,
-    submitScore
+    submitScore,
+    currentScore
   } = props;
 
   return (
@@ -135,14 +136,19 @@ export default function QuizCard(props) {
                   <h3 className='title is-3'>Quiz end...!</h3>
                 </button>
                 <div>
-                  <button
-                    className='button is-warning'
-                    onClick={() => {
-                      submitScore();
-                    }}
-                  >
-                    Submit score
-                  </button>
+                  {currentScore ? (
+                    <button
+                      className='button is-warning'
+                      onClick={() => {
+                        submitScore();
+                      }}
+                    >
+                      Submit score
+                    </button>
+                  ) : (
+                    ''
+                  )}
+
                   <span style={{ margin: '0 20px' }}></span>
                   <button className='button is-light' onClick={resetCounter}>
                     Play again

@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 import { createQuizset } from '../actions/actions.quizset';
 import { BASE_URL } from '../../static';
+import Loader from '../../app/componets/Loader';
 
 class CreateQuizset extends Component {
   state = {
@@ -14,6 +15,7 @@ class CreateQuizset extends Component {
     e.preventDefault();
     const { jwt } = localStorage;
     const { name } = this.state;
+
     if (jwt && name) {
       this.props.dispatch(
         createQuizset(
@@ -39,43 +41,48 @@ class CreateQuizset extends Component {
   render() {
     const { name, error } = this.state;
     const resError = this.props.quizsets.error;
+    const { isLoading } = this.props.quizsets;
 
     return (
       <div style={{ paddingTop: '100px' }}>
-        <div className='container'>
-          <div className='notification'>
-            <label
-              className='label'
-              style={{ textAlign: 'center', color: 'red' }}
-            >
-              {error || resError || ''}
-            </label>
+        {isLoading ? (
+          <Loader />
+        ) : (
+          <div className='container'>
+            <div className='notification'>
+              <label
+                className='label'
+                style={{ textAlign: 'center', color: 'red' }}
+              >
+                {error || resError || ''}
+              </label>
 
-            <div className='field'>
-              <label className='label'>Quizset name</label>
+              <div className='field'>
+                <label className='label'>Quizset name</label>
+                <div className='control'>
+                  <input
+                    className='input'
+                    type='text'
+                    name='name'
+                    value={name}
+                    required
+                    onChange={this.handleInputChange}
+                    placeholder='e.g. science'
+                  />
+                </div>
+              </div>
+
               <div className='control'>
-                <input
-                  className='input'
-                  type='text'
-                  name='name'
-                  value={name}
-                  required
-                  onChange={this.handleInputChange}
-                  placeholder='e.g. science'
-                />
+                <button
+                  className='button is-primary'
+                  onClick={this.handleCreateQuizset}
+                >
+                  Submit
+                </button>
               </div>
             </div>
-
-            <div className='control'>
-              <button
-                className='button is-primary'
-                onClick={this.handleCreateQuizset}
-              >
-                Submit
-              </button>
-            </div>
           </div>
-        </div>
+        )}
       </div>
     );
   }

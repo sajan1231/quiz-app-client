@@ -7,27 +7,50 @@ import { updateQuizset } from '../actions/actions.quizset';
 import { BASE_URL } from '../../static';
 
 class EditQuizset extends Component {
-  state = {
-    name: '',
-    error: '',
-    isLoading: true
-  };
+  constructor(props) {
+    super(props);
+    this.quizsetId = window.location.pathname.split('/')[2];
+
+    this.quizset = this.props.quizsets.reduce((acc, quizset) => {
+      if (quizset._id === this.quizsetId) {
+        acc = quizset;
+        return acc;
+      }
+    }, {});
+
+    console.log(this.quizsetId, this.quizset, 'costructor quizset...');
+
+    // this.state = {
+    //   name: this.quizset && this.quizset.name ? this.quizset.name : '',
+    //   error: '',
+    //   isLoading: false
+    // };
+
+    this.state = {
+      name: '',
+      error: '',
+      isLoading: false
+    };
+
+    // this.input = React.createRef();
+  }
 
   componentDidMount = () => {
     const quizsetId = window.location.pathname.split('/')[2];
-
     const { jwt } = localStorage;
+    // const { quizsets } = this.props;
 
-    if ((jwt, quizsetId)) {
+    // if (jwt && quizsetId && !quizsets|| !quizsets.length) {
+    if (jwt && quizsetId) {
       this.getQuizset(BASE_URL + '/quizsets/' + quizsetId, jwt);
-    } else if (!jwt) {
-      this.setState({ error: 'Unauthorized!' });
-    } else if (!quizsetId) {
-      this.setState({ error: 'Quizset id not found' });
+    } else if (!jwt || !quizsetId) {
+      this.props.history.push('/');
     }
   };
 
-  getQuizsets = (url, token) => {
+  getQuizset = (url, token) => {
+    this.setState({ isLoading: true });
+
     fetch(url, {
       method: 'GET',
       headers: {
@@ -62,6 +85,7 @@ class EditQuizset extends Component {
           BASE_URL + '/quizsets/' + quizsetId + '/update',
           jwt,
           name,
+          quizsetId,
           this.props.history
         )
       );
@@ -86,10 +110,20 @@ class EditQuizset extends Component {
 
   render() {
     const { name, error, isLoading } = this.state;
+    const loading = this.props.isLoading;
+
+    // const quizset = this.props.quizsets.reduce((acc, quizset) => {
+    //   if (quizset._id === this.quizsetId) {
+    //     acc = quizset;
+    //     return acc;
+    //   }
+    // }, {});
+
+    // console.log(quizset, 'rndr quizset...');
 
     return (
       <div>
-        {isLoading ? (
+        {isLoading || loading ? (
           <Loader />
         ) : (
           <div style={{ paddingTop: '100px' }}>
@@ -114,6 +148,18 @@ class EditQuizset extends Component {
                       onChange={this.handleInputChange}
                       placeholder='e.g. science'
                     />
+
+                    {/* <input
+                      className='input'
+                      type='text'
+                      name='name'
+                      // value={name}
+                      defaultValue={quizset.name}
+                      ref={this.input}
+                      required
+                      onChange={this.handleInputChange}
+                      placeholder='e.g. science'
+                    /> */}
                   </div>
                 </div>
 

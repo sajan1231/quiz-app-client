@@ -1,22 +1,17 @@
-import {
-  action
-} from '../../utils/helper';
-
+import { action, handleCatchError, removeError } from '../../utils/helper';
 
 export function createScore(url, token, score, history) {
-  console.log(url, token, score, 'create score...');
-
   return dispatch => {
     dispatch(action('AUTH_IN_PROCESS', true));
 
     fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: token
-        },
-        body: JSON.stringify(score)
-      })
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: token
+      },
+      body: JSON.stringify(score)
+    })
       .then(res => res.json())
       .then(data => {
         console.log(data, 'score created...');
@@ -29,8 +24,10 @@ export function createScore(url, token, score, history) {
         }
       })
       .catch(err => {
-        dispatch(action('QUESTION_ERROR', 'something went wrong. sorry for the trouble.'));
         console.log(err, 'create score catch err...');
+
+        handleCatchError(dispatch, action, 'AUTH_ERROR');
+        removeError(dispatch, action, 'AUTH_ERROR');
       });
-  }
-};
+  };
+}

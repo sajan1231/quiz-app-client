@@ -115,16 +115,19 @@ class PlayQuiz extends Component {
     const category = questions[0].quizsetId.name || '';
     const scoreData = { score, category };
 
-    if (jwt) {
+    if ((jwt, score)) {
       this.props.dispatch(
         createScore(BASE_URL + '/scores', jwt, scoreData, this.props.history)
       );
+    } else if (!score) {
+      console.log(score, 'no score...');
     }
     this.resetCounter();
+    this.props.history.push('/');
   };
 
   render() {
-    const { counter, isAnswered } = this.state;
+    const { counter, isAnswered, score } = this.state;
     const { questions, user } = this.props;
     const { isLoading } = questions;
 
@@ -139,6 +142,7 @@ class PlayQuiz extends Component {
                 ? questions.questions[counter]
                 : null
             }
+            currentScore={score}
             handleClick={this.handleClick}
             user={user.user}
             resetCounter={this.resetCounter}

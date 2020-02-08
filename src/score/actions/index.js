@@ -1,18 +1,16 @@
-import {
-  action
-} from '../../utils/helper';
+import { action, handleCatchError, removeError } from '../../utils/helper';
 
 export default function handleDeleteScore(url, token, id) {
   return dispatch => {
     dispatch(action('AUTH_IN_PROCESS', true));
 
     fetch(url, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: token
-        }
-      })
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: token
+      }
+    })
       .then(res => res.json())
       .then(data => {
         if (data.success) {
@@ -24,8 +22,10 @@ export default function handleDeleteScore(url, token, id) {
         }
       })
       .catch(err => {
-        dispatch(action('AUTH_ERROR', 'something went wrong. sorry for the trouble.'));
         console.log(err, 'delete score catch error...');
+
+        handleCatchError(dispatch, action, 'AUTH_ERROR');
+        removeError(dispatch, action, 'AUTH_ERROR');
       });
-  }
+  };
 }

@@ -12,7 +12,9 @@ import { BASE_URL } from '../../static';
 class ListQuizsets extends Component {
   componentDidMount = () => {
     const { jwt } = localStorage;
-    if (jwt) {
+    const { quizsets } = this.props.quizsets;
+
+    if (jwt && quizsets && !quizsets.length) {
       this.props.dispatch(getQuizsets(BASE_URL + '/quizsets', jwt));
     }
   };
@@ -29,6 +31,7 @@ class ListQuizsets extends Component {
   render() {
     const { user, quizsets } = this.props;
     const { isLoading } = quizsets;
+    console.log(quizsets.quizsets, 'list quizset...');
 
     return (
       <div>

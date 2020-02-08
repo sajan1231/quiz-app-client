@@ -1,18 +1,16 @@
-import {
-  action
-} from '../../utils/helper';
+import { action, handleCatchError, removeError } from '../../utils/helper';
 
 export function handleAutoLogin(url, jwt, history) {
   return dispatch => {
     dispatch(action('AUTH_IN_PROCESS', true));
 
     fetch(url, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: jwt
-        }
-      })
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: jwt
+      }
+    })
       .then(res => res.json())
       .then(data => {
         if (data && data.success) {
@@ -20,17 +18,16 @@ export function handleAutoLogin(url, jwt, history) {
             dispatch(action('LOGIN', data));
           }
         } else if (!data.success) {
-          dispatch(
-            action('AUTH_ERROR', '')
-          );
+          dispatch(action('AUTH_ERROR', ''));
           history.push('/users/login');
         }
       })
       .catch(err => {
-        dispatch(
-          action('AUTH_ERROR', 'something went wrong. sorry for the trouble.')
-        );
         console.log(err, 'auto login catch err...');
+
+        handleCatchError(dispatch, action, 'AUTH_ERROR');
+        removeError(dispatch, action, 'AUTH_ERROR');
+        history.push('/users/login');
       });
   };
 }
@@ -40,12 +37,12 @@ export function handleUserLogin(url, user, history) {
     dispatch(action('AUTH_IN_PROCESS', true));
 
     fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(user)
-      })
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(user)
+    })
       .then(res => res.json())
       .then(data => {
         if (data && data.success) {
@@ -57,10 +54,10 @@ export function handleUserLogin(url, user, history) {
         }
       })
       .catch(err => {
-        dispatch(
-          action('AUTH_ERROR', 'something went wrong. sorry for the trouble.')
-        );
         console.log(err, 'user login catch err...');
+
+        handleCatchError(dispatch, action, 'AUTH_ERROR');
+        removeError(dispatch, action, 'AUTH_ERROR');
       });
   };
 }
@@ -70,12 +67,12 @@ export function handleUserRegister(url, user, history) {
     dispatch(action('AUTH_IN_PROCESS', true));
 
     fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(user)
-      })
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(user)
+    })
       .then(res => res.json())
       .then(data => {
         if (data.success) {
@@ -89,10 +86,10 @@ export function handleUserRegister(url, user, history) {
         }
       })
       .catch(err => {
-        dispatch(
-          action('AUTH_ERROR', 'something went wrong. sorry for the trouble.')
-        );
         console.log(err, 'user register catch err');
+
+        handleCatchError(dispatch, action, 'AUTH_ERROR');
+        removeError(dispatch, action, 'AUTH_ERROR');
       });
   };
 }
