@@ -19,10 +19,10 @@ class PlayQuiz extends Component {
 
   componentDidMount() {
     const quizsetId = window.location.pathname.split('/')[2];
-    const { quizsets } = this.props.quizsets;
+    // const { quizsets } = this.props.quizsets;
     const { jwt } = localStorage;
 
-    if (jwt && quizsetId && (!quizsets || !quizsets.length)) {
+    if (jwt && quizsetId) {
       this.props.dispatch(
         handleFetchQuestions(BASE_URL + '/quizsets/' + quizsetId, jwt)
       );
@@ -33,6 +33,8 @@ class PlayQuiz extends Component {
   handleClick = (option, question) => {
     const { counter } = this.state;
     const { questions } = this.props.questions;
+
+    console.log(option, question, 'click callled...');
 
     if (counter <= questions.length - 1) {
       if (option && option === question.answer) {
@@ -128,26 +130,29 @@ class PlayQuiz extends Component {
 
   render() {
     const { counter, isAnswered, score } = this.state;
-    const { quizsets, questions, user } = this.props;
+    const { questions, user } = this.props;
     const { isLoading } = questions;
 
-    const quizsetId = window.location.pathname.split('/')[2];
-
-    const quiz =
-      quizsets.quizsets.reduce((acc, quiz) => {
-        if (quiz._id === quizsetId) {
-          acc = quiz.questions;
-        }
-        return acc;
-      }, []) || [];
+    // const quizsetId = window.location.pathname.split('/')[2];
+    // const quiz =
+    //   quizsets.quizsets.reduce((acc, quiz) => {
+    //     if (quiz._id === quizsetId) {
+    //       acc = quiz.questions;
+    //     }
+    //     return acc;
+    //   }, []) || [];
 
     return (
       <div style={{ paddingTop: '100px ' }} className='container'>
         {isLoading ? (
           <Loader />
-        ) : quiz && quiz.length ? (
+        ) : questions && questions.questions.length ? (
           <QuizCard
-            quiz={counter <= quiz.length - 1 ? quiz[counter] : null}
+            quiz={
+              counter <= questions.questions.length - 1
+                ? questions.questions[counter]
+                : null
+            }
             currentScore={score}
             handleClick={this.handleClick}
             user={user.user}
