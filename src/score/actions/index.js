@@ -2,8 +2,6 @@ import { action, handleCatchError, removeError } from '../../utils/helper';
 
 export default function handleDeleteScore(url, token, id) {
   return dispatch => {
-    dispatch(action('AUTH_IN_PROCESS', true));
-
     fetch(url, {
       method: 'DELETE',
       headers: {

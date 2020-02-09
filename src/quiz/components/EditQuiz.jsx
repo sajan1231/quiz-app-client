@@ -143,7 +143,6 @@ class EditQuiz extends Component {
     } = this.state;
 
     const loading = this.props.quizsets.quizsets.isLoading;
-    console.log(loading, 'edid quiz loading...');
 
     return (
       <div style={{ margin: '100px 0' }}>
@@ -258,4 +257,6 @@ class EditQuiz extends Component {
   }
 }
 
-export default connect()(EditQuiz);
+const mapStateToProps = state => state;
+
+export default connect(mapStateToProps)(EditQuiz);

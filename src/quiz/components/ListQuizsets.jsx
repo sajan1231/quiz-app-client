@@ -31,7 +31,6 @@ class ListQuizsets extends Component {
   render() {
     const { user, quizsets } = this.props;
     const { isLoading } = quizsets;
-    console.log(quizsets.quizsets, 'list quizset...');
 
     return (
       <div>

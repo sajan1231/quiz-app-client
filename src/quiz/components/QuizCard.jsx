@@ -31,7 +31,7 @@ export default function QuizCard(props) {
                     alignItems: 'center'
                   }}
                 >
-                  <Link to={`/questions/${quiz._id}/update`}>
+                  <Link to={`/quizzes/${quiz._id}/update`}>
                     <span>
                       <FaRegEdit
                         color='green'

@@ -14,34 +14,29 @@ class EditQuizset extends Component {
     this.quizset = this.props.quizsets.reduce((acc, quizset) => {
       if (quizset._id === this.quizsetId) {
         acc = quizset;
-        return acc;
       }
+      return acc;
     }, {});
 
     console.log(this.quizsetId, this.quizset, 'costructor quizset...');
 
-    // this.state = {
-    //   name: this.quizset && this.quizset.name ? this.quizset.name : '',
-    //   error: '',
-    //   isLoading: false
-    // };
-
     this.state = {
-      name: '',
+      name: this.quizset && this.quizset.name ? this.quizset.name : '',
       error: '',
       isLoading: false
     };
+  }
 
-    // this.input = React.createRef();
+  componentWillMount() {
+    console.log(this.props, 'cwm...');
   }
 
   componentDidMount = () => {
     const quizsetId = window.location.pathname.split('/')[2];
     const { jwt } = localStorage;
-    // const { quizsets } = this.props;
+    const { quizsets } = this.props;
 
-    // if (jwt && quizsetId && !quizsets|| !quizsets.length) {
-    if (jwt && quizsetId) {
+    if (jwt && quizsetId && (!quizsets || !quizsets.length)) {
       this.getQuizset(BASE_URL + '/quizsets/' + quizsetId, jwt);
     } else if (!jwt || !quizsetId) {
       this.props.history.push('/');
@@ -112,15 +107,6 @@ class EditQuizset extends Component {
     const { name, error, isLoading } = this.state;
     const loading = this.props.isLoading;
 
-    // const quizset = this.props.quizsets.reduce((acc, quizset) => {
-    //   if (quizset._id === this.quizsetId) {
-    //     acc = quizset;
-    //     return acc;
-    //   }
-    // }, {});
-
-    // console.log(quizset, 'rndr quizset...');
-
     return (
       <div>
         {isLoading || loading ? (
@@ -148,18 +134,6 @@ class EditQuizset extends Component {
                       onChange={this.handleInputChange}
                       placeholder='e.g. science'
                     />
-
-                    {/* <input
-                      className='input'
-                      type='text'
-                      name='name'
-                      // value={name}
-                      defaultValue={quizset.name}
-                      ref={this.input}
-                      required
-                      onChange={this.handleInputChange}
-                      placeholder='e.g. science'
-                    /> */}
                   </div>
                 </div>
 

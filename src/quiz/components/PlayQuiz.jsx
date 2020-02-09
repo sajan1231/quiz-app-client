@@ -19,8 +19,10 @@ class PlayQuiz extends Component {
 
   componentDidMount() {
     const quizsetId = window.location.pathname.split('/')[2];
+    const { quizsets } = this.props.quizsets;
     const { jwt } = localStorage;
-    if (jwt) {
+
+    if (jwt && quizsetId && (!quizsets || !quizsets.length)) {
       this.props.dispatch(
         handleFetchQuestions(BASE_URL + '/quizsets/' + quizsetId, jwt)
       );
@@ -119,8 +121,6 @@ class PlayQuiz extends Component {
       this.props.dispatch(
         createScore(BASE_URL + '/scores', jwt, scoreData, this.props.history)
       );
-    } else if (!score) {
-      console.log(score, 'no score...');
     }
     this.resetCounter();
     this.props.history.push('/');
@@ -128,20 +128,26 @@ class PlayQuiz extends Component {
 
   render() {
     const { counter, isAnswered, score } = this.state;
-    const { questions, user } = this.props;
+    const { quizsets, questions, user } = this.props;
     const { isLoading } = questions;
+
+    const quizsetId = window.location.pathname.split('/')[2];
+
+    const quiz =
+      quizsets.quizsets.reduce((acc, quiz) => {
+        if (quiz._id === quizsetId) {
+          acc = quiz.questions;
+        }
+        return acc;
+      }, []) || [];
 
     return (
       <div style={{ paddingTop: '100px ' }} className='container'>
         {isLoading ? (
           <Loader />
-        ) : questions.questions && questions.questions.length ? (
+        ) : quiz && quiz.length ? (
           <QuizCard
-            quiz={
-              counter <= questions.questions.length - 1
-                ? questions.questions[counter]
-                : null
-            }
+            quiz={counter <= quiz.length - 1 ? quiz[counter] : null}
             currentScore={score}
             handleClick={this.handleClick}
             user={user.user}
